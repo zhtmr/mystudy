@@ -2,6 +2,7 @@ package bitcamp.myapp;
 
 public class BoardMenu {
 
+  Prompt prompt;
   String title;
   Board[] boards = new Board[3];
   int length = 0;
@@ -9,7 +10,8 @@ public class BoardMenu {
   // 기본생성자 대신 BoardMenu 인스턴스 생성 시 title 초기화하는 생성자를 사용한다.
   // -> 인스턴스 생성 시 무조건 값 넘겨야됨. 안넘기면 컴파일 단계에서 오류 발생시킴.
   // -> 개발자의 실수를 줄일 수 있다.
-  public BoardMenu(String title) {
+  public BoardMenu(String title, Prompt prompt) {
+    this.prompt = prompt;
     this.title = title;
   }
 
@@ -26,7 +28,7 @@ public class BoardMenu {
   void execute() {
     this.printMenu();
     while (true) {
-      String input = Prompt.input("메인/%s> ", this.title);
+      String input = this.prompt.input("메인/%s> ", this.title);
 
       switch (input) {
         case "1":
@@ -58,7 +60,7 @@ public class BoardMenu {
   void delete() {
     System.out.printf("%s 삭제:\n", this.title);
 
-    int index = Integer.parseInt(Prompt.input("번호? "));
+    int index = this.prompt.inputInt("번호? ");
     if (index < 0 || index >= this.length) {
       System.out.printf("%s 번호가 유효하지 않습니다.\n", this.title);
       return;
@@ -73,23 +75,23 @@ public class BoardMenu {
   void modify() {
     System.out.printf("%s 변경:\n", this.title);
 
-    int index = Integer.parseInt(Prompt.input("번호? "));
+    int index = this.prompt.inputInt("번호? ");
     if (index < 0 || index >= this.length) {
       System.out.printf("%s 번호가 유효하지 않습니다.\n", this.title);
       return;
     }
 
     Board board = this.boards[index];
-    board.title = Prompt.input("제목(%s)? ", board.title);
-    board.content = Prompt.input("내용(%s)? ", board.content);
-    board.writer = Prompt.input("작성자(%s)? ", board.writer);
-    board.createdDate = Prompt.input("작성일(%s)? ", board.createdDate);
+    board.title = this.prompt.input("제목(%s)? ", board.title);
+    board.content = this.prompt.input("내용(%s)? ", board.content);
+    board.writer = this.prompt.input("작성자(%s)? ", board.writer);
+    board.createdDate = this.prompt.input("작성일(%s)? ", board.createdDate);
   }
 
   void view() {
     System.out.println("게시글 조회:");
 
-    int index = Integer.parseInt(Prompt.input("번호? "));
+    int index = this.prompt.inputInt("번호? ");
     if (index < 0 || index >= this.length) {
       System.out.println("게시물 번호가 유효하지 않습니다.");
       return;
@@ -128,10 +130,10 @@ public class BoardMenu {
     }
 
     Board board = new Board();
-    board.title = Prompt.input("제목? ");
-    board.content = Prompt.input("내용? ");
-    board.writer = Prompt.input("작성자? ");
-    board.createdDate = Prompt.input("작성일? ");
+    board.title = this.prompt.input("제목? ");
+    board.content = this.prompt.input("내용? ");
+    board.writer = this.prompt.input("작성자? ");
+    board.createdDate = this.prompt.input("작성일? ");
 
     boards[length++] = board;
   }
