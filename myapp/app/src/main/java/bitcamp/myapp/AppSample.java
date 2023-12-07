@@ -3,8 +3,10 @@ package bitcamp.myapp;
 public class AppSample {
 
   public static void main(String[] args) {
-    MainMenu.execute();
-    new Prompt(System.in).close();
+    Prompt prompt = new Prompt(System.in);
+
+    new MainMenu(prompt).execute();
+    prompt.close();
   }
 
 }
