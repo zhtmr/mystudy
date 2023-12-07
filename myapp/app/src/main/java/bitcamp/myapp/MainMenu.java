@@ -24,6 +24,8 @@ public class MainMenu {
   }
 
   static void execute() {
+    BoardMenu boardMenu = new BoardMenu();
+
     printMenu();
 
     while (true) {
@@ -34,7 +36,7 @@ public class MainMenu {
           AssignmentMenu.execute();
           break;
         case "2":
-          BoardMenu.execute();
+          boardMenu.execute();
           break;
         case "3":
           UserMenu.execute();
