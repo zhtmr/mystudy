@@ -24,7 +24,9 @@ public class MainMenu {
   }
 
   static void execute() {
-    BoardMenu boardMenu = new BoardMenu();
+    BoardMenu boardMenu = new BoardMenu("게시판");
+
+    BoardMenu greetingMenu = new BoardMenu("가입인사");
 
     printMenu();
 
@@ -42,7 +44,7 @@ public class MainMenu {
           UserMenu.execute();
           break;
         case "4":
-          GreetingBoardMenu.execute();
+          greetingMenu.execute();
           break;
         case "5":
           System.out.println("도움말");

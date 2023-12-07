@@ -2,12 +2,19 @@ package bitcamp.myapp;
 
 public class BoardMenu {
 
+  String title;
   Board[] boards = new Board[3];
   int length = 0;
 
+  // 기본생성자 대신 BoardMenu 인스턴스 생성 시 title 초기화하는 생성자를 사용한다.
+  // -> 인스턴스 생성 시 무조건 값 넘겨야됨. 안넘기면 컴파일 단계에서 오류 발생시킴.
+  // -> 개발자의 실수를 줄일 수 있다.
+  public BoardMenu(String title) {
+    this.title = title;
+  }
 
-  static void printMenu() {
-    System.out.println("[게시글]");
+  void printMenu() {
+    System.out.printf("[%s]\n", this.title);
     System.out.println("1. 등록");
     System.out.println("2. 조회");
     System.out.println("3. 변경");
@@ -17,9 +24,9 @@ public class BoardMenu {
   }
 
   void execute() {
-    printMenu();
+    this.printMenu();
     while (true) {
-      String input = Prompt.input("메인/게시글> ");
+      String input = Prompt.input("메인/%s> ", this.title);
 
       switch (input) {
         case "1":
@@ -40,7 +47,7 @@ public class BoardMenu {
         case "0":
           return;
         case "menu":
-          printMenu();
+          this.printMenu();
           break;
         default:
           System.out.println("메뉴 번호가 옳지 않습니다!");
@@ -49,11 +56,11 @@ public class BoardMenu {
   }
 
   void delete() {
-    System.out.println("게시글 삭제:");
+    System.out.printf("%s 삭제:\n", this.title);
 
     int index = Integer.parseInt(Prompt.input("번호? "));
     if (index < 0 || index >= this.length) {
-      System.out.println("게시물 번호가 유효하지 않습니다.");
+      System.out.printf("%s 번호가 유효하지 않습니다.\n", this.title);
       return;
     }
 
@@ -64,11 +71,11 @@ public class BoardMenu {
   }
 
   void modify() {
-    System.out.println("게시글 변경:");
+    System.out.printf("%s 변경:\n", this.title);
 
     int index = Integer.parseInt(Prompt.input("번호? "));
     if (index < 0 || index >= this.length) {
-      System.out.println("게시물 번호가 유효하지 않습니다.");
+      System.out.printf("%s 번호가 유효하지 않습니다.\n", this.title);
       return;
     }
 
