@@ -1,6 +1,6 @@
 package bitcamp.myapp.vo;
 
-public class User {
+public class Member {
 
   public String email;
   public String name;
