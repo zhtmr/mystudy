@@ -1,5 +1,7 @@
-package bitcamp.myapp;
+package bitcamp.myapp.menu;
 
+import bitcamp.myapp.vo.User;
+import bitcamp.util.Prompt;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

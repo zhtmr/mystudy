@@ -1,4 +1,7 @@
-package bitcamp.myapp;
+package bitcamp.myapp.menu;
+
+import bitcamp.util.AnsiEscape;
+import bitcamp.util.Prompt;
 
 public class MainMenu {
 
@@ -11,7 +14,7 @@ public class MainMenu {
       "5. 도움말",
       AnsiEscape.ANSI_RED + "0. 종료" + AnsiEscape.ANSI_CLEAR
   };
-  
+
   Prompt prompt;
 
   public MainMenu(Prompt prompt) {
@@ -26,7 +29,7 @@ public class MainMenu {
     }
   }
 
-  void execute() {
+  public void execute() {
     //Prompt prompt = new Prompt(System.in);
     BoardMenu boardMenu = new BoardMenu("게시판", this.prompt);
     BoardMenu greetingMenu = new BoardMenu("가입인사", this.prompt);
