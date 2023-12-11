@@ -1,5 +1,6 @@
 package bitcamp.myapp.menu;
 
+import bitcamp.menu.Menu;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
 
