@@ -106,11 +106,11 @@ public class MemberMenu implements Menu {
   }
 
   @Override
-  public void execute() {
+  public void execute(Prompt prompt) {
     this.printMenu();
 
     while (true) {
-      String input = this.prompt.input("메인/%s> ", this.title);
+      String input = prompt.input("메인/%s> ", this.title);
 
       switch (input) {
         case "1":
@@ -137,6 +137,11 @@ public class MemberMenu implements Menu {
           System.out.println("메뉴 번호 다시!");
       }
     }
+  }
+
+  @Override
+  public String getTitle() {
+    return null;
   }
 
 

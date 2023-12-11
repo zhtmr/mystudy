@@ -31,7 +31,7 @@ public class MainMenu implements Menu {
   }
 
   @Override
-  public void execute() {
+  public void execute(Prompt prompt) {
 
     Menu assignmentMenu = new AssignmentMenu("과제", this.prompt);
     Menu boardMenu = new BoardMenu("게시글", this.prompt);
@@ -46,19 +46,19 @@ public class MainMenu implements Menu {
 
       switch (input) {
         case "1":
-          assignmentMenu.execute();
+          assignmentMenu.execute(prompt);
           break;
         case "2":
-          boardMenu.execute();
+          boardMenu.execute(prompt);
           break;
         case "3":
-          memberMenu.execute();
+          memberMenu.execute(prompt);
           break;
         case "4":
-          greetingMenu.execute();
+          greetingMenu.execute(prompt);
           break;
         case "5":
-          helpMenu.execute();
+          helpMenu.execute(prompt);
           break;
         case "0":
           System.out.println("종료합니다.");
@@ -71,4 +71,10 @@ public class MainMenu implements Menu {
       }
     }
   }
+
+  @Override
+  public String getTitle() {
+    return null;
+  }
+
 }

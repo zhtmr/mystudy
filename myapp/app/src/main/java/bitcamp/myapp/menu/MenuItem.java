@@ -2,25 +2,23 @@ package bitcamp.myapp.menu;
 
 import bitcamp.myapp.util.Prompt;
 
-public class HelpMenu implements Menu {
+// Composite pattern: leaf
+public class MenuItem implements Menu {
 
   String title;
-  Prompt prompt;
 
-  public HelpMenu(String title, Prompt prompt) {
+  public MenuItem(String title) {
     this.title = title;
-    this.prompt = prompt;
   }
 
 
   @Override
   public void execute(Prompt prompt) {
     System.out.printf("[%s]\n", this.title);
-    System.out.println("도움말 입니다.");
   }
 
   @Override
   public String getTitle() {
-    return null;
+    return this.title;
   }
 }
