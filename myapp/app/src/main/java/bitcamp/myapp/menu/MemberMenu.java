@@ -5,7 +5,7 @@ import bitcamp.myapp.vo.Member;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MemberMenu {
+public class MemberMenu implements Menu {
 
   Prompt prompt;
   String title;
@@ -105,7 +105,8 @@ public class MemberMenu {
     System.out.println("0. 이전");
   }
 
-  void execute() {
+  @Override
+  public void execute() {
     this.printMenu();
 
     while (true) {

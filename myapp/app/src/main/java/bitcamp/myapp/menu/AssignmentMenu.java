@@ -3,7 +3,7 @@ package bitcamp.myapp.menu;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
 
-public class AssignmentMenu {
+public class AssignmentMenu implements Menu {
 
   Prompt prompt;
   String title;
@@ -25,7 +25,8 @@ public class AssignmentMenu {
     System.out.println("0. 이전");
   }
 
-  void execute() {
+  @Override
+  public void execute() {
     this.printMenu();
 
     while (true) {

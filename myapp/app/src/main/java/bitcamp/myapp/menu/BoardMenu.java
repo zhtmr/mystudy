@@ -5,7 +5,7 @@ import bitcamp.myapp.vo.Board;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BoardMenu {
+public class BoardMenu implements Menu {
 
   Prompt prompt;
   String title;
@@ -107,7 +107,8 @@ public class BoardMenu {
     this.boards[--this.length] = null;
   }
 
-  void execute() {
+  @Override
+  public void execute() {
     this.printMenu();
     while (true) {
       String input = this.prompt.input("메인/%s> ", this.title);
