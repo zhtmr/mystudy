@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.member;
 
+import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
@@ -17,7 +18,7 @@ public class MemberAddHandler implements MenuHandler {
   }
 
   @Override
-  public void action() {
+  public void action(Menu menu) {
     System.out.println("멤버 등록:");
 
     if (this.memberRepository.length == this.memberRepository.members.length) {

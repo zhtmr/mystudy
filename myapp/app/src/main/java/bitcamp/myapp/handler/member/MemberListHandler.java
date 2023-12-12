@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.member;
 
+import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.vo.Member;
 
@@ -12,7 +13,7 @@ public class MemberListHandler implements MenuHandler {
   }
 
   @Override
-  public void action() {
+  public void action(Menu menu) {
     System.out.println("멤버 목록:");
 
     System.out.printf("%-20s\t%20s\t%15s\n", "이메일", "이름", "가입일");

@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.assignment;
 
+import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
@@ -15,7 +16,7 @@ public class AssignmentViewHandler implements MenuHandler {
   }
 
   @Override
-  public void action() {
+  public void action(Menu menu) {
     System.out.println("과제 조회:");
 
     int index = this.prompt.inputInt("번호? ");

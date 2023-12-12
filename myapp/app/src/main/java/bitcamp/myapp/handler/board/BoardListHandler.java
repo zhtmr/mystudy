@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.board;
 
+import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.vo.Board;
 
@@ -13,7 +14,7 @@ public class BoardListHandler implements MenuHandler {
   }
 
   @Override
-  public void action() {
+  public void action(Menu menu) {
     System.out.println("게시글 목록:");
     System.out.printf("%-20s\t%10s\t%s\n", "Title", "Writer", "Date");
 

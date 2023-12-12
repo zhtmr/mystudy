@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.board;
 
+import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Board;
@@ -18,7 +19,7 @@ public class BoardAddHandler implements MenuHandler {
   }
 
   @Override
-  public void action() {
+  public void action(Menu menu) {
     System.out.println("게시글 등록:");
 
     if (this.boardRepository.length == this.boardRepository.boards.length) {

@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.board;
 
+import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.Prompt;
 
@@ -15,7 +16,7 @@ public class BoardDeleteHandler implements MenuHandler {
   }
 
   @Override
-  public void action() {
+  public void action(Menu menu) {
     System.out.println("게시글 삭제!");
 
     int index = this.prompt.inputInt("번호? ");

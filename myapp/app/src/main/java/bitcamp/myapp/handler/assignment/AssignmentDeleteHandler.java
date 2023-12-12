@@ -1,5 +1,6 @@
 package bitcamp.myapp.handler.assignment;
 
+import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.Prompt;
 
@@ -14,7 +15,7 @@ public class AssignmentDeleteHandler implements MenuHandler {
   }
 
   @Override
-  public void action() {
+  public void action(Menu menu) {
     System.out.println("과제 삭제:");
 
     int index = this.prompt.inputInt("번호? ");
