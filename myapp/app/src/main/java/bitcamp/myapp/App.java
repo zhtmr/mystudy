@@ -2,12 +2,12 @@ package bitcamp.myapp;
 
 import bitcamp.menu.MenuGroup;
 import bitcamp.menu.MenuItem;
-import bitcamp.myapp.menu.BoardAddHandler;
-import bitcamp.myapp.menu.BoardDeleteHandler;
-import bitcamp.myapp.menu.BoardListHandler;
-import bitcamp.myapp.menu.BoardModifyHandler;
-import bitcamp.myapp.menu.BoardRepository;
-import bitcamp.myapp.menu.BoardViewHandler;
+import bitcamp.myapp.handler.board.BoardAddHandler;
+import bitcamp.myapp.handler.board.BoardDeleteHandler;
+import bitcamp.myapp.handler.board.BoardListHandler;
+import bitcamp.myapp.handler.board.BoardModifyHandler;
+import bitcamp.myapp.handler.board.BoardRepository;
+import bitcamp.myapp.handler.board.BoardViewHandler;
 import bitcamp.myapp.util.Prompt;
 
 public class App {
@@ -33,9 +33,9 @@ public class App {
 
     mainMenu.add(boardMenu);
     boardMenu.add(new MenuItem("등록", new BoardAddHandler(boardRepository, prompt)));
-    boardMenu.add(new MenuItem("조회", new BoardViewHandler()));
-    boardMenu.add(new MenuItem("변경", new BoardModifyHandler()));
-    boardMenu.add(new MenuItem("삭제", new BoardDeleteHandler()));
+    boardMenu.add(new MenuItem("조회", new BoardViewHandler(boardRepository, prompt)));
+    boardMenu.add(new MenuItem("변경", new BoardModifyHandler(boardRepository, prompt)));
+    boardMenu.add(new MenuItem("삭제", new BoardDeleteHandler(boardRepository, prompt)));
     boardMenu.add(new MenuItem("목록", new BoardListHandler(boardRepository)));
 
     mainMenu.add(memberMenu);
