@@ -6,6 +6,8 @@ import bitcamp.myapp.repository.MemberRepository;
 import bitcamp.myapp.util.AnsiEscape;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MemberModifyHandler implements MenuHandler {
 
@@ -24,14 +26,18 @@ public class MemberModifyHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    if (index < 0 || index >= this.memberRepository.length) {
+    Member oldVal = memberRepository.get(index);
+    if (oldVal == null) {
       System.out.println("멤버 번호가 유효하지 않습니다");
       return;
     }
 
-    Member member = this.memberRepository.members[index];
-    member.email = this.prompt.input("이메일(%s): ", member.email);
-    member.name = this.prompt.input("이름(%s): ", member.name);
-    member.password = this.prompt.input("암호: ", member.password);
+    Member member = new Member();
+    member.email = this.prompt.input("이메일(%s): ", oldVal.email);
+    member.name = this.prompt.input("이름(%s): ", oldVal.name);
+    member.password = this.prompt.input("암호: ", oldVal.password);
+    member.createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+    memberRepository.set(index, member);
   }
 }

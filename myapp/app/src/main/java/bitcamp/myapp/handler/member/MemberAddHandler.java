@@ -24,23 +24,12 @@ public class MemberAddHandler implements MenuHandler {
     System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
         menu.getTitle());
 
-    if (this.memberRepository.length == this.memberRepository.members.length) {
-      int oldSize = this.memberRepository.members.length;
-      int newSize = oldSize + (oldSize >> 2);
-
-      Member[] arr = new Member[newSize];
-      for (int i = 0; i < this.memberRepository.length; i++) {
-        arr[i] = this.memberRepository.members[i];
-      }
-      this.memberRepository.members = arr;
-    }
-
     Member member = new Member();
     member.email = this.prompt.input("이메일? ");
     member.name = this.prompt.input("이름? ");
     member.password = this.prompt.input("암호? ");
-    member.createDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    member.createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-    this.memberRepository.members[this.memberRepository.length++] = member;
+    memberRepository.add(member);
   }
 }

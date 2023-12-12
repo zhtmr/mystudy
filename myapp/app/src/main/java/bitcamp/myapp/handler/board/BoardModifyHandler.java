@@ -24,14 +24,17 @@ public class BoardModifyHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    if (index < 0 || index >= this.boardRepository.length) {
+    Board oldBoard = this.boardRepository.get(index);
+    if (oldBoard == null) {
       System.out.println("게시글 번호가 유효하지 않습니다.");
       return;
     }
 
-    Board board = this.boardRepository.boards[index];
-    board.title = this.prompt.input("제목(%s)? ", board.title);
-    board.content = this.prompt.input("내용(%s)? ", board.content);
-    board.writer = this.prompt.input("작성자(%s)? ", board.writer);
+    Board board = new Board();
+    board.title = this.prompt.input("제목(%s)? ", oldBoard.title);
+    board.content = this.prompt.input("내용(%s)? ", oldBoard.content);
+    board.writer = this.prompt.input("작성자(%s)? ", oldBoard.writer);
+
+    this.boardRepository.set(index, board);
   }
 }

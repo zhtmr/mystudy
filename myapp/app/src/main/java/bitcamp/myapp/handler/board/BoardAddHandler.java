@@ -24,25 +24,15 @@ public class BoardAddHandler implements MenuHandler {
   public void action(Menu menu) {
     System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
         menu.getTitle());
-
-    if (this.boardRepository.length == this.boardRepository.boards.length) {
-      int oldSize = this.boardRepository.boards.length;
-      int newSize = oldSize + (oldSize >> 1);
-
-      Board[] arr = new Board[newSize];
-      for (int i = 0; i < oldSize; i++) {
-        arr[i] = this.boardRepository.boards[i];
-      }
-
-      this.boardRepository.boards = arr;
-    }
-
+    
     Board board = new Board();
     board.title = this.prompt.input("제목? ");
     board.content = this.prompt.input("내용? ");
     board.writer = this.prompt.input("작성자? ");
     board.createdDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-    this.boardRepository.boards[this.boardRepository.length++] = board;
+    // 캡슐화
+    boardRepository.add(board);
+
   }
 }

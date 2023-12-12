@@ -23,14 +23,17 @@ public class AssignmentModifyHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    if (index < 0 || index >= this.assignmentRepository.length) {
+    Assignment oldVal = assignmentRepository.get(index);
+    if (oldVal == null) {
       System.out.println("과제 번호가 유효하지 않습니다.");
       return;
     }
 
-    Assignment assignment = this.assignmentRepository.assignments[index];
+    Assignment assignment = new Assignment();
     assignment.title = this.prompt.input("과제명(%s)? ", assignment.title);
     assignment.content = this.prompt.input("내용(%s)? ", assignment.content);
     assignment.deadline = this.prompt.input("제출 마감일(%s)? ", assignment.deadline);
+
+    assignmentRepository.set(index, assignment);
   }
 }

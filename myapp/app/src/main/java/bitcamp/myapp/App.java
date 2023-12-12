@@ -38,7 +38,6 @@ public class App {
     MenuGroup boardMenu = new MenuGroup("게시글");
     MenuGroup memberMenu = new MenuGroup("회원");
     MenuGroup greetingMenu = new MenuGroup("가입인사");
-    MenuGroup helpMenu = new MenuGroup("도움말");
 
     mainMenu.add(assignmentMenu);
     assignmentMenu.add(new MenuItem("등록", new AssignmentAddHandler(prompt, assignmentRepository)));
