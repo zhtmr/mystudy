@@ -2,6 +2,8 @@ package bitcamp.myapp.handler.member;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
+import bitcamp.myapp.repository.MemberRepository;
+import bitcamp.myapp.util.AnsiEscape;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
 import java.text.SimpleDateFormat;
@@ -19,7 +21,8 @@ public class MemberAddHandler implements MenuHandler {
 
   @Override
   public void action(Menu menu) {
-    System.out.println("멤버 등록:");
+    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
+        menu.getTitle());
 
     if (this.memberRepository.length == this.memberRepository.members.length) {
       int oldSize = this.memberRepository.members.length;

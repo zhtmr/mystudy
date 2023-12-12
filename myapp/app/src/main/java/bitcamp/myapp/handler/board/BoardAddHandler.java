@@ -2,6 +2,8 @@ package bitcamp.myapp.handler.board;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
+import bitcamp.myapp.repository.BoardRepository;
+import bitcamp.myapp.util.AnsiEscape;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Board;
 import java.text.SimpleDateFormat;
@@ -20,7 +22,8 @@ public class BoardAddHandler implements MenuHandler {
 
   @Override
   public void action(Menu menu) {
-    System.out.println("게시글 등록:");
+    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
+        menu.getTitle());
 
     if (this.boardRepository.length == this.boardRepository.boards.length) {
       int oldSize = this.boardRepository.boards.length;

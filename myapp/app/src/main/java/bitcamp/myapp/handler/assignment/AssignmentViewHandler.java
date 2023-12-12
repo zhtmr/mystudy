@@ -2,6 +2,8 @@ package bitcamp.myapp.handler.assignment;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
+import bitcamp.myapp.repository.AssignmentRepository;
+import bitcamp.myapp.util.AnsiEscape;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
 
@@ -17,7 +19,8 @@ public class AssignmentViewHandler implements MenuHandler {
 
   @Override
   public void action(Menu menu) {
-    System.out.println("과제 조회:");
+    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
+        menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
     if (index < 0 || index >= this.assignmentRepository.length) {
