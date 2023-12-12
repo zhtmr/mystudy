@@ -2,8 +2,8 @@ package bitcamp.myapp.handler.member;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.repository.MemberRepository;
 import bitcamp.myapp.util.AnsiEscape;
+import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
 import java.text.SimpleDateFormat;
@@ -12,10 +12,10 @@ import java.util.Date;
 public class MemberAddHandler implements MenuHandler {
 
   Prompt prompt;
-  MemberRepository memberRepository;
+  ObjectRepository objectRepository;
 
-  public MemberAddHandler(MemberRepository memberRepository, Prompt prompt) {
-    this.memberRepository = memberRepository;
+  public MemberAddHandler(ObjectRepository objectRepository, Prompt prompt) {
+    this.objectRepository = objectRepository;
     this.prompt = prompt;
   }
 
@@ -30,6 +30,6 @@ public class MemberAddHandler implements MenuHandler {
     member.password = this.prompt.input("암호? ");
     member.createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-    memberRepository.add(member);
+    objectRepository.add(member);
   }
 }

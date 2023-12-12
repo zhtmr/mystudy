@@ -2,8 +2,8 @@ package bitcamp.myapp.handler.board;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.repository.BoardRepository;
 import bitcamp.myapp.util.AnsiEscape;
+import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Board;
 
@@ -11,11 +11,11 @@ import bitcamp.myapp.vo.Board;
 public class BoardModifyHandler implements MenuHandler {
 
   Prompt prompt;
-  BoardRepository boardRepository;
+  ObjectRepository objectRepository;
 
-  public BoardModifyHandler(BoardRepository boardRepository, Prompt prompt) {
+  public BoardModifyHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.prompt = prompt;
-    this.boardRepository = boardRepository;
+    this.objectRepository = objectRepository;
   }
 
   @Override
@@ -24,7 +24,7 @@ public class BoardModifyHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    Board oldBoard = this.boardRepository.get(index);
+    Board oldBoard = (Board) this.objectRepository.get(index);
     if (oldBoard == null) {
       System.out.println("게시글 번호가 유효하지 않습니다.");
       return;
@@ -35,6 +35,6 @@ public class BoardModifyHandler implements MenuHandler {
     board.content = this.prompt.input("내용(%s)? ", oldBoard.content);
     board.writer = this.prompt.input("작성자(%s)? ", oldBoard.writer);
 
-    this.boardRepository.set(index, board);
+    this.objectRepository.set(index, board);
   }
 }

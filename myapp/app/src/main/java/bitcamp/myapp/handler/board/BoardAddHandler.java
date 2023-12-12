@@ -2,8 +2,8 @@ package bitcamp.myapp.handler.board;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.repository.BoardRepository;
 import bitcamp.myapp.util.AnsiEscape;
+import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Board;
 import java.text.SimpleDateFormat;
@@ -13,10 +13,10 @@ import java.util.Date;
 public class BoardAddHandler implements MenuHandler {
 
   Prompt prompt;
-  BoardRepository boardRepository;
+  ObjectRepository objectRepository;
 
-  public BoardAddHandler(BoardRepository boardRepository, Prompt prompt) {
-    this.boardRepository = boardRepository;
+  public BoardAddHandler(ObjectRepository objectRepository, Prompt prompt) {
+    this.objectRepository = objectRepository;
     this.prompt = prompt;
   }
 
@@ -24,7 +24,7 @@ public class BoardAddHandler implements MenuHandler {
   public void action(Menu menu) {
     System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
         menu.getTitle());
-    
+
     Board board = new Board();
     board.title = this.prompt.input("제목? ");
     board.content = this.prompt.input("내용? ");
@@ -32,7 +32,7 @@ public class BoardAddHandler implements MenuHandler {
     board.createdDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
     // 캡슐화
-    boardRepository.add(board);
+    objectRepository.add(board);
 
   }
 }

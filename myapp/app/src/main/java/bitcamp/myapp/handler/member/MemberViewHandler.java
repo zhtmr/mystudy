@@ -2,18 +2,18 @@ package bitcamp.myapp.handler.member;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.repository.MemberRepository;
 import bitcamp.myapp.util.AnsiEscape;
+import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
 
 public class MemberViewHandler implements MenuHandler {
 
   Prompt prompt;
-  MemberRepository memberRepository;
+  ObjectRepository objectRepository;
 
-  public MemberViewHandler(MemberRepository memberRepository, Prompt prompt) {
-    this.memberRepository = memberRepository;
+  public MemberViewHandler(ObjectRepository objectRepository, Prompt prompt) {
+    this.objectRepository = objectRepository;
     this.prompt = prompt;
   }
 
@@ -23,7 +23,7 @@ public class MemberViewHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    Member member = memberRepository.get(index);
+    Member member = (Member) objectRepository.get(index);
     if (member == null) {
       System.out.println("멤버 번호가 유효하지 않습니다");
       return;

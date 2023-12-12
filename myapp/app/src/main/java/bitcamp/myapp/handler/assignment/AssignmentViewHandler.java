@@ -2,19 +2,19 @@ package bitcamp.myapp.handler.assignment;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.repository.AssignmentRepository;
 import bitcamp.myapp.util.AnsiEscape;
+import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
 
 public class AssignmentViewHandler implements MenuHandler {
 
   Prompt prompt;
-  AssignmentRepository assignmentRepository;
+  ObjectRepository objectRepository;
 
-  public AssignmentViewHandler(Prompt prompt, AssignmentRepository assignmentRepository) {
+  public AssignmentViewHandler(Prompt prompt, ObjectRepository objectRepository) {
     this.prompt = prompt;
-    this.assignmentRepository = assignmentRepository;
+    this.objectRepository = objectRepository;
   }
 
   @Override
@@ -23,7 +23,7 @@ public class AssignmentViewHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    Assignment assignment = assignmentRepository.get(index);
+    Assignment assignment = (Assignment) objectRepository.get(index);
     if (assignment == null) {
       System.out.println("과제 번호가 유효하지 않습니다.");
       return;

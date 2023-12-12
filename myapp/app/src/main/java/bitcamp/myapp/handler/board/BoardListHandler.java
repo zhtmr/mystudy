@@ -2,17 +2,17 @@ package bitcamp.myapp.handler.board;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.repository.BoardRepository;
 import bitcamp.myapp.util.AnsiEscape;
+import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.vo.Board;
 
 // 게시글의 '목록' 메뉴를 선택했을 때 작업을 수행하는 클래스
 public class BoardListHandler implements MenuHandler {
 
-  BoardRepository boardRepository;
+  ObjectRepository objectRepository;
 
-  public BoardListHandler(BoardRepository boardRepository) {
-    this.boardRepository = boardRepository;
+  public BoardListHandler(ObjectRepository objectRepository) {
+    this.objectRepository = objectRepository;
   }
 
   @Override
@@ -21,7 +21,8 @@ public class BoardListHandler implements MenuHandler {
         menu.getTitle());
     System.out.printf("%-20s\t%10s\t%s\n", "Title", "Writer", "Date");
 
-    for (Board board : boardRepository.toArray()) {
+    for (Object object : objectRepository.toArray()) {
+      Board board = (Board) object;
       System.out.printf("%-20s\t%10s\t%s\n", board.title, board.writer, board.createdDate);
     }
   }

@@ -2,8 +2,8 @@ package bitcamp.myapp.handler.member;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.repository.MemberRepository;
 import bitcamp.myapp.util.AnsiEscape;
+import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
 import java.text.SimpleDateFormat;
@@ -12,11 +12,11 @@ import java.util.Date;
 public class MemberModifyHandler implements MenuHandler {
 
   Prompt prompt;
-  MemberRepository memberRepository;
+  ObjectRepository objectRepository;
 
-  public MemberModifyHandler(MemberRepository memberRepository, Prompt prompt) {
+  public MemberModifyHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.prompt = prompt;
-    this.memberRepository = memberRepository;
+    this.objectRepository = objectRepository;
   }
 
 
@@ -26,7 +26,7 @@ public class MemberModifyHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    Member oldVal = memberRepository.get(index);
+    Member oldVal = (Member) objectRepository.get(index);
     if (oldVal == null) {
       System.out.println("멤버 번호가 유효하지 않습니다");
       return;
@@ -38,6 +38,6 @@ public class MemberModifyHandler implements MenuHandler {
     member.password = this.prompt.input("암호: ", oldVal.password);
     member.createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-    memberRepository.set(index, member);
+    objectRepository.set(index, member);
   }
 }
