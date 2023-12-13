@@ -1,9 +1,8 @@
-package bitcamp.myapp.handler;
+package bitcamp.myapp.menu;
 
-import bitcamp.menu.Menu;
-import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.util.AnsiEscape;
-
+import bitcamp.myapp.handler.Menu;
+import bitcamp.myapp.handler.MenuHandler;
+import bitcamp.util.AnsiEscape;
 
 public class HelpHandler implements MenuHandler {
 

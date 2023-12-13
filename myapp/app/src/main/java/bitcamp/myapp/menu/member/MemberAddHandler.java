@@ -1,13 +1,11 @@
-package bitcamp.myapp.handler.member;
+package bitcamp.myapp.menu.member;
 
-import bitcamp.menu.Menu;
-import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.util.AnsiEscape;
-import bitcamp.myapp.util.Prompt;
+import bitcamp.myapp.handler.Menu;
+import bitcamp.myapp.handler.MenuHandler;
 import bitcamp.myapp.vo.Member;
-import java.text.SimpleDateFormat;
+import bitcamp.util.AnsiEscape;
+import bitcamp.util.Prompt;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MemberAddHandler implements MenuHandler {
 
@@ -21,15 +19,14 @@ public class MemberAddHandler implements MenuHandler {
 
   @Override
   public void action(Menu menu) {
-    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
-        menu.getTitle());
+    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR, menu.getTitle());
 
     Member member = new Member();
     member.email = this.prompt.input("이메일? ");
     member.name = this.prompt.input("이름? ");
     member.password = this.prompt.input("암호? ");
-    member.createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    member.createdDate = this.prompt.input("가입일? ");
 
-    objectRepository.add(member);
+    this.objectRepository.add(member);
   }
 }

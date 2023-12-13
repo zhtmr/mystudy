@@ -1,20 +1,19 @@
-package bitcamp.menu;
+package bitcamp.myapp.handler;
 
-import bitcamp.myapp.util.Prompt;
+import bitcamp.util.Prompt;
 
-// Composite pattern: leaf
 public class MenuItem implements Menu {
 
   String title;
   MenuHandler menuHandler;
 
-  public MenuItem(String title) {
-    this.title = title;
-  }
-
   public MenuItem(String title, MenuHandler menuHandler) {
     this(title);
     this.menuHandler = menuHandler;
+  }
+
+  public MenuItem(String title) {
+    this.title = title;
   }
 
   @Override
@@ -24,8 +23,7 @@ public class MenuItem implements Menu {
     }
   }
 
-  @Override
   public String getTitle() {
-    return this.title;
+    return title;
   }
 }

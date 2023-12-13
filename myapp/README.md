@@ -4,18 +4,24 @@ classDiagram
     class AnsiEscape
     class App
     class Assignment
-    class AssignmentMenu
+    class AssignmentAddHandler
+    class AssignmentDeleteHandler
+    class AssignmentListHandler
+    class AssignmentModifyHandler
+    class AssignmentViewHandler
     class Board
     class BoardAddHandler
     class BoardDeleteHandler
     class BoardListHandler
-    class BoardMenu
     class BoardModifyHandler
-    class BoardRepository
     class BoardViewHandler
-    class HelpMenu
+    class HelpHandler
     class Member
-    class MemberMenu
+    class MemberAddHandler
+    class MemberDeleteHandler
+    class MemberListHandler
+    class MemberModifyHandler
+    class MemberViewHandler
     class Menu {
         <<Interface>>
     }
@@ -24,20 +30,29 @@ classDiagram
         <<Interface>>
     }
     class MenuItem
+    class ObjectRepository~E~
     class Prompt
 
-    AssignmentMenu ..> Menu
+    AssignmentAddHandler ..> MenuHandler
+    AssignmentDeleteHandler ..> MenuHandler
+    AssignmentListHandler ..> MenuHandler
+    AssignmentModifyHandler ..> MenuHandler
+    AssignmentViewHandler ..> MenuHandler
     BoardAddHandler ..> MenuHandler
     BoardDeleteHandler ..> MenuHandler
     BoardListHandler ..> MenuHandler
-    BoardMenu ..> Menu
     BoardModifyHandler ..> MenuHandler
     BoardViewHandler ..> MenuHandler
-    HelpMenu ..> Menu
-    MemberMenu ..> Menu
+    HelpHandler ..> MenuHandler
+    MemberAddHandler ..> MenuHandler
+    MemberDeleteHandler ..> MenuHandler
+    MemberListHandler ..> MenuHandler
+    MemberModifyHandler ..> MenuHandler
+    MemberViewHandler ..> MenuHandler
     MenuGroup ..> Menu
     MenuItem ..> Menu
 
+
 ```
 
-![img.png](img.png)
+![img.png](app%2Fimg.png))
