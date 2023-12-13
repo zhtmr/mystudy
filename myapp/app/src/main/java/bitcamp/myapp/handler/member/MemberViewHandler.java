@@ -3,16 +3,16 @@ package bitcamp.myapp.handler.member;
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.AnsiEscape;
-import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
+import java.util.ArrayList;
 
 public class MemberViewHandler implements MenuHandler {
 
   Prompt prompt;
-  ObjectRepository<Member> objectRepository;
+  ArrayList<Member> objectRepository;
 
-  public MemberViewHandler(ObjectRepository<Member> objectRepository, Prompt prompt) {
+  public MemberViewHandler(ArrayList<Member> objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;
     this.prompt = prompt;
   }

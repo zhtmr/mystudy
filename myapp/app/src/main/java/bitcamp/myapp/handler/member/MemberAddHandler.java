@@ -3,18 +3,18 @@ package bitcamp.myapp.handler.member;
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.AnsiEscape;
-import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MemberAddHandler implements MenuHandler {
 
   Prompt prompt;
-  ObjectRepository<Member> objectRepository;
+  ArrayList<Member> objectRepository;
 
-  public MemberAddHandler(ObjectRepository<Member> objectRepository, Prompt prompt) {
+  public MemberAddHandler(ArrayList<Member> objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;
     this.prompt = prompt;
   }

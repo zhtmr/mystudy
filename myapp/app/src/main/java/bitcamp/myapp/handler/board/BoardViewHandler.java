@@ -3,17 +3,17 @@ package bitcamp.myapp.handler.board;
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.AnsiEscape;
-import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Board;
+import java.util.ArrayList;
 
 // 게시글의 '조회' 메뉴를 선택했을 때 작업을 수행하는 클래스
 public class BoardViewHandler implements MenuHandler {
 
   Prompt prompt;
-  ObjectRepository<Board> objectRepository;
+  ArrayList<Board> objectRepository;
 
-  public BoardViewHandler(ObjectRepository<Board> objectRepository, Prompt prompt) {
+  public BoardViewHandler(ArrayList<Board> objectRepository, Prompt prompt) {
     this.prompt = prompt;
     this.objectRepository = objectRepository;
   }

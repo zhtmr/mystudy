@@ -18,21 +18,21 @@ import bitcamp.myapp.handler.member.MemberDeleteHandler;
 import bitcamp.myapp.handler.member.MemberListHandler;
 import bitcamp.myapp.handler.member.MemberModifyHandler;
 import bitcamp.myapp.handler.member.MemberViewHandler;
-import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
+import java.util.ArrayList;
 
 public class App {
 
   public static void main(String[] args) {
     Prompt prompt = new Prompt(System.in);
 //    new MainMenu(prompt).execute();
-    ObjectRepository<Board> boardRepository = new ObjectRepository<>();
-    ObjectRepository<Assignment> assignmentRepository = new ObjectRepository<>();
-    ObjectRepository<Member> memberRepository = new ObjectRepository<>();
-    ObjectRepository<Board> greetingRepository = new ObjectRepository<>();
+    ArrayList<Board> boardRepository = new ArrayList<>();
+    ArrayList<Assignment> assignmentRepository = new ArrayList<>();
+    ArrayList<Member> memberRepository = new ArrayList<>();
+    ArrayList<Board> greetingRepository = new ArrayList<>();
 
     MenuGroup mainMenu = new MenuGroup("메인");
     MenuGroup assignmentMenu = new MenuGroup("과제");

@@ -3,15 +3,15 @@ package bitcamp.myapp.handler.board;
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.AnsiEscape;
-import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.vo.Board;
+import java.util.ArrayList;
 
 // 게시글의 '목록' 메뉴를 선택했을 때 작업을 수행하는 클래스
 public class BoardListHandler implements MenuHandler {
 
-  ObjectRepository<Board> objectRepository;
+  ArrayList<Board> objectRepository;
 
-  public BoardListHandler(ObjectRepository<Board> objectRepository) {
+  public BoardListHandler(ArrayList<Board> objectRepository) {
     this.objectRepository = objectRepository;
   }
 

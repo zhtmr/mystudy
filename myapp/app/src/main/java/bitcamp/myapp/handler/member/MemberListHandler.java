@@ -3,14 +3,14 @@ package bitcamp.myapp.handler.member;
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.AnsiEscape;
-import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.vo.Member;
+import java.util.ArrayList;
 
 public class MemberListHandler implements MenuHandler {
 
-  ObjectRepository<Member> objectRepository;
+  ArrayList<Member> objectRepository;
 
-  public MemberListHandler(ObjectRepository<Member> objectRepository) {
+  public MemberListHandler(ArrayList<Member> objectRepository) {
     this.objectRepository = objectRepository;
   }
 
