@@ -1,6 +1,8 @@
 package bitcamp.myapp.util;
 
 
+import java.util.Arrays;
+
 // 게시글 데이터 보관
 public class ObjectRepository<E> {
 
@@ -13,10 +15,11 @@ public class ObjectRepository<E> {
       int oldSize = this.objects.length;
       int newSize = oldSize + (oldSize >> 1);
 
-      Object[] arr = new Object[newSize];
-      System.arraycopy(this.objects, 0, arr, 0, oldSize);
-      System.out.printf("배열 크기 증가: %d\n", newSize);
-      this.objects = arr;
+//      Object[] arr = new Object[newSize];
+//      System.arraycopy(this.objects, 0, arr, 0, oldSize);
+
+      this.objects = Arrays.copyOf(this.objects, newSize);
+      System.out.printf("새 배열 크기: %d", this.objects.length);
     }
     this.objects[this.length++] = object;
   }
@@ -44,11 +47,12 @@ public class ObjectRepository<E> {
   }
 
   public Object[] toArray() {
-    Object[] arr = new Object[this.length];
-    for (int i = 0; i < this.length; i++) {
-      arr[i] = this.objects[i];
-    }
-    return arr;
+    return Arrays.copyOf(this.objects, this.length);
+//    Object[] arr = new Object[this.length];
+//    for (int i = 0; i < this.length; i++) {
+//      arr[i] = this.objects[i];
+//    }
+//    return arr;
   }
 
   public void toArray(E[] arr) {
