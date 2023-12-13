@@ -1,6 +1,6 @@
 ```mermaid
 classDiagram
-    direction BT
+    direction RL
     class AnsiEscape
     class App
     class Assignment
@@ -55,4 +55,4 @@ classDiagram
 
 ```
 
-![img.png](app%2Fimg.png))
+![img.png](app/img.png))
