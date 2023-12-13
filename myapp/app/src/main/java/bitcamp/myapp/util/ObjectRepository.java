@@ -19,7 +19,6 @@ public class ObjectRepository<E> {
 //      System.arraycopy(this.objects, 0, arr, 0, oldSize);
 
       this.objects = Arrays.copyOf(this.objects, newSize);
-      System.out.printf("새 배열 크기: %d", this.objects.length);
     }
     this.objects[this.length++] = object;
   }
@@ -55,10 +54,12 @@ public class ObjectRepository<E> {
 //    return arr;
   }
 
-  public void toArray(E[] arr) {
-    for (int i = 0; i < this.length; i++) {
-      arr[i] = (E) this.objects[i];
+  public E[] toArray(E[] arr) {
+    if (arr.length >= this.length) {
+      System.arraycopy(this.objects, 0, arr, 0, this.length);
+      return arr;
     }
+    return (E[]) Arrays.copyOf(this.objects, this.length, arr.getClass());
   }
 
   public E set(int index, E object) {
