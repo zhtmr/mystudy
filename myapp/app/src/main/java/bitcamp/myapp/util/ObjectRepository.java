@@ -2,14 +2,13 @@ package bitcamp.myapp.util;
 
 
 // 게시글 데이터 보관
-public class ObjectRepository {
+public class ObjectRepository<T> {
 
   private Object[] objects = new Object[3];
   private int length = 0;
 
 
-  // 배열에 객체를 추가하는 부분을 메서드로 감춘다 --> 캡슐화
-  public void add(Object object) {
+  public void add(T object) {
     if (this.length == this.objects.length) {
       int oldSize = this.objects.length;
       int newSize = oldSize + (oldSize >> 1);
@@ -24,7 +23,7 @@ public class ObjectRepository {
     this.objects[this.length++] = object;
   }
 
-  public Object remove(int index) {
+  public T remove(int index) {
     if (index < 0 || index >= this.length) {
       return null;
     }
@@ -35,14 +34,14 @@ public class ObjectRepository {
       this.objects[i] = this.objects[i + 1];
     }
     this.objects[--this.length] = null;
-    return deleted;
+    return (T) deleted;
   }
 
-  public Object get(int index) {
+  public T get(int index) {
     if (index < 0 || index >= this.length) {
       return null;
     }
-    return this.objects[index];
+    return (T) this.objects[index];
   }
 
   public Object[] toArray() {
@@ -53,14 +52,25 @@ public class ObjectRepository {
     return arr;
   }
 
-  public Object set(int index, Object object) {
+  public void toArray(T[] arr) {
+    for (int i = 0; i < this.length; i++) {
+      arr[i] = (T) this.objects[i];
+    }
+  }
+
+  public T set(int index, T object) {
     if (index < 0 || index >= this.length) {
       return null;
     }
 
     Object old = this.objects[index];
     this.objects[index] = object;
-    return old;
+    return (T) old;
+  }
+
+
+  public int size() {
+    return this.length;
   }
 
 

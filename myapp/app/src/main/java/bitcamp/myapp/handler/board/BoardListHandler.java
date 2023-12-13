@@ -9,9 +9,9 @@ import bitcamp.myapp.vo.Board;
 // 게시글의 '목록' 메뉴를 선택했을 때 작업을 수행하는 클래스
 public class BoardListHandler implements MenuHandler {
 
-  ObjectRepository objectRepository;
+  ObjectRepository<Board> objectRepository;
 
-  public BoardListHandler(ObjectRepository objectRepository) {
+  public BoardListHandler(ObjectRepository<Board> objectRepository) {
     this.objectRepository = objectRepository;
   }
 
@@ -21,8 +21,10 @@ public class BoardListHandler implements MenuHandler {
         menu.getTitle());
     System.out.printf("%-20s\t%10s\t%s\n", "Title", "Writer", "Date");
 
-    for (Object object : objectRepository.toArray()) {
-      Board board = (Board) object;
+    Board[] boards = new Board[this.objectRepository.size()];
+    this.objectRepository.toArray(boards);
+
+    for (Board board : boards) {
       System.out.printf("%-20s\t%10s\t%s\n", board.title, board.writer, board.createdDate);
     }
   }

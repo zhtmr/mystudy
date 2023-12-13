@@ -13,9 +13,9 @@ import java.util.Date;
 public class BoardAddHandler implements MenuHandler {
 
   Prompt prompt;
-  ObjectRepository objectRepository;
+  ObjectRepository<Board> objectRepository;
 
-  public BoardAddHandler(ObjectRepository objectRepository, Prompt prompt) {
+  public BoardAddHandler(ObjectRepository<Board> objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;
     this.prompt = prompt;
   }
@@ -31,8 +31,6 @@ public class BoardAddHandler implements MenuHandler {
     board.writer = this.prompt.input("작성자? ");
     board.createdDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-    // 캡슐화
     objectRepository.add(board);
-
   }
 }

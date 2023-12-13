@@ -20,13 +20,14 @@ import bitcamp.myapp.handler.member.MemberModifyHandler;
 import bitcamp.myapp.handler.member.MemberViewHandler;
 import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
+import bitcamp.myapp.vo.Board;
 
 public class App {
 
   public static void main(String[] args) {
     Prompt prompt = new Prompt(System.in);
 //    new MainMenu(prompt).execute();
-    ObjectRepository boardRepository = new ObjectRepository();
+    ObjectRepository<Board> boardRepository = new ObjectRepository<>();
     ObjectRepository assignmentRepository = new ObjectRepository();
     ObjectRepository memberRepository = new ObjectRepository();
     ObjectRepository greetingRepository = new ObjectRepository();
