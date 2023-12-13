@@ -55,4 +55,4 @@ classDiagram
 
 ```
 
-![img.png](app/img.png))
+![img.png](app/img.png)
