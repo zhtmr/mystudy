@@ -20,7 +20,9 @@ import bitcamp.myapp.handler.member.MemberModifyHandler;
 import bitcamp.myapp.handler.member.MemberViewHandler;
 import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
+import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
+import bitcamp.myapp.vo.Member;
 
 public class App {
 
@@ -28,9 +30,9 @@ public class App {
     Prompt prompt = new Prompt(System.in);
 //    new MainMenu(prompt).execute();
     ObjectRepository<Board> boardRepository = new ObjectRepository<>();
-    ObjectRepository assignmentRepository = new ObjectRepository();
-    ObjectRepository memberRepository = new ObjectRepository();
-    ObjectRepository greetingRepository = new ObjectRepository();
+    ObjectRepository<Assignment> assignmentRepository = new ObjectRepository<>();
+    ObjectRepository<Member> memberRepository = new ObjectRepository<>();
+    ObjectRepository<Board> greetingRepository = new ObjectRepository<>();
 
     MenuGroup mainMenu = new MenuGroup("메인");
     MenuGroup assignmentMenu = new MenuGroup("과제");

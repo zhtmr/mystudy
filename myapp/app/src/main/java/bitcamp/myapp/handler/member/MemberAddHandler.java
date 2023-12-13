@@ -12,9 +12,9 @@ import java.util.Date;
 public class MemberAddHandler implements MenuHandler {
 
   Prompt prompt;
-  ObjectRepository objectRepository;
+  ObjectRepository<Member> objectRepository;
 
-  public MemberAddHandler(ObjectRepository objectRepository, Prompt prompt) {
+  public MemberAddHandler(ObjectRepository<Member> objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;
     this.prompt = prompt;
   }

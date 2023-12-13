@@ -12,9 +12,9 @@ import java.util.Date;
 public class MemberModifyHandler implements MenuHandler {
 
   Prompt prompt;
-  ObjectRepository objectRepository;
+  ObjectRepository<Member> objectRepository;
 
-  public MemberModifyHandler(ObjectRepository objectRepository, Prompt prompt) {
+  public MemberModifyHandler(ObjectRepository<Member> objectRepository, Prompt prompt) {
     this.prompt = prompt;
     this.objectRepository = objectRepository;
   }
@@ -26,7 +26,7 @@ public class MemberModifyHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    Member oldVal = (Member) objectRepository.get(index);
+    Member oldVal = objectRepository.get(index);
     if (oldVal == null) {
       System.out.println("멤버 번호가 유효하지 않습니다");
       return;

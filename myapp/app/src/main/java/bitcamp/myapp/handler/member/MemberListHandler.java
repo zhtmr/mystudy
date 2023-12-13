@@ -8,9 +8,9 @@ import bitcamp.myapp.vo.Member;
 
 public class MemberListHandler implements MenuHandler {
 
-  ObjectRepository objectRepository;
+  ObjectRepository<Member> objectRepository;
 
-  public MemberListHandler(ObjectRepository objectRepository) {
+  public MemberListHandler(ObjectRepository<Member> objectRepository) {
     this.objectRepository = objectRepository;
   }
 
@@ -20,8 +20,10 @@ public class MemberListHandler implements MenuHandler {
         menu.getTitle());
 
     System.out.printf("%-20s\t%20s\t%15s\n", "이메일", "이름", "가입일");
-    for (Object object : objectRepository.toArray()) {
-      Member member = (Member) object; // downcasting 필수! 컴파일 오류 발생!
+    Member[] members = new Member[this.objectRepository.size()];
+    this.objectRepository.toArray(members);
+
+    for (Member member : members) {
       System.out.printf("%-20s\t%20s\t%15s\n", member.email, member.name, member.createDate);
     }
   }

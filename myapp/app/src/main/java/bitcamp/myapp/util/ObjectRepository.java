@@ -2,13 +2,13 @@ package bitcamp.myapp.util;
 
 
 // 게시글 데이터 보관
-public class ObjectRepository<T> {
+public class ObjectRepository<E> {
 
   private Object[] objects = new Object[3];
   private int length = 0;
 
 
-  public void add(T object) {
+  public void add(E object) {
     if (this.length == this.objects.length) {
       int oldSize = this.objects.length;
       int newSize = oldSize + (oldSize >> 1);
@@ -23,7 +23,7 @@ public class ObjectRepository<T> {
     this.objects[this.length++] = object;
   }
 
-  public T remove(int index) {
+  public E remove(int index) {
     if (index < 0 || index >= this.length) {
       return null;
     }
@@ -34,14 +34,14 @@ public class ObjectRepository<T> {
       this.objects[i] = this.objects[i + 1];
     }
     this.objects[--this.length] = null;
-    return (T) deleted;
+    return (E) deleted;
   }
 
-  public T get(int index) {
+  public E get(int index) {
     if (index < 0 || index >= this.length) {
       return null;
     }
-    return (T) this.objects[index];
+    return (E) this.objects[index];
   }
 
   public Object[] toArray() {
@@ -52,20 +52,20 @@ public class ObjectRepository<T> {
     return arr;
   }
 
-  public void toArray(T[] arr) {
+  public void toArray(E[] arr) {
     for (int i = 0; i < this.length; i++) {
-      arr[i] = (T) this.objects[i];
+      arr[i] = (E) this.objects[i];
     }
   }
 
-  public T set(int index, T object) {
+  public E set(int index, E object) {
     if (index < 0 || index >= this.length) {
       return null;
     }
 
     Object old = this.objects[index];
     this.objects[index] = object;
-    return (T) old;
+    return (E) old;
   }
 
 
