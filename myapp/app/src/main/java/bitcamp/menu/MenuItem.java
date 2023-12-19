@@ -2,7 +2,7 @@ package bitcamp.menu;
 
 import bitcamp.myapp.util.Prompt;
 
-public class MenuItem implements Menu {
+public class MenuItem extends AbstractMenu {
 
   private String title;
   private MenuHandler menuHandler;
@@ -13,6 +13,7 @@ public class MenuItem implements Menu {
   }
 
   public MenuItem(String title) {
+    super(title);
     this.title = title;
   }
 

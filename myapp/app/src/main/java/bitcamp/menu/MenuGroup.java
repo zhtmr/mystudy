@@ -2,13 +2,14 @@ package bitcamp.menu;
 
 import bitcamp.myapp.util.Prompt;
 
-public class MenuGroup implements Menu {
+public class MenuGroup extends AbstractMenu {
 
   private String title;
   private Menu[] menus = new Menu[10];
   private int menuSize;
 
   public MenuGroup(String title) {
+    super(title); // 슈퍼 클래스의 생성자를 호출한다.
     this.title = title;
   }
 
