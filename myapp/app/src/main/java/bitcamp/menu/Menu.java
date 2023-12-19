@@ -1,6 +1,6 @@
-package bitcamp.myapp.handler;
+package bitcamp.menu;
 
-import bitcamp.util.Prompt;
+import bitcamp.myapp.util.Prompt;
 
 // Menu를 처리하는 객체의 사용법을 정의한다.
 //

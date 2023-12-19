@@ -1,28 +1,28 @@
 package bitcamp.myapp;
 
 
-import bitcamp.myapp.handler.MenuGroup;
-import bitcamp.myapp.handler.MenuItem;
-import bitcamp.myapp.menu.HelpHandler;
-import bitcamp.myapp.menu.assignment.AssignmentAddHandler;
-import bitcamp.myapp.menu.assignment.AssignmentDeleteHandler;
-import bitcamp.myapp.menu.assignment.AssignmentListHandler;
-import bitcamp.myapp.menu.assignment.AssignmentModifyHandler;
-import bitcamp.myapp.menu.assignment.AssignmentViewHandler;
-import bitcamp.myapp.menu.board.BoardAddHandler;
-import bitcamp.myapp.menu.board.BoardDeleteHandler;
-import bitcamp.myapp.menu.board.BoardListHandler;
-import bitcamp.myapp.menu.board.BoardModifyHandler;
-import bitcamp.myapp.menu.board.BoardViewHandler;
-import bitcamp.myapp.menu.member.MemberAddHandler;
-import bitcamp.myapp.menu.member.MemberDeleteHandler;
-import bitcamp.myapp.menu.member.MemberListHandler;
-import bitcamp.myapp.menu.member.MemberModifyHandler;
-import bitcamp.myapp.menu.member.MemberViewHandler;
+import bitcamp.menu.MenuGroup;
+import bitcamp.menu.MenuItem;
+import bitcamp.myapp.handler.HelpHandler;
+import bitcamp.myapp.handler.assignment.AssignmentAddHandler;
+import bitcamp.myapp.handler.assignment.AssignmentDeleteHandler;
+import bitcamp.myapp.handler.assignment.AssignmentListHandler;
+import bitcamp.myapp.handler.assignment.AssignmentModifyHandler;
+import bitcamp.myapp.handler.assignment.AssignmentViewHandler;
+import bitcamp.myapp.handler.board.BoardAddHandler;
+import bitcamp.myapp.handler.board.BoardDeleteHandler;
+import bitcamp.myapp.handler.board.BoardListHandler;
+import bitcamp.myapp.handler.board.BoardModifyHandler;
+import bitcamp.myapp.handler.board.BoardViewHandler;
+import bitcamp.myapp.handler.member.MemberAddHandler;
+import bitcamp.myapp.handler.member.MemberDeleteHandler;
+import bitcamp.myapp.handler.member.MemberListHandler;
+import bitcamp.myapp.handler.member.MemberModifyHandler;
+import bitcamp.myapp.handler.member.MemberViewHandler;
+import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.Prompt;
 import java.util.ArrayList;
 
 public class App {

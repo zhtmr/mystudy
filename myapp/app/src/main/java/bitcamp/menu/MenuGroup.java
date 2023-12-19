@@ -1,6 +1,6 @@
-package bitcamp.myapp.handler;
+package bitcamp.menu;
 
-import bitcamp.util.Prompt;
+import bitcamp.myapp.util.Prompt;
 
 public class MenuGroup implements Menu {
 

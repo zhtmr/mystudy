@@ -3,33 +3,30 @@ package bitcamp.myapp.handler.member;
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.AnsiEscape;
-import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 
 public class MemberAddHandler implements MenuHandler {
 
-  private Prompt prompt;
-  private ObjectRepository objectRepository;
+  Prompt prompt;
+  ArrayList<Member> objectRepository;
 
-  public MemberAddHandler(ObjectRepository objectRepository, Prompt prompt) {
+  public MemberAddHandler(ArrayList<Member> objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;
     this.prompt = prompt;
   }
 
   @Override
   public void action(Menu menu) {
-    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
-        menu.getTitle());
+    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR, menu.getTitle());
 
     Member member = new Member();
-    member.setEmail(this.prompt.input("이메일? "));
-    member.setName(this.prompt.input("이름? "));
-    member.setPassword(this.prompt.input("암호? "));
-    member.setCreateDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+    member.email = this.prompt.input("이메일? ");
+    member.name = this.prompt.input("이름? ");
+    member.password = this.prompt.input("암호? ");
+    member.createdDate = this.prompt.input("가입일? ");
 
-    objectRepository.add(member);
+    this.objectRepository.add(member);
   }
 }

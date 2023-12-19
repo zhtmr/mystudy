@@ -1,4 +1,4 @@
-package bitcamp.util;
+package bitcamp.myapp.util;
 
 import java.io.InputStream;
 import java.util.Scanner;
