@@ -1,8 +1,15 @@
 package bitcamp.menu;
 
 import bitcamp.util.AnsiEscape;
+import bitcamp.util.Prompt;
 
 public abstract class AbstractMenuHandler implements MenuHandler {
+
+  protected Prompt prompt;
+
+  public AbstractMenuHandler(Prompt prompt) {
+    this.prompt = prompt;
+  }
 
   @Override
   public void action(Menu menu) {
