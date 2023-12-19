@@ -1,7 +1,6 @@
 package bitcamp.myapp.handler.member;
 
 import bitcamp.menu.AbstractMenuHandler;
-import bitcamp.menu.Menu;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.Prompt;
 import java.util.ArrayList;
@@ -17,8 +16,7 @@ public class MemberDeleteHandler extends AbstractMenuHandler {
   }
 
   @Override
-  public void action(Menu menu) {
-    super.action(menu);
+  public void action() {
     int index = this.prompt.inputInt("번호? ");
     if (this.objectRepository.remove(index) == null) {
       System.out.println("회원 번호가 유효하지 않습니다.");
