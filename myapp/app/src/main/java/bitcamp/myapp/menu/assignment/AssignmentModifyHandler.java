@@ -25,9 +25,9 @@ public class AssignmentModifyHandler implements MenuHandler {
       return;
     }
     Assignment assignment = new Assignment();
-    assignment.title = this.prompt.input("과제명(%s)? ", assignment.title);
-    assignment.content = this.prompt.input("내용(%s)? ", assignment.content);
-    assignment.deadline = this.prompt.input("제출 마감일(%s)? ", assignment.deadline);
+    assignment.setTitle(this.prompt.input("과제명(%s)? ", assignment.getTitle()));
+    assignment.setContent(this.prompt.input("내용(%s)? ", assignment.getContent()));
+    assignment.setDeadline(this.prompt.input("제출 마감일(%s)? ", assignment.getDeadline()));
 
     this.assignmentRepository.set(index, assignment);
   }

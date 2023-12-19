@@ -1,35 +1,35 @@
-package bitcamp.myapp.menu.assignment;
+package bitcamp.myapp.handler.assignment;
 
-import bitcamp.myapp.handler.Menu;
-import bitcamp.myapp.handler.MenuHandler;
+import bitcamp.menu.Menu;
+import bitcamp.menu.MenuHandler;
+import bitcamp.myapp.util.AnsiEscape;
+import bitcamp.myapp.util.ObjectRepository;
+import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
-import bitcamp.util.AnsiEscape;
-import bitcamp.util.Prompt;
-import java.util.ArrayList;
 
 public class AssignmentViewHandler implements MenuHandler {
 
   Prompt prompt;
-  ArrayList<Assignment> assignmentRepository;
+  ObjectRepository objectRepository;
 
-  public AssignmentViewHandler(Prompt prompt, ArrayList<Assignment> assignmentRepository) {
+  public AssignmentViewHandler(Prompt prompt, ObjectRepository objectRepository) {
     this.prompt = prompt;
-    this.assignmentRepository = assignmentRepository;
+    this.objectRepository = objectRepository;
   }
 
   @Override
   public void action(Menu menu) {
-    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR, menu.getTitle());
+    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
+        menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    Assignment assignment = this.assignmentRepository.get(index);
+    Assignment assignment = (Assignment) objectRepository.get(index);
     if (assignment == null) {
       System.out.println("과제 번호가 유효하지 않습니다.");
       return;
     }
-
-    System.out.printf("과제명: %s\n", assignment.title);
-    System.out.printf("내용: %s\n", assignment.content);
-    System.out.printf("제출 마감일: %s\n", assignment.deadline);
+    System.out.printf("과제명: %s\n", assignment.getTitle());
+    System.out.printf("내용: %s\n", assignment.getContent());
+    System.out.printf("제출 마감일: %s\n", assignment.getDeadline());
   }
 }
