@@ -2,15 +2,15 @@ package bitcamp.myapp.handler.member;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
-import bitcamp.myapp.util.AnsiEscape;
-import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Member;
+import bitcamp.util.AnsiEscape;
+import bitcamp.util.Prompt;
 import java.util.ArrayList;
 
 public class MemberDeleteHandler implements MenuHandler {
 
-  Prompt prompt;
-  ArrayList<Member> objectRepository;
+  private Prompt prompt;
+  private ArrayList<Member> objectRepository;
 
   public MemberDeleteHandler(ArrayList<Member> objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;

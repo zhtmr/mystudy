@@ -1,6 +1,6 @@
 package bitcamp.menu;
 
-import bitcamp.myapp.util.Prompt;
+import bitcamp.util.Prompt;
 
 // Menu를 처리하는 객체의 사용법을 정의한다.
 //
@@ -11,5 +11,5 @@ public interface Menu {
   // => 추상 메서드
   public abstract void execute(Prompt prompt);
 
-  String getTitle();
+  public abstract String getTitle();
 }

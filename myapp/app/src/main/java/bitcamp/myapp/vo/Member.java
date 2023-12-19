@@ -5,7 +5,7 @@ public class Member {
   private String email;
   private String name;
   private String password;
-  private String createDate;
+  private String createdDate;
 
   public String getEmail() {
     return email;
@@ -31,11 +31,11 @@ public class Member {
     this.password = password;
   }
 
-  public String getCreateDate() {
-    return createDate;
+  public String getCreatedDate() {
+    return createdDate;
   }
 
-  public void setCreateDate(String createDate) {
-    this.createDate = createDate;
+  public void setCreatedDate(String createdDate) {
+    this.createdDate = createdDate;
   }
 }

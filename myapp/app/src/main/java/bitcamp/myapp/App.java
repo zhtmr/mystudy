@@ -1,6 +1,5 @@
 package bitcamp.myapp;
 
-
 import bitcamp.menu.MenuGroup;
 import bitcamp.menu.MenuItem;
 import bitcamp.myapp.handler.HelpHandler;
@@ -19,31 +18,31 @@ import bitcamp.myapp.handler.member.MemberDeleteHandler;
 import bitcamp.myapp.handler.member.MemberListHandler;
 import bitcamp.myapp.handler.member.MemberModifyHandler;
 import bitcamp.myapp.handler.member.MemberViewHandler;
-import bitcamp.myapp.util.Prompt;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
+import bitcamp.util.Prompt;
 import java.util.ArrayList;
 
 public class App {
 
   public static void main(String[] args) throws Exception {
     Prompt prompt = new Prompt(System.in);
-//    new MainMenu(prompt).execute();
-    ArrayList<Assignment> assignmentRepository = new ArrayList<>();
+
     ArrayList<Board> boardRepository = new ArrayList<>();
+    ArrayList<Assignment> assignmentRepository = new ArrayList<>();
     ArrayList<Member> memberRepository = new ArrayList<>();
     ArrayList<Board> greetingRepository = new ArrayList<>();
 
     MenuGroup mainMenu = new MenuGroup("메인");
 
     MenuGroup assignmentMenu = new MenuGroup("과제");
-    assignmentMenu.add(new MenuItem("등록", new AssignmentAddHandler(prompt, assignmentRepository)));
-    assignmentMenu.add(new MenuItem("조회", new AssignmentViewHandler(prompt, assignmentRepository)));
+    assignmentMenu.add(new MenuItem("등록", new AssignmentAddHandler(assignmentRepository, prompt)));
+    assignmentMenu.add(new MenuItem("조회", new AssignmentViewHandler(assignmentRepository, prompt)));
     assignmentMenu.add(
-        new MenuItem("변경", new AssignmentModifyHandler(prompt, assignmentRepository)));
+        new MenuItem("변경", new AssignmentModifyHandler(assignmentRepository, prompt)));
     assignmentMenu.add(
-        new MenuItem("삭제", new AssignmentDeleteHandler(prompt, assignmentRepository)));
+        new MenuItem("삭제", new AssignmentDeleteHandler(assignmentRepository, prompt)));
     assignmentMenu.add(new MenuItem("목록", new AssignmentListHandler(assignmentRepository)));
     mainMenu.add(assignmentMenu);
 
@@ -72,7 +71,9 @@ public class App {
     mainMenu.add(greetingMenu);
 
     mainMenu.add(new MenuItem("도움말", new HelpHandler()));
+
     mainMenu.execute(prompt);
+
     prompt.close();
   }
 }
