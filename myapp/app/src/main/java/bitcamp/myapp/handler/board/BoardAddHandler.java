@@ -18,7 +18,7 @@ public class BoardAddHandler extends AbstractMenuHandler {
   }
 
   @Override
-  public void action() {
+  protected void action() {
     Board board = new Board();
     board.setTitle(this.prompt.input("제목? "));
     board.setContent(this.prompt.input("내용? "));
