@@ -1,13 +1,12 @@
 package bitcamp.myapp.handler.member;
 
+import bitcamp.menu.AbstractMenuHandler;
 import bitcamp.menu.Menu;
-import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.AnsiEscape;
 import bitcamp.util.Prompt;
 import java.util.ArrayList;
 
-public class MemberAddHandler implements MenuHandler {
+public class MemberAddHandler extends AbstractMenuHandler {
 
   private Prompt prompt;
   private ArrayList<Member> objectRepository;
@@ -19,8 +18,7 @@ public class MemberAddHandler implements MenuHandler {
 
   @Override
   public void action(Menu menu) {
-    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR, menu.getTitle());
-
+    super.action(menu);
     Member member = new Member();
     member.setEmail(this.prompt.input("이메일? "));
     member.setName(this.prompt.input("이름? "));
