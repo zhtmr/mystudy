@@ -8,7 +8,7 @@ import bitcamp.myapp.vo.Member;
 
 public class MemberListHandler implements MenuHandler {
 
-  ObjectRepository objectRepository;
+  private ObjectRepository objectRepository;
 
   public MemberListHandler(ObjectRepository objectRepository) {
     this.objectRepository = objectRepository;

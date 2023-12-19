@@ -10,8 +10,8 @@ import bitcamp.myapp.vo.Board;
 // 게시글의 '조회' 메뉴를 선택했을 때 작업을 수행하는 클래스
 public class BoardViewHandler implements MenuHandler {
 
-  Prompt prompt;
-  ObjectRepository objectRepository;
+  private Prompt prompt;
+  private ObjectRepository objectRepository;
 
   public BoardViewHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.prompt = prompt;

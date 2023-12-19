@@ -9,8 +9,8 @@ import bitcamp.myapp.vo.Member;
 
 public class MemberViewHandler implements MenuHandler {
 
-  Prompt prompt;
-  ObjectRepository objectRepository;
+  private Prompt prompt;
+  private ObjectRepository objectRepository;
 
   public MemberViewHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;

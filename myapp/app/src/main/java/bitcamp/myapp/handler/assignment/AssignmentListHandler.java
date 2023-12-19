@@ -8,7 +8,7 @@ import bitcamp.myapp.vo.Assignment;
 
 public class AssignmentListHandler implements MenuHandler {
 
-  ObjectRepository objectRepository;
+  private ObjectRepository objectRepository;
 
   public AssignmentListHandler(ObjectRepository objectRepository) {
     this.objectRepository = objectRepository;

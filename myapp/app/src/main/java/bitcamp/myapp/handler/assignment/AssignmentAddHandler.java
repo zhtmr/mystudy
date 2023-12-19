@@ -9,8 +9,8 @@ import bitcamp.myapp.vo.Assignment;
 
 public class AssignmentAddHandler implements MenuHandler {
 
-  Prompt prompt;
-  ObjectRepository objectRepository;
+  private Prompt prompt;
+  private ObjectRepository objectRepository;
 
   public AssignmentAddHandler(Prompt prompt, ObjectRepository objectRepository) {
     this.prompt = prompt;

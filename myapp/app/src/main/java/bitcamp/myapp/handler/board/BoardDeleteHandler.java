@@ -9,8 +9,8 @@ import bitcamp.myapp.util.Prompt;
 // 게시글의 '삭제' 메뉴를 선택했을 때 작업을 수행하는 클래스
 public class BoardDeleteHandler implements MenuHandler {
 
-  Prompt prompt;
-  ObjectRepository objectRepository;
+  private Prompt prompt;
+  private ObjectRepository objectRepository;
 
   public BoardDeleteHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.prompt = prompt;

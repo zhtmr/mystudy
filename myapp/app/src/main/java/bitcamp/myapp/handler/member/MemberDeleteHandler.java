@@ -8,8 +8,8 @@ import bitcamp.myapp.util.Prompt;
 
 public class MemberDeleteHandler implements MenuHandler {
 
-  Prompt prompt;
-  ObjectRepository objectRepository;
+  private Prompt prompt;
+  private ObjectRepository objectRepository;
 
   public MemberDeleteHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;

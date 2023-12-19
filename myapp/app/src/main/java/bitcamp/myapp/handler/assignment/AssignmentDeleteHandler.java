@@ -8,8 +8,8 @@ import bitcamp.myapp.util.Prompt;
 
 public class AssignmentDeleteHandler implements MenuHandler {
 
-  Prompt prompt;
-  ObjectRepository objectRepository;
+  private Prompt prompt;
+  private ObjectRepository objectRepository;
 
   public AssignmentDeleteHandler(Prompt prompt, ObjectRepository objectRepository) {
     this.prompt = prompt;
