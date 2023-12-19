@@ -1,4 +1,4 @@
-package bitcamp.myapp.handler.board;
+package bitcamp.myapp.handler.member;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
@@ -6,15 +6,14 @@ import bitcamp.myapp.util.AnsiEscape;
 import bitcamp.myapp.util.ObjectRepository;
 import bitcamp.myapp.util.Prompt;
 
-// 게시글의 '삭제' 메뉴를 선택했을 때 작업을 수행하는 클래스
-public class BoardDeleteHandler implements MenuHandler {
+public class MemberDeleteHandler implements MenuHandler {
 
   private Prompt prompt;
   private ObjectRepository objectRepository;
 
-  public BoardDeleteHandler(ObjectRepository objectRepository, Prompt prompt) {
-    this.prompt = prompt;
+  public MemberDeleteHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;
+    this.prompt = prompt;
   }
 
   @Override
@@ -23,8 +22,8 @@ public class BoardDeleteHandler implements MenuHandler {
         menu.getTitle());
 
     int index = this.prompt.inputInt("번호? ");
-    if (this.objectRepository.remove(index) == null) {
-      System.out.println("게시글 번호가 유효하지 않습니다)");
+    if (objectRepository.remove(index) == null) {
+      System.out.println("멤버 번호가 유효하지 않습니다");
     }
   }
 }

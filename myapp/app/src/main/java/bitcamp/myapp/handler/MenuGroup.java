@@ -4,9 +4,9 @@ import bitcamp.util.Prompt;
 
 public class MenuGroup implements Menu {
 
-  String title;
-  Menu[] menus = new Menu[10];
-  int menuSize;
+  private String title;
+  private Menu[] menus = new Menu[10];
+  private int menuSize;
 
   public MenuGroup(String title) {
     this.title = title;

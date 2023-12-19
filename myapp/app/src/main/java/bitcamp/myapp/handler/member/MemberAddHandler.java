@@ -11,8 +11,8 @@ import java.util.Date;
 
 public class MemberAddHandler implements MenuHandler {
 
-  Prompt prompt;
-  ObjectRepository objectRepository;
+  private Prompt prompt;
+  private ObjectRepository objectRepository;
 
   public MemberAddHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;

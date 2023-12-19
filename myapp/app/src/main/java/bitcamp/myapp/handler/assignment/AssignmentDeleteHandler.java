@@ -4,13 +4,15 @@ import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
 import bitcamp.myapp.util.AnsiEscape;
 import bitcamp.myapp.util.ObjectRepository;
-import bitcamp.myapp.vo.Assignment;
+import bitcamp.myapp.util.Prompt;
 
-public class AssignmentListHandler implements MenuHandler {
+public class AssignmentDeleteHandler implements MenuHandler {
 
+  private Prompt prompt;
   private ObjectRepository objectRepository;
 
-  public AssignmentListHandler(ObjectRepository objectRepository) {
+  public AssignmentDeleteHandler(Prompt prompt, ObjectRepository objectRepository) {
+    this.prompt = prompt;
     this.objectRepository = objectRepository;
   }
 
@@ -18,11 +20,10 @@ public class AssignmentListHandler implements MenuHandler {
   public void action(Menu menu) {
     System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR,
         menu.getTitle());
-    System.out.printf("%-20s\t%s\n", "과제", "제출마감일");
 
-    for (Object object : this.objectRepository.toArray()) {
-      Assignment assignment = (Assignment) object;
-      System.out.printf("%-20s\t%s\n", assignment.getTitle(), assignment.getDeadline());
+    int index = this.prompt.inputInt("번호? ");
+    if (this.objectRepository.remove(index) == null) {
+      System.out.println("과제 번호가 유효하지 않습니다.");
     }
   }
 }

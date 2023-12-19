@@ -4,8 +4,8 @@ import bitcamp.util.Prompt;
 
 public class MenuItem implements Menu {
 
-  String title;
-  MenuHandler menuHandler;
+  private String title;
+  private MenuHandler menuHandler;
 
   public MenuItem(String title, MenuHandler menuHandler) {
     this(title);
