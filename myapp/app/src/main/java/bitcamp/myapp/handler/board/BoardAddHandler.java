@@ -26,10 +26,10 @@ public class BoardAddHandler implements MenuHandler {
         menu.getTitle());
 
     Board board = new Board();
-    board.title = this.prompt.input("제목? ");
-    board.content = this.prompt.input("내용? ");
-    board.writer = this.prompt.input("작성자? ");
-    board.createdDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    board.setTitle(this.prompt.input("제목? "));
+    board.setContent(this.prompt.input("내용? "));
+    board.setWriter(this.prompt.input("작성자? "));
+    board.setCreatedDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 
     // 캡슐화
     objectRepository.add(board);

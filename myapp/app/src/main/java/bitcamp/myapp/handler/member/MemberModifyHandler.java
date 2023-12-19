@@ -33,10 +33,10 @@ public class MemberModifyHandler implements MenuHandler {
     }
 
     Member member = new Member();
-    member.email = this.prompt.input("이메일(%s): ", oldVal.email);
-    member.name = this.prompt.input("이름(%s): ", oldVal.name);
-    member.password = this.prompt.input("암호: ", oldVal.password);
-    member.createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    member.setEmail(this.prompt.input("이메일(%s): ", oldVal.getEmail()));
+    member.setName(this.prompt.input("이름(%s): ", oldVal.getName()));
+    member.setPassword(this.prompt.input("암호: ", oldVal.getPassword()));
+    member.setCreateDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
     objectRepository.set(index, member);
   }

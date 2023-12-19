@@ -22,7 +22,8 @@ public class MemberListHandler implements MenuHandler {
     System.out.printf("%-20s\t%20s\t%15s\n", "이메일", "이름", "가입일");
     for (Object object : objectRepository.toArray()) {
       Member member = (Member) object; // downcasting 필수! 컴파일 오류 발생!
-      System.out.printf("%-20s\t%20s\t%15s\n", member.email, member.name, member.createDate);
+      System.out.printf("%-20s\t%20s\t%15s\n", member.getEmail(), member.getName(),
+          member.getCreateDate());
     }
   }
 }

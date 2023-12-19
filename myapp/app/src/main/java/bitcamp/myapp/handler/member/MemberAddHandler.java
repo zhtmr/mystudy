@@ -25,10 +25,10 @@ public class MemberAddHandler implements MenuHandler {
         menu.getTitle());
 
     Member member = new Member();
-    member.email = this.prompt.input("이메일? ");
-    member.name = this.prompt.input("이름? ");
-    member.password = this.prompt.input("암호? ");
-    member.createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    member.setEmail(this.prompt.input("이메일? "));
+    member.setName(this.prompt.input("이름? "));
+    member.setPassword(this.prompt.input("암호? "));
+    member.setCreateDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
     objectRepository.add(member);
   }

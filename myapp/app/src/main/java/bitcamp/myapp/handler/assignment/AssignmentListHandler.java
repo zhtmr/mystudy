@@ -22,7 +22,7 @@ public class AssignmentListHandler implements MenuHandler {
 
     for (Object object : this.objectRepository.toArray()) {
       Assignment assignment = (Assignment) object;
-      System.out.printf("%-20s\t%s\n", assignment.title, assignment.deadline);
+      System.out.printf("%-20s\t%s\n", assignment.getTitle(), assignment.getDeadline());
     }
   }
 }

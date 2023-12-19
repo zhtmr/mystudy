@@ -31,9 +31,9 @@ public class BoardModifyHandler implements MenuHandler {
     }
 
     Board board = new Board();
-    board.title = this.prompt.input("제목(%s)? ", oldBoard.title);
-    board.content = this.prompt.input("내용(%s)? ", oldBoard.content);
-    board.writer = this.prompt.input("작성자(%s)? ", oldBoard.writer);
+    board.setTitle(this.prompt.input("제목(%s)? ", oldBoard.getTitle()));
+    board.setContent(this.prompt.input("내용(%s)? ", oldBoard.getContent()));
+    board.setWriter(this.prompt.input("작성자(%s)? ", oldBoard.getWriter()));
 
     this.objectRepository.set(index, board);
   }
