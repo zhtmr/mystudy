@@ -3,6 +3,7 @@ package bitcamp.myapp.handler.assignment;
 import bitcamp.menu.AbstractMenuHandler;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.util.Prompt;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class AssignmentModifyHandler extends AbstractMenuHandler {
@@ -27,7 +28,7 @@ public class AssignmentModifyHandler extends AbstractMenuHandler {
     Assignment assignment = new Assignment();
     assignment.setTitle(this.prompt.input("과제명(%s)? ", old.getTitle()));
     assignment.setContent(this.prompt.input("내용(%s)? ", old.getContent()));
-    assignment.setDeadline(this.prompt.input("제출 마감일(%s)? ", old.getDeadline()));
+    assignment.setDeadline(Date.valueOf(this.prompt.input("제출 마감일(%s)? ", old.getDeadline())));
 
     this.objectRepository.set(index, assignment);
   }
