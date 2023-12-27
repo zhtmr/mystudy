@@ -93,7 +93,7 @@ public class LinkedList {
       throw new IndexOutOfBoundsException("무효한 인덱스입니다.");
     }
 
-    Object old = null;
+    Object old;
 
     if (size == 1) {
       old = first;
@@ -102,7 +102,7 @@ public class LinkedList {
     } else if (index == 0) {
       old = first;
       first = first.next;
-      
+
     } else {
       int cursor = 0;
       Node prev = first;
@@ -120,5 +120,13 @@ public class LinkedList {
     size--;
     return old;
   }
+
+
+  private static class Node {
+
+    Object value;
+    Node next;
+  }
+
 
 }
