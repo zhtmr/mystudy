@@ -3,12 +3,20 @@ package bitcamp.util;
 public class Test {
 
   public static void main(String[] args) {
-    LinkedList list = new LinkedList();
+    LinkedList<String> list = new LinkedList<>();
     list.add("aaa");
     list.add("bbb");
     list.add("ccc");
     list.add("ddd");
 
+    System.out.println(list.remove("xxx"));
+    System.out.println(list.remove("ccc"));
+    System.out.println(list.remove("ddd"));
+    System.out.println(list.remove("aaa"));
+    System.out.println(list.remove("bbb"));
+    list.add("xxx");
+    list.add("yyy");
+    list.add("zzz");
     // 맨 앞에 추가하기
 //    list.add(0, "xxx");
 //
@@ -22,10 +30,10 @@ public class Test {
 
 //    list.remove(0);
 //    list.remove(0);
-    list.remove(3);
-    list.remove(2);
-    list.remove(1);
-    list.remove(0);
+//    list.remove(3);
+//    list.remove(2);
+//    list.remove(1);
+//    list.remove(0);
 
     Object[] array = list.toArray();
     for (Object val : array) {
