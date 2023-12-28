@@ -1,5 +1,7 @@
 package bitcamp.util;
 
+import java.util.Arrays;
+
 public class LinkedList<E> {
 
   private Node<E> last;
@@ -93,14 +95,14 @@ public class LinkedList<E> {
       throw new IndexOutOfBoundsException("무효한 인덱스입니다.");
     }
 
-    E old;
+    Node<E> deleted = null;
 
     if (size == 1) {
-      old = first.value;
+      deleted = first;
       first = last = null;
 
     } else if (index == 0) {
-      old = first.value;
+      deleted = first;
       first = first.next;
 
     } else {
@@ -109,7 +111,7 @@ public class LinkedList<E> {
       while (++cursor < index) {
         prev = prev.next;
       }
-      old = prev.next.value;
+      deleted = prev.next;
       prev.next = prev.next.next;
 
       if (index == size - 1) {
@@ -118,6 +120,10 @@ public class LinkedList<E> {
     }
 
     size--;
+
+    E old = deleted.value;
+    deleted.value = null;   // 가비지가 되기 전에 다른 객체 참조 제거
+    deleted.next = null;  // 가비지가 되기 전에 다른 객체 참조 제거
     return old;
   }
 
@@ -148,6 +154,22 @@ public class LinkedList<E> {
 
     size--;
     return true;
+  }
+
+  public E[] toArray(final E[] arr) {
+    E[] values = arr;
+    if (values.length < size) {
+      values = Arrays.copyOf(arr, size);
+    }
+
+    int i = 0;
+    Node<E> node = first;
+    while (node != null) {
+      values[i++] = node.value;
+      node = node.next;
+    }
+
+    return values;
   }
 
   public int size() {
