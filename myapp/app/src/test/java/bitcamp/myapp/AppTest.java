@@ -3,13 +3,20 @@
  */
 package bitcamp.myapp;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import bitcamp.menu.MenuGroup;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class AppTest {
 
   @Test
-  void appHasAGreeting() {
-//        App classUnderTest = new App();
-//        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+  @DisplayName("MenuGroup 은 만들때마다 서로 다른 주소를 갖는다.")
+  void isSameInstance() {
+    MenuGroup mainMenu = MenuGroup.getInstance("메인");
+    MenuGroup mainMenu2 = MenuGroup.getInstance("메인1");
+
+    assertNotEquals(mainMenu, mainMenu2);
   }
 }
