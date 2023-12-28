@@ -11,8 +11,13 @@ public class MenuGroup extends AbstractMenu {
 
   private List<Menu> menus = new LinkedList<>();
 
-  public MenuGroup(String title, Stack<String> breadcrumb) {
+  private MenuGroup(String title, Stack<String> breadcrumb) {
     super(title, breadcrumb);
+  }
+
+  // 팩토리 메서드
+  public static MenuGroup getInstance(String title) {
+    return new MenuGroup(title, new Stack<>());
   }
 
   @Override
