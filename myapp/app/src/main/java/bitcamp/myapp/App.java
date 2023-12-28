@@ -22,6 +22,8 @@ import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.ArrayList;
+import bitcamp.util.LinkedList;
+import bitcamp.util.List;
 import bitcamp.util.Prompt;
 
 public class App {
@@ -29,10 +31,10 @@ public class App {
   public static void main(String[] args) throws Exception {
     Prompt prompt = new Prompt(System.in);
 
-    ArrayList<Board> boardRepository = new ArrayList<>();
-    ArrayList<Assignment> assignmentRepository = new ArrayList<>();
-    ArrayList<Member> memberRepository = new ArrayList<>();
-    ArrayList<Board> greetingRepository = new ArrayList<>();
+    List<Board> boardRepository = new LinkedList<>();
+    List<Assignment> assignmentRepository = new LinkedList<>();
+    List<Member> memberRepository = new ArrayList<>();
+    List<Board> greetingRepository = new ArrayList<>();
 
     MenuGroup mainMenu = new MenuGroup("메인");
 
