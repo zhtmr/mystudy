@@ -2,6 +2,7 @@ package bitcamp.util;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,15 @@ class LinkedListTest {
 
   @Test
   void toArray() {
+    linkedList.add("A");
+    linkedList.add("B");
+    linkedList.add("C");
+
+    Object[] array = linkedList.toArray();
+    assertEquals(3, array.length);
+    assertArrayEquals(new String[]{"A", "B", "C"}, array);
+    assertNotSame(array, linkedList.toArray());
+    assertTrue(array.getClass().isArray());
   }
 
   @Test
