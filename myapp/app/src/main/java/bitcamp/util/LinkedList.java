@@ -2,11 +2,10 @@ package bitcamp.util;
 
 import java.util.Arrays;
 
-public class LinkedList<E> {
+public class LinkedList<E> extends AbstractList<E> {
 
   private Node<E> last;
   private Node<E> first;
-  private int size;
 
   public void add(E value) {
     Node<E> node = new Node<>();
@@ -172,9 +171,6 @@ public class LinkedList<E> {
     return values;
   }
 
-  public int size() {
-    return size;
-  }
 
   private static class Node<E> {
 

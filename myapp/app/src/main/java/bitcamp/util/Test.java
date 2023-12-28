@@ -3,7 +3,7 @@ package bitcamp.util;
 public class Test {
 
   public static void main(String[] args) {
-    LinkedList<String> list = new LinkedList<>();
+    ArrayList<String> list = new ArrayList<>();
     list.add("aaa");
     list.add("bbb");
     list.add("ccc");
@@ -35,7 +35,7 @@ public class Test {
 //    list.remove(1);
 //    list.remove(0);
 
-    Object[] array = list.toArray();
+    String[] array = list.toArray(new String[0]);
     for (Object val : array) {
       System.out.printf("%s, ", val);
     }
