@@ -174,11 +174,27 @@ public class LinkedList<E> extends AbstractList<E> {
     return values;
   }
 
+
+  /* 5) 익명 클래스 */
   @Override
   public Iterator<E> iterator() {
-    return new LinkedListIterator<>(this);
-  }
+    return new Iterator<>() {
 
+      Node<E> cursor = LinkedList.this.first;
+
+      @Override
+      public boolean hasNext() {
+        return cursor != null;
+      }
+
+      @Override
+      public E next() {
+        E value = cursor.value;
+        cursor = cursor.next;
+        return value;
+      }
+    };
+  }
 
   private static class Node<E> {
 
