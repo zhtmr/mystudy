@@ -149,6 +149,9 @@ public class LinkedList<E> extends AbstractList<E> {
       }
     } else {
       prevNode.next = node.next;
+      if (node == last) {
+        last = prevNode;
+      }
     }
 
     size--;
