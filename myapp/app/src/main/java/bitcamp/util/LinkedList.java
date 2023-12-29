@@ -174,12 +174,16 @@ public class LinkedList<E> extends AbstractList<E> {
     return values;
   }
 
+  @Override
+  public Iterator<E> iterator() {
+    return new LinkedListIterator<>(this);
+  }
+
 
   private static class Node<E> {
 
     E value;
     Node<E> next;
   }
-
 
 }
