@@ -1,6 +1,8 @@
 ```mermaid
 classDiagram
-    direction RL
+    direction BT
+    class AbstractMenu
+    class AbstractMenuHandler
     class AnsiEscape
     class App
     class Assignment
@@ -30,29 +32,28 @@ classDiagram
         <<Interface>>
     }
     class MenuItem
-    class ObjectRepository~E~
     class Prompt
 
-    AssignmentAddHandler ..> MenuHandler
-    AssignmentDeleteHandler ..> MenuHandler
-    AssignmentListHandler ..> MenuHandler
-    AssignmentModifyHandler ..> MenuHandler
-    AssignmentViewHandler ..> MenuHandler
-    BoardAddHandler ..> MenuHandler
-    BoardDeleteHandler ..> MenuHandler
-    BoardListHandler ..> MenuHandler
-    BoardModifyHandler ..> MenuHandler
-    BoardViewHandler ..> MenuHandler
-    HelpHandler ..> MenuHandler
-    MemberAddHandler ..> MenuHandler
-    MemberDeleteHandler ..> MenuHandler
-    MemberListHandler ..> MenuHandler
-    MemberModifyHandler ..> MenuHandler
-    MemberViewHandler ..> MenuHandler
-    MenuGroup ..> Menu
-    MenuItem ..> Menu
-
-
+    AbstractMenu ..> Menu
+    AbstractMenuHandler ..> MenuHandler
+    AssignmentAddHandler --> AbstractMenuHandler
+    AssignmentDeleteHandler --> AbstractMenuHandler
+    AssignmentListHandler --> AbstractMenuHandler
+    AssignmentModifyHandler --> AbstractMenuHandler
+    AssignmentViewHandler --> AbstractMenuHandler
+    BoardAddHandler --> AbstractMenuHandler
+    BoardDeleteHandler --> AbstractMenuHandler
+    BoardListHandler --> AbstractMenuHandler
+    BoardModifyHandler --> AbstractMenuHandler
+    BoardViewHandler --> AbstractMenuHandler
+    HelpHandler --> AbstractMenuHandler
+    MemberAddHandler --> AbstractMenuHandler
+    MemberDeleteHandler --> AbstractMenuHandler
+    MemberListHandler --> AbstractMenuHandler
+    MemberModifyHandler --> AbstractMenuHandler
+    MemberViewHandler --> AbstractMenuHandler
+    MenuGroup --> AbstractMenu
+    MenuItem --> AbstractMenu
 ```
 
 ![img.png](img.png)
