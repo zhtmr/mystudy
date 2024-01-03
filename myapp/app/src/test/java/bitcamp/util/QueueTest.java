@@ -1,12 +1,12 @@
 package bitcamp.util;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Queue;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class QueueTest {
 
@@ -24,7 +24,7 @@ class QueueTest {
     queue.offer("C");
 
     assertEquals(3, queue.size());
-    assertArrayEquals(new String[]{"A", "B", "C"}, queue.toArray());
+    assertArrayEquals(new String[] {"A", "B", "C"}, queue.toArray());
   }
 
   @Test
@@ -48,7 +48,7 @@ class QueueTest {
 
     assertEquals("A", queue.peek());
     assertEquals(3, queue.size());
-    assertArrayEquals(new String[]{"A", "B", "C"}, queue.toArray());
+    assertArrayEquals(new String[] {"A", "B", "C"}, queue.toArray());
   }
 
   @Test

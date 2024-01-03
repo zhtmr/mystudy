@@ -1,13 +1,12 @@
 package bitcamp.util;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTest {
 
@@ -25,7 +24,7 @@ class LinkedListTest {
     linkedList.add("C");
 
     assertEquals(3, linkedList.size());
-    assertArrayEquals(new String[]{"A", "B", "C"}, linkedList.toArray());
+    assertArrayEquals(new String[] {"A", "B", "C"}, linkedList.toArray());
   }
 
   @Test
@@ -36,7 +35,7 @@ class LinkedListTest {
 
     Object[] array = linkedList.toArray();
     assertEquals(3, array.length);
-    assertArrayEquals(new String[]{"A", "B", "C"}, array);
+    assertArrayEquals(new String[] {"A", "B", "C"}, array);
     assertNotSame(array, linkedList.toArray());
     assertTrue(array.getClass().isArray());
   }
@@ -57,7 +56,7 @@ class LinkedListTest {
     linkedList.add("C");
 
     assertEquals("B", linkedList.set(1, "D"));
-    assertArrayEquals(new String[]{"A", "D", "C"}, linkedList.toArray());
+    assertArrayEquals(new String[] {"A", "D", "C"}, linkedList.toArray());
   }
 
   @Test
@@ -70,7 +69,7 @@ class LinkedListTest {
     linkedList.add(1, "D");
 
     assertEquals(4, linkedList.size());
-    assertArrayEquals(new String[]{"A", "D", "B", "C"}, linkedList.toArray());
+    assertArrayEquals(new String[] {"A", "D", "B", "C"}, linkedList.toArray());
   }
 
   @Test
@@ -82,7 +81,7 @@ class LinkedListTest {
 
     assertEquals("B", linkedList.remove(1));
     assertEquals(2, linkedList.size());
-    assertArrayEquals(new String[]{"A", "C"}, linkedList.toArray());
+    assertArrayEquals(new String[] {"A", "C"}, linkedList.toArray());
   }
 
   @Test
@@ -94,7 +93,7 @@ class LinkedListTest {
 
     assertTrue(linkedList.remove("B"));
     assertEquals(2, linkedList.size());
-    assertArrayEquals(new String[]{"A", "C"}, linkedList.toArray());
+    assertArrayEquals(new String[] {"A", "C"}, linkedList.toArray());
   }
 
   @Test
@@ -106,7 +105,7 @@ class LinkedListTest {
 
     String[] ret = linkedList.toArray(new String[0]);
 
-    assertArrayEquals(new String[]{"A", "B", "C"}, ret);
+    assertArrayEquals(new String[] {"A", "B", "C"}, ret);
   }
 
   @Test

@@ -2,28 +2,17 @@ package bitcamp.myapp;
 
 import bitcamp.menu.MenuGroup;
 import bitcamp.myapp.handler.HelpHandler;
-import bitcamp.myapp.handler.assignment.AssignmentAddHandler;
-import bitcamp.myapp.handler.assignment.AssignmentDeleteHandler;
-import bitcamp.myapp.handler.assignment.AssignmentListHandler;
-import bitcamp.myapp.handler.assignment.AssignmentModifyHandler;
-import bitcamp.myapp.handler.assignment.AssignmentViewHandler;
-import bitcamp.myapp.handler.board.BoardAddHandler;
-import bitcamp.myapp.handler.board.BoardDeleteHandler;
-import bitcamp.myapp.handler.board.BoardListHandler;
-import bitcamp.myapp.handler.board.BoardModifyHandler;
-import bitcamp.myapp.handler.board.BoardViewHandler;
-import bitcamp.myapp.handler.member.MemberAddHandler;
-import bitcamp.myapp.handler.member.MemberDeleteHandler;
-import bitcamp.myapp.handler.member.MemberListHandler;
-import bitcamp.myapp.handler.member.MemberModifyHandler;
-import bitcamp.myapp.handler.member.MemberViewHandler;
+import bitcamp.myapp.handler.assignment.*;
+import bitcamp.myapp.handler.board.*;
+import bitcamp.myapp.handler.member.*;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.ArrayList;
-import bitcamp.util.LinkedList;
-import bitcamp.util.List;
 import bitcamp.util.Prompt;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class App {
 
@@ -38,13 +27,10 @@ public class App {
     MenuGroup mainMenu = MenuGroup.getInstance("메인");
 
     MenuGroup assignmentMenu = mainMenu.addGroup("과제");
-    assignmentMenu.addItem(
-        "등록", new AssignmentAddHandler(assignmentRepository, prompt));
+    assignmentMenu.addItem("등록", new AssignmentAddHandler(assignmentRepository, prompt));
     assignmentMenu.addItem("조회", new AssignmentViewHandler(assignmentRepository, prompt));
-    assignmentMenu.addItem(
-        "변경", new AssignmentModifyHandler(assignmentRepository, prompt));
-    assignmentMenu.addItem(
-        "삭제", new AssignmentDeleteHandler(assignmentRepository, prompt));
+    assignmentMenu.addItem("변경", new AssignmentModifyHandler(assignmentRepository, prompt));
+    assignmentMenu.addItem("삭제", new AssignmentDeleteHandler(assignmentRepository, prompt));
     assignmentMenu.addItem("목록", new AssignmentListHandler(assignmentRepository, prompt));
 
     MenuGroup boardMenu = mainMenu.addGroup("게시글");

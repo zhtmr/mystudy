@@ -3,11 +3,11 @@
  */
 package bitcamp.myapp;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import bitcamp.menu.MenuGroup;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class AppTest {
 

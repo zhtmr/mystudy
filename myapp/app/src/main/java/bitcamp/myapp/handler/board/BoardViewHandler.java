@@ -2,8 +2,9 @@ package bitcamp.myapp.handler.board;
 
 import bitcamp.menu.AbstractMenuHandler;
 import bitcamp.myapp.vo.Board;
-import bitcamp.util.List;
 import bitcamp.util.Prompt;
+
+import java.util.List;
 
 // 게시글의 '등록' 메뉴를 선택했을 때 작업을 수행하는 클래스
 // - 반드시 MenuHandler 규칙에 따라 클래스를 작성해야 한다.
@@ -25,7 +26,6 @@ public class BoardViewHandler extends AbstractMenuHandler {
     System.out.printf("제목: %s\n", board.getTitle());
     System.out.printf("내용: %s\n", board.getContent());
     System.out.printf("작성자: %s\n", board.getWriter());
-    System.out.printf("작성일: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS\n", board.getCreatedDate()
-    );
+    System.out.printf("작성일: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS\n", board.getCreatedDate());
   }
 }
