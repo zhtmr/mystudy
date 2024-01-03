@@ -27,12 +27,11 @@ public class App {
   }
 
   public static void main(String[] args) throws Exception {
-    App app = new App();
-    app.run();
+    new App().run();
   }
 
   void run() {
-    while (true) {
+    while (true) { // 예외가 발생해도 App을 종료하지 않음.
       try {
         mainMenu.execute(prompt);
         prompt.close();
