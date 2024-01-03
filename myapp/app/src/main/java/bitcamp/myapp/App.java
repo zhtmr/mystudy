@@ -15,16 +15,36 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class App {
+  Prompt prompt = new Prompt(System.in);
+  List<Board> boardRepository = new LinkedList<>();
+  List<Assignment> assignmentRepository = new LinkedList<>();
+  List<Member> memberRepository = new ArrayList<>();
+  List<Board> greetingRepository = new ArrayList<>();
+  MenuGroup mainMenu;
+
+  App() {
+    prepareMenu();
+  }
 
   public static void main(String[] args) throws Exception {
-    Prompt prompt = new Prompt(System.in);
+    App app = new App();
+    app.run();
+  }
 
-    List<Board> boardRepository = new LinkedList<>();
-    List<Assignment> assignmentRepository = new LinkedList<>();
-    List<Member> memberRepository = new ArrayList<>();
-    List<Board> greetingRepository = new ArrayList<>();
+  void run() {
+    while (true) {
+      try {
+        mainMenu.execute(prompt);
+        prompt.close();
+        break;
+      } catch (Exception e) {
+        System.out.println("main() 예외 발생");
+      }
+    }
+  }
 
-    MenuGroup mainMenu = MenuGroup.getInstance("메인");
+  void prepareMenu() {
+    mainMenu = MenuGroup.getInstance("메인");
 
     MenuGroup assignmentMenu = mainMenu.addGroup("과제");
     assignmentMenu.addItem("등록", new AssignmentAddHandler(assignmentRepository, prompt));
@@ -55,17 +75,5 @@ public class App {
     greetingMenu.addItem("목록", new BoardListHandler(greetingRepository, prompt));
 
     mainMenu.addItem("도움말", new HelpHandler(prompt));
-
-    // jvm 까지 오류보고 안가게 막기
-    while (true) {
-      try {
-        mainMenu.execute(prompt);
-        prompt.close();
-        break;
-      } catch (Exception e) {
-        System.out.println("main() 예외 발생");
-      }
-    }
-
   }
 }
