@@ -4,9 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class QueueTest {
 
@@ -14,7 +15,7 @@ class QueueTest {
 
   @BeforeEach
   void setUp() {
-    queue = new Queue<>();
+    queue = new LinkedList<>();
   }
 
   @Test
