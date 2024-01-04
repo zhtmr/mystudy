@@ -1,9 +1,5 @@
 package bitcamp.myapp;
 
-import bitcamp.io.BufferedDataInputStream;
-import bitcamp.io.BufferedDataOutputStream;
-import bitcamp.io.DataInputStream;
-import bitcamp.io.DataOutputStream;
 import bitcamp.menu.MenuGroup;
 import bitcamp.myapp.handler.HelpHandler;
 import bitcamp.myapp.handler.assignment.*;
@@ -14,6 +10,7 @@ import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.Prompt;
 
+import java.io.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -90,7 +87,8 @@ public class App {
   }
 
   void loadAssignment() {
-    try (BufferedDataInputStream in = new BufferedDataInputStream("assignment.data")) {
+    try (DataInputStream in = new DataInputStream(
+        new BufferedInputStream(new FileInputStream("assignment.data")))) {
       // start
       long start = System.currentTimeMillis();
       int size = in.readInt();
@@ -112,7 +110,8 @@ public class App {
   }
 
   void saveAssignment() {
-    try (BufferedDataOutputStream out = new BufferedDataOutputStream("assignment.data")) {
+    try (DataOutputStream out = new DataOutputStream(
+        new BufferedOutputStream(new FileOutputStream("assignment.data")))) {
       // 시작 시간
       long start = System.currentTimeMillis();
 
@@ -135,23 +134,9 @@ public class App {
     }
   }
 
-  void saveMember() {
-    try (DataOutputStream out = new DataOutputStream("member.data")) {
-      out.writeShort(memberRepository.size());
-
-      for (Member member : memberRepository) {
-        out.writeUTF(member.getName());
-        out.writeUTF(member.getEmail());
-        out.writeUTF(member.getPassword());
-        out.writeLong(member.getCreatedDate().getTime());
-      }
-    } catch (Exception e) {
-      System.out.println("회원 데이터 저장 중 오류 발생!");
-    }
-  }
-
   void loadMember() {
-    try (DataInputStream in = new DataInputStream("member.data")) {
+    try (DataInputStream in = new DataInputStream(
+        new BufferedInputStream(new FileInputStream("member.data")))) {
       int size = in.readShort();
 
       for (int i = 0; i < size; i++) {
@@ -168,24 +153,25 @@ public class App {
     }
   }
 
-  void saveGreeting() {
-    try (DataOutputStream out = new DataOutputStream("greeting.data")) {
-      out.writeShort(greetingRepository.size());
+  void saveMember() {
+    try (DataOutputStream out = new DataOutputStream(
+        new BufferedOutputStream(new FileOutputStream("member.data")))) {
+      out.writeShort(memberRepository.size());
 
-      for (Board board : greetingRepository) {
-        out.writeUTF(board.getTitle());
-        out.writeUTF(board.getContent());
-        out.writeUTF(board.getWriter());
-        out.writeUTF(board.getTitle());
-        out.writeLong(board.getCreatedDate().getTime());
+      for (Member member : memberRepository) {
+        out.writeUTF(member.getName());
+        out.writeUTF(member.getEmail());
+        out.writeUTF(member.getPassword());
+        out.writeLong(member.getCreatedDate().getTime());
       }
     } catch (Exception e) {
-      System.out.println("가입인사 데이터 저장 중 오류 발생!");
+      System.out.println("회원 데이터 저장 중 오류 발생!");
     }
   }
 
   void loadGreeting() {
-    try (DataInputStream in = new DataInputStream("greeting.data")) {
+    try (DataInputStream in = new DataInputStream(
+        new BufferedInputStream(new FileInputStream("greeting.data")))) {
       int size = in.readShort();
 
       for (int i = 0; i < size; i++) {
@@ -202,24 +188,26 @@ public class App {
     }
   }
 
-  void saveBoard() {
-    try (DataOutputStream out = new DataOutputStream("board.data")) {
-      out.writeShort(boardRepository.size());
+  void saveGreeting() {
+    try (DataOutputStream out = new DataOutputStream(
+        new BufferedOutputStream(new FileOutputStream("greeting.data")))) {
+      out.writeShort(greetingRepository.size());
 
-      for (Board board : boardRepository) {
+      for (Board board : greetingRepository) {
         out.writeUTF(board.getTitle());
         out.writeUTF(board.getContent());
         out.writeUTF(board.getWriter());
+        out.writeUTF(board.getTitle());
         out.writeLong(board.getCreatedDate().getTime());
       }
-
     } catch (Exception e) {
-      System.out.println("게시글 데이터 저장 중 오류 발생!");
+      System.out.println("가입인사 데이터 저장 중 오류 발생!");
     }
   }
 
   void loadBoard() {
-    try (DataInputStream in = new DataInputStream("board.data")) {
+    try (DataInputStream in = new DataInputStream(
+        new BufferedInputStream(new FileInputStream("board.data")))) {
       int size = in.readShort();
 
       for (int i = 0; i < size; i++) {
@@ -233,6 +221,23 @@ public class App {
     } catch (Exception e) {
       System.out.println("게시글 데이터 로딩 중 오류 발생!");
       e.printStackTrace();
+    }
+  }
+
+  void saveBoard() {
+    try (DataOutputStream out = new DataOutputStream(
+        new BufferedOutputStream(new FileOutputStream("board.data")))) {
+      out.writeShort(boardRepository.size());
+
+      for (Board board : boardRepository) {
+        out.writeUTF(board.getTitle());
+        out.writeUTF(board.getContent());
+        out.writeUTF(board.getWriter());
+        out.writeLong(board.getCreatedDate().getTime());
+      }
+
+    } catch (Exception e) {
+      System.out.println("게시글 데이터 저장 중 오류 발생!");
     }
   }
 }
