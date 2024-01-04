@@ -1,5 +1,7 @@
 package bitcamp.myapp;
 
+import bitcamp.io.BufferedDataInputStream;
+import bitcamp.io.BufferedDataOutputStream;
 import bitcamp.io.DataInputStream;
 import bitcamp.io.DataOutputStream;
 import bitcamp.menu.MenuGroup;
@@ -88,8 +90,10 @@ public class App {
   }
 
   void loadAssignment() {
-    try (DataInputStream in = new DataInputStream("assignment.data")) {
-      int size = in.readShort();
+    try (BufferedDataInputStream in = new BufferedDataInputStream("assignment.data")) {
+      // start
+      long start = System.currentTimeMillis();
+      int size = in.readInt();
 
       for (int i = 0; i < size; i++) {
         Assignment assignment = new Assignment();
@@ -98,6 +102,9 @@ public class App {
         assignment.setDeadline(Date.valueOf(in.readUTF()));
         assignmentRepository.add(assignment);
       }
+      // end
+      long end = System.currentTimeMillis();
+      System.out.printf("걸린시간: %d\n", end - start);
     } catch (Exception e) {
       System.out.println("과제 데이터 로딩 중 오류 발생!");
       e.printStackTrace();
@@ -105,16 +112,23 @@ public class App {
   }
 
   void saveAssignment() {
-    try (DataOutputStream out = new DataOutputStream("assignment.data")) {
+    try (BufferedDataOutputStream out = new BufferedDataOutputStream("assignment.data")) {
+      // 시작 시간
+      long start = System.currentTimeMillis();
 
       // 저장할 데이터 갯수를 2바이트로 출력한다.
-      out.writeShort(assignmentRepository.size());
+      out.writeInt(assignmentRepository.size());
 
       for (Assignment assignment : assignmentRepository) {
         out.writeUTF(assignment.getTitle());
         out.writeUTF(assignment.getContent());
         out.writeUTF(assignment.getDeadline().toString());
       }
+
+      // 종료 시간
+      long end = System.currentTimeMillis();
+      System.out.printf("걸린시간: %d\n", end - start);
+
     } catch (Exception e) {
       System.out.println("과제 데이터 저장 중 오류 발생!");
       e.printStackTrace();
