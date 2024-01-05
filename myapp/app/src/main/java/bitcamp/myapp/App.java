@@ -24,16 +24,6 @@ public class App {
   MenuGroup mainMenu;
 
   App() {
-    //    loadAssignment();
-    //    loadMember();
-    //    loadBoard();
-    //    loadGreeting();
-
-    //    loadData("assignment.data", assignmentRepository);
-    //    loadData("member.data", memberRepository);
-    //    loadData("board.data", boardRepository);
-    //    loadData("greeting.data", greetingRepository);
-
     assignmentRepository = loadData("assignment.data");
     memberRepository = loadData("member.data");
     boardRepository = loadData("board.data");
@@ -57,10 +47,6 @@ public class App {
         System.out.println("main() 예외 발생");
       }
     }
-    //    saveAssignment();
-    //    saveMember();
-    //    saveBoard();
-    //    saveGreeting();
     saveData("assignment.data", assignmentRepository);
     saveData("member.data", memberRepository);
     saveData("board.data", boardRepository);
@@ -101,118 +87,6 @@ public class App {
     mainMenu.addItem("도움말", new HelpHandler(prompt));
   }
 
-  //  void loadAssignment() {
-  //    try (ObjectInputStream in = new ObjectInputStream(
-  //        new BufferedInputStream(new FileInputStream("assignment.data")))) {
-  //      // start
-  //      long start = System.currentTimeMillis();
-  //
-  //      assignmentRepository = (List<Assignment>) in.readObject();
-  //
-  //      // end
-  //      long end = System.currentTimeMillis();
-  //      System.out.printf("걸린시간: %d\n", end - start);
-  //    } catch (Exception e) {
-  //      // null 인 경우
-  //      assignmentRepository = new LinkedList<>();
-  //      System.out.println("과제 데이터 로딩 중 오류 발생!");
-  //      e.printStackTrace();
-  //    }
-  //  }
-  //
-  //  void saveAssignment() {
-  //    try (ObjectOutputStream out = new ObjectOutputStream(
-  //        new BufferedOutputStream(new FileOutputStream("assignment.data")))) {
-  //      // 시작 시간
-  //      long start = System.currentTimeMillis();
-  //
-  //      out.writeObject(assignmentRepository);
-  //
-  //      // 종료 시간
-  //      long end = System.currentTimeMillis();
-  //      System.out.printf("걸린시간: %d\n", end - start);
-  //
-  //    } catch (Exception e) {
-  //      System.out.println("과제 데이터 저장 중 오류 발생!");
-  //      e.printStackTrace();
-  //    }
-  //  }
-  //
-  //  void loadMember() {
-  //    try (ObjectInputStream in = new ObjectInputStream(
-  //        new BufferedInputStream(new FileInputStream("member.data")))) {
-  //
-  //      memberRepository = (List<Member>) in.readObject();
-  //    } catch (Exception e) {
-  //      memberRepository = new ArrayList<>();
-  //      System.out.println("회원 데이터 로딩 중 오류 발생!");
-  //      e.printStackTrace();
-  //    }
-  //  }
-  //
-  //  void saveMember() {
-  //    try (ObjectOutputStream out = new ObjectOutputStream(
-  //        new BufferedOutputStream(new FileOutputStream("member.data")))) {
-  //
-  //      out.writeObject(memberRepository);
-  //    } catch (Exception e) {
-  //      System.out.println("회원 데이터 저장 중 오류 발생!");
-  //    }
-  //  }
-  //
-  //  void loadGreeting() {
-  //    try (ObjectInputStream in = new ObjectInputStream(
-  //        new BufferedInputStream(new FileInputStream("greeting.data")))) {
-  //      greetingRepository = (List<Board>) in.readObject();
-  //    } catch (Exception e) {
-  //      greetingRepository = new LinkedList<>();
-  //      System.out.println("가입인사 데이터 로딩 중 오류 발생!");
-  //    }
-  //  }
-  //
-  //  void saveGreeting() {
-  //    try (ObjectOutputStream out = new ObjectOutputStream(
-  //        new BufferedOutputStream(new FileOutputStream("greeting.data")))) {
-  //      out.writeObject(greetingRepository);
-  //    } catch (Exception e) {
-  //      System.out.println("가입인사 데이터 저장 중 오류 발생!");
-  //    }
-  //  }
-  //
-  //  void loadBoard() {
-  //    try (ObjectInputStream in = new ObjectInputStream(
-  //        new BufferedInputStream(new FileInputStream("board.data")))) {
-  //      boardRepository = (List<Board>) in.readObject();
-  //    } catch (Exception e) {
-  //      boardRepository = new LinkedList<>();
-  //      System.out.println("게시글 데이터 로딩 중 오류 발생!");
-  //      e.printStackTrace();
-  //    }
-  //  }
-  //
-  //  void saveBoard() {
-  //    try (ObjectOutputStream out = new ObjectOutputStream(
-  //        new BufferedOutputStream(new FileOutputStream("board.data")))) {
-  //      out.writeObject(boardRepository);
-  //    } catch (Exception e) {
-  //      System.out.println("게시글 데이터 저장 중 오류 발생!");
-  //    }
-  //  }
-
-  /* 리팩토링 */
-
-  //  <E> void loadData(String filepath, List<E> dataList) {
-  //    try (ObjectInputStream in = new ObjectInputStream(
-  //        new BufferedInputStream(new FileInputStream(filepath)))) {
-  //
-  //      List<E> list = (List<E>) in.readObject();
-  //      dataList.addAll(list);
-  //
-  //    } catch (Exception e) {
-  //      System.out.printf("%s 로딩 중 오류 발생!\n", filepath);
-  //      e.printStackTrace();
-  //    }
-  //  }
 
   /** 리턴 타입에 따라 다른 리스트를 반환할 수 있다. */
   <E> List<E> loadData(String filepath) {
@@ -220,7 +94,6 @@ public class App {
         new BufferedInputStream(new FileInputStream(filepath)))) {
 
       return (List<E>) in.readObject();
-
     } catch (Exception e) {
       System.out.printf("%s 로딩 중 오류 발생!\n", filepath);
       e.printStackTrace();
