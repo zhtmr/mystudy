@@ -17,8 +17,8 @@ import java.util.List;
 
 public class App {
   Prompt prompt = new Prompt(System.in);
-  List<Board> boardRepository = new LinkedList<>();
-  List<Assignment> assignmentRepository = new LinkedList<>();
+  List<Board> boardRepository = new ArrayList<>();
+  List<Assignment> assignmentRepository;
   List<Member> memberRepository = new ArrayList<>();
   List<Board> greetingRepository = new ArrayList<>();
   MenuGroup mainMenu;
@@ -90,25 +90,15 @@ public class App {
         new BufferedInputStream(new FileInputStream("assignment.data")))) {
       // start
       long start = System.currentTimeMillis();
-      int size = in.readInt();
 
-      //      for (int i = 0; i < size; i++) {
-      //        //        Assignment assignment = new Assignment();
-      //        //        assignment.setTitle(in.readUTF());
-      //        //        assignment.setContent(in.readUTF());
-      //        //        assignment.setDeadline(Date.valueOf(in.readUTF()));
-      //        Assignment assignment = (Assignment) in.readObject();
-      //        assignmentRepository.add(assignment);
-      //      }
-
-      // 리스트로 가져오기
-      List<Assignment> list = (List<Assignment>) in.readObject();
-      assignmentRepository.addAll(list);
+      assignmentRepository = (List<Assignment>) in.readObject();
 
       // end
       long end = System.currentTimeMillis();
       System.out.printf("걸린시간: %d\n", end - start);
     } catch (Exception e) {
+      // null 인 경우
+      assignmentRepository = new LinkedList<>();
       System.out.println("과제 데이터 로딩 중 오류 발생!");
       e.printStackTrace();
     }
@@ -120,17 +110,6 @@ public class App {
       // 시작 시간
       long start = System.currentTimeMillis();
 
-      // 저장할 데이터 갯수를 2바이트로 출력한다.
-      out.writeInt(assignmentRepository.size());
-
-      //      for (Assignment assignment : assignmentRepository) {
-      //        out.writeObject(assignment);
-      //        //        out.writeUTF(assignment.getTitle());
-      //        //        out.writeUTF(assignment.getContent());
-      //        //        out.writeUTF(assignment.getDeadline().toString());
-      //      }
-
-      // 리스트로 저장
       out.writeObject(assignmentRepository);
 
       // 종료 시간
