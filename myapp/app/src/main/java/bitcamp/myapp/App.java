@@ -24,14 +24,14 @@ public class App {
   MenuGroup mainMenu;
 
   App() {
-    prepareMenu();
     loadAssignment();
     loadMember();
     loadBoard();
     loadGreeting();
+    prepareMenu();
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     new App().run();
   }
 
@@ -92,14 +92,19 @@ public class App {
       long start = System.currentTimeMillis();
       int size = in.readInt();
 
-      for (int i = 0; i < size; i++) {
-        //        Assignment assignment = new Assignment();
-        //        assignment.setTitle(in.readUTF());
-        //        assignment.setContent(in.readUTF());
-        //        assignment.setDeadline(Date.valueOf(in.readUTF()));
-        Assignment assignment = (Assignment) in.readObject();
-        assignmentRepository.add(assignment);
-      }
+      //      for (int i = 0; i < size; i++) {
+      //        //        Assignment assignment = new Assignment();
+      //        //        assignment.setTitle(in.readUTF());
+      //        //        assignment.setContent(in.readUTF());
+      //        //        assignment.setDeadline(Date.valueOf(in.readUTF()));
+      //        Assignment assignment = (Assignment) in.readObject();
+      //        assignmentRepository.add(assignment);
+      //      }
+
+      // 리스트로 가져오기
+      List<Assignment> list = (List<Assignment>) in.readObject();
+      assignmentRepository.addAll(list);
+
       // end
       long end = System.currentTimeMillis();
       System.out.printf("걸린시간: %d\n", end - start);
@@ -118,12 +123,15 @@ public class App {
       // 저장할 데이터 갯수를 2바이트로 출력한다.
       out.writeInt(assignmentRepository.size());
 
-      for (Assignment assignment : assignmentRepository) {
-        out.writeObject(assignment);
-        //        out.writeUTF(assignment.getTitle());
-        //        out.writeUTF(assignment.getContent());
-        //        out.writeUTF(assignment.getDeadline().toString());
-      }
+      //      for (Assignment assignment : assignmentRepository) {
+      //        out.writeObject(assignment);
+      //        //        out.writeUTF(assignment.getTitle());
+      //        //        out.writeUTF(assignment.getContent());
+      //        //        out.writeUTF(assignment.getDeadline().toString());
+      //      }
+
+      // 리스트로 저장
+      out.writeObject(assignmentRepository);
 
       // 종료 시간
       long end = System.currentTimeMillis();
