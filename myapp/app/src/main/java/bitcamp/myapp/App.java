@@ -11,7 +11,6 @@ import bitcamp.myapp.vo.Member;
 import bitcamp.util.Prompt;
 
 import java.io.*;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,17 +86,18 @@ public class App {
   }
 
   void loadAssignment() {
-    try (DataInputStream in = new DataInputStream(
+    try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(new FileInputStream("assignment.data")))) {
       // start
       long start = System.currentTimeMillis();
       int size = in.readInt();
 
       for (int i = 0; i < size; i++) {
-        Assignment assignment = new Assignment();
-        assignment.setTitle(in.readUTF());
-        assignment.setContent(in.readUTF());
-        assignment.setDeadline(Date.valueOf(in.readUTF()));
+        //        Assignment assignment = new Assignment();
+        //        assignment.setTitle(in.readUTF());
+        //        assignment.setContent(in.readUTF());
+        //        assignment.setDeadline(Date.valueOf(in.readUTF()));
+        Assignment assignment = (Assignment) in.readObject();
         assignmentRepository.add(assignment);
       }
       // end
@@ -110,7 +110,7 @@ public class App {
   }
 
   void saveAssignment() {
-    try (DataOutputStream out = new DataOutputStream(
+    try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(new FileOutputStream("assignment.data")))) {
       // 시작 시간
       long start = System.currentTimeMillis();
@@ -119,9 +119,10 @@ public class App {
       out.writeInt(assignmentRepository.size());
 
       for (Assignment assignment : assignmentRepository) {
-        out.writeUTF(assignment.getTitle());
-        out.writeUTF(assignment.getContent());
-        out.writeUTF(assignment.getDeadline().toString());
+        out.writeObject(assignment);
+        //        out.writeUTF(assignment.getTitle());
+        //        out.writeUTF(assignment.getContent());
+        //        out.writeUTF(assignment.getDeadline().toString());
       }
 
       // 종료 시간
