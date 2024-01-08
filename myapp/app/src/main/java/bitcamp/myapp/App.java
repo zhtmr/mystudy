@@ -7,14 +7,18 @@ import bitcamp.myapp.handler.board.*;
 import bitcamp.myapp.handler.member.*;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
-import bitcamp.myapp.vo.CsvString;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.Prompt;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class App {
   Prompt prompt = new Prompt(System.in);
@@ -25,10 +29,10 @@ public class App {
   MenuGroup mainMenu;
 
   App() {
-    assignmentRepository = loadData("assignment.csv", Assignment.class);
-    memberRepository = loadData("member.csv", Member.class);
-    boardRepository = loadData("board.csv", Board.class);
-    greetingRepository = loadData("greeting.csv", Board.class);
+    assignmentRepository = loadData("assignment.json", Assignment.class);
+    memberRepository = loadData("member.json", Member.class);
+    boardRepository = loadData("board.json", Board.class);
+    greetingRepository = loadData("greeting.json", Board.class);
 
     prepareMenu();  // 기존에 이 메소드를 제일 먼저 실행했을땐 App 클래스 필드에서 할당한 빈 리스트 구현체를 넘겨준 뒤, loadAssignment() 호출 시 해당 repository 에 addAll() 등으로 데이터를 넣어줬었다.
     // 그러나 수정된 코드에서는 실제로 데이터를 넣어주는 시점이 다르기 때문에 예외가 발생할 수 있다.
@@ -48,10 +52,10 @@ public class App {
         System.out.println("main() 예외 발생");
       }
     }
-    saveData("assignment.csv", assignmentRepository);
-    saveData("member.csv", memberRepository);
-    saveData("board.csv", boardRepository);
-    saveData("greeting.csv", greetingRepository);
+    saveData("assignment.json", assignmentRepository);
+    saveData("member.json", memberRepository);
+    saveData("board.json", boardRepository);
+    saveData("greeting.json", greetingRepository);
   }
 
   void prepareMenu() {
@@ -91,36 +95,26 @@ public class App {
 
   /** 리턴 타입에 따라 다른 리스트를 반환할 수 있다. */
   <E> List<E> loadData(String filepath, Class<E> clazz) {
-    // 0) 객체를 저장할 리스트 준비.
-    ArrayList<E> list = new ArrayList<>();
 
-    try (Scanner in = new Scanner(new FileReader(filepath))) {
-      // 리플랙션 사용
-      // 1) 클래스 정보로 팩토리 메소드를 알아낸다.
-      Method factory = clazz.getMethod("fromCsvString", String.class);
-
-      while (true) {
-        // 2) 팩토리 메소드에 csv 문자열을 전달하고 객체를 리턴 받는다.
-        E obj = (E) factory.invoke(null, in.nextLine());
-        // 3) 리턴 받은 객체를 리스트에 추가한다.
-        list.add(obj);
+    try (BufferedReader in = new BufferedReader(new FileReader(filepath))) {
+      StringBuilder sb = new StringBuilder();
+      String str;
+      while ((str = in.readLine()) != null) {
+        sb.append(str);
       }
-    } catch (NoSuchElementException e) { // in.nextLine()으로 다 읽은 후 여기로 이동됨
-      System.out.printf("%s 파일 로딩 완료!\n", filepath);
-
+      return (List<E>) new GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+          .fromJson(sb.toString(), TypeToken.getParameterized(ArrayList.class, clazz));
     } catch (Exception e) {
       System.out.printf("%s 로딩 중 오류 발생!\n", filepath);
       e.printStackTrace();
     }
-    return list;
+    return new ArrayList<>();
   }
 
-  void saveData(String filepath, List<? extends CsvString> dataList) {
-    try (FileWriter out = new FileWriter(filepath)) {
+  void saveData(String filepath, List<?> dataList) {
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(filepath))) {
 
-      for (CsvString data : dataList) {
-        out.write(data.toCsvString() + "\n");
-      }
+      out.write(new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(dataList));
 
     } catch (Exception e) {
       System.out.printf("%s 저장 중 오류 발생!\n", filepath);
