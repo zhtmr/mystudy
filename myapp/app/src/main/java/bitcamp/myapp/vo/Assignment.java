@@ -51,4 +51,9 @@ public class Assignment implements Serializable/*, CsvString */ {
   public void setDeadline(Date deadline) {
     this.deadline = deadline;
   }
+
+  @Override
+  public String toString() {
+    return "Assignment{" + "title='" + title + '\'' + ", content='" + content + '\'' + ", deadline=" + deadline + '}';
+  }
 }
