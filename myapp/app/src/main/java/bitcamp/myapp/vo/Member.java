@@ -8,27 +8,26 @@ public class Member implements Serializable/*, CsvString */ {
 
   @Serial
   private static final long serialVersionUID = 100L;
+
+  private int no;
   private String email;
   private String name;
   private String password;
   private Date createdDate;
 
 
-  // 팩토리 메소드
-  public static Member fromCsvString(String csv) {
-    String[] values = csv.split(",");
-    Member member = new Member();
-    member.setEmail(values[0]);
-    member.setName(values[1]);
-    member.setPassword(values[2]);
-    member.setCreatedDate(new Date(Long.parseLong(values[3])));
-    return member;
+  public int getNo() {
+    return no;
   }
 
-  //  @Override
-  //  public String toCsvString() {
-  //    return String.format("%s,%s,%s,%d", email, name, password, createdDate.getTime());
-  //  }
+  public void setNo(int no) {
+    this.no = no;
+  }
+
+  @Override
+  public String toString() {
+    return "Member{" + "no=" + no + ", email='" + email + '\'' + ", name='" + name + '\'' + ", password='" + password + '\'' + ", createdDate=" + createdDate + '}';
+  }
 
   public String getEmail() {
     return email;
@@ -62,8 +61,4 @@ public class Member implements Serializable/*, CsvString */ {
     this.createdDate = createdDate;
   }
 
-  @Override
-  public String toString() {
-    return "Member{" + "email='" + email + '\'' + ", name='" + name + '\'' + ", password='" + password + '\'' + ", createdDate=" + createdDate + '}';
-  }
 }
