@@ -4,60 +4,18 @@ import bitcamp.myapp.vo.Assignment;
 
 import java.util.List;
 
-public class AssignmentDao extends AbstractDao<Assignment> {
+public interface AssignmentDao {
 
-  private int sequence;
 
-  public AssignmentDao(String filepath) {
-    super(filepath);
-    sequence = list.getLast().getNo();
-  }
+  List<Assignment> findAll();
 
-  public List<Assignment> findAll() {
-    return list.subList(0, list.size());
-  }
+  Assignment findBy(int no);
 
-  public Assignment findBy(int no) {
-    int index = indexOf(no);
-    if (index == -1) {
-      return null;
-    }
-    return list.get(index);
-  }
+  void add(Assignment assignment);
 
-  public void add(Assignment assignment) {
-    assignment.setNo(++sequence);
-    list.add(assignment);
-    saveData();
-  }
+  int delete(int no);
 
-  public int delete(int no) {
-    int index = indexOf(no);
-    if (index == -1) {
-      return 0;
-    }
-    list.remove(index);
-    saveData();
-    return 1;
-  }
+  int update(Assignment assignment);
 
-  public int update(Assignment assignment) {
-    int index = indexOf(assignment.getNo());
-    if (index == -1) {
-      return 0;
-    }
-    list.set(index, assignment);
-    saveData();
-    return 1;
-  }
-
-  public int indexOf(int no) {
-    for (int i = 0; i < list.size(); i++) {
-      if (list.get(i).getNo() == no) {
-        return i;
-      }
-    }
-    return -1;
-  }
 
 }
