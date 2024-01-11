@@ -11,11 +11,15 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 
 public abstract class AbstractDao<T> {
-  ArrayList<T> list;
+  protected ArrayList<T> list;
+  private String filepath;
 
-  void loadData(String filepath) {
+  public AbstractDao(String filepath) {
+    this.filepath = filepath;
+    loadData();
+  }
 
-
+  protected void loadData() {
     try (BufferedReader in = new BufferedReader(new FileReader(filepath))) {
       StringBuilder sb = new StringBuilder();
       String str;
@@ -36,7 +40,7 @@ public abstract class AbstractDao<T> {
     }
   }
 
-  void saveData(String filepath) {
+  protected void saveData() {
     try (BufferedWriter out = new BufferedWriter(new FileWriter(filepath))) {
       out.write(new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(list));
     } catch (Exception e) {

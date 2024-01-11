@@ -4,31 +4,30 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Board implements Serializable/*, CsvString */ {
+public class Board implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 100L;
+
+  private int no;
   private String title;
   private String content;
   private String writer;
   private Date createdDate;
 
 
-  // 팩토리 메소드
-  public static Board fromCsvString(String csv) {
-    String[] values = csv.split(",");
-    Board board = new Board();
-    board.setTitle(values[0]);
-    board.setContent(values[1]);
-    board.setWriter(values[2]);
-    board.setCreatedDate(new Date(Long.parseLong(values[3])));
-    return board;
+  @Override
+  public String toString() {
+    return "Board{" + "no=" + no + ", title='" + title + '\'' + ", content='" + content + '\'' + ", writer='" + writer + '\'' + ", createdDate=" + createdDate + '}';
   }
 
-  //  @Override
-  //  public String toCsvString() {
-  //    return String.format("%s,%s,%s,%d", title, content, writer, createdDate.getTime());
-  //  }
+  public int getNo() {
+    return no;
+  }
+
+  public void setNo(int no) {
+    this.no = no;
+  }
 
   public String getTitle() {
     return title;
@@ -62,8 +61,4 @@ public class Board implements Serializable/*, CsvString */ {
     this.createdDate = createdDate;
   }
 
-  @Override
-  public String toString() {
-    return "Board{" + "title='" + title + '\'' + ", content='" + content + '\'' + ", writer='" + writer + '\'' + ", createdDate=" + createdDate + '}';
-  }
 }
