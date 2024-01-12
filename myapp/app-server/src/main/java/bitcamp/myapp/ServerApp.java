@@ -1,24 +1,30 @@
 package bitcamp.myapp;
 
-import bitcamp.myapp.dao.AssignmentDao;
-import bitcamp.myapp.dao.BoardDao;
-import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.dao.json.AssignmentDaoImpl;
 import bitcamp.myapp.dao.json.BoardDaoImpl;
 import bitcamp.myapp.dao.json.MemberDaoImpl;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class ServerApp {
-  MemberDao memberDao = new MemberDaoImpl("member.json");
-  AssignmentDao assignmentDao = new AssignmentDaoImpl("assignment.json");
-  BoardDao boardDao = new BoardDaoImpl("board.json");
-  BoardDao greetingDao = new BoardDaoImpl("greeting.json");
+  HashMap<String, Object> daoMap = new HashMap<>();
+  Gson gson;
 
+  public ServerApp() {
+    daoMap.put("board", new BoardDaoImpl("board.json"));
+    daoMap.put("greeting", new BoardDaoImpl("greeting.json"));
+    daoMap.put("assignment", new AssignmentDaoImpl("assignment.json"));
+    daoMap.put("member", new MemberDaoImpl("member.json"));
+    gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+  }
 
   public static void main(String[] args) {
     new ServerApp().run();
@@ -46,20 +52,55 @@ public class ServerApp {
       DataOutputStream out = new DataOutputStream(socket.getOutputStream());
       System.out.println("입출력 준비 완료!");
 
-      String dataName = in.readUTF();
-      String command = in.readUTF();
-      String value = in.readUTF();
-      System.out.println("클라이언트가 보낸 데이터 읽음!");
+      while (true) {
+        System.out.println("---------------------------------------");
+        String dataName = in.readUTF();
+        String command = in.readUTF();
+        String value = in.readUTF();
+        System.out.println("클라이언트 요청: ");
 
-      System.out.println(dataName);
-      System.out.println(command);
-      System.out.println(value);
+        // dataName 으로 DAO를 찾는다.
+        Object dao = daoMap.get(dataName);
+        System.out.printf("데이터: %s\n", dataName);
 
-      String json =
-          new GsonBuilder().setDateFormat("yyy-MM-dd").create().toJson(boardDao.findAll());
+        // command 이름으로 메소드 찾기
+        Method[] methods = dao.getClass().getDeclaredMethods();
+        Method commandHandler = null;
+        for (Method m : methods) {
+          if (m.getName().equals(command)) {
+            commandHandler = m;
+            break;
+          }
+        }
+        System.out.printf("메서드: %s\n", commandHandler.getName());
 
-      out.writeUTF(json);
-      System.out.println("클라이언트로 데이터 전송!");
+        // 메소드의 파라미터 정보를 알아낸다.
+        Parameter[] parameters = commandHandler.getParameters();
+        System.out.printf("파라미터 개수: %s\n", parameters.length);
+
+        // 메소드를 호출할 때 파라미터에 넘겨 줄 데이터를 담을 배열을 준비한다.
+        Object[] args = new Object[parameters.length];
+
+        // 아규먼트 값 준비하기
+        // => 현재 모든 DAO의 메소드는 파라미터가 최대 1개만 있다.
+        // => 1개만 있다는 가정하에서 아규먼트 값을 준비한다.
+        if (parameters.length > 0) {
+          Class<?> paramType = parameters[0].getType();
+          Object paramValue = gson.fromJson(value, paramType);
+          args[0] = paramValue;
+        }
+
+        // 메소드의 리턴 타입을 알아낸다.
+        Class<?> returnType = commandHandler.getReturnType();
+        System.out.printf("리턴: %s\n", returnType.getName());
+
+        // 메소드를 호출한다.
+        Object returnValue = commandHandler.invoke(dao, args);
+
+        out.writeUTF("200");
+        out.writeUTF(gson.toJson(returnValue));
+        System.out.println("클라이언트에게 응답 완료!");
+      }
     } catch (Exception e) {
       System.out.println("통신 오류!");
       e.printStackTrace();
