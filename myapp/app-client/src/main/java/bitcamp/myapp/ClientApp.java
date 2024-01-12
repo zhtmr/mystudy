@@ -11,7 +11,15 @@ import bitcamp.myapp.handler.HelpHandler;
 import bitcamp.myapp.handler.assignment.*;
 import bitcamp.myapp.handler.board.*;
 import bitcamp.myapp.handler.member.*;
+import bitcamp.myapp.vo.Board;
 import bitcamp.util.Prompt;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
 
 public class ClientApp {
   Prompt prompt = new Prompt(System.in);
@@ -28,6 +36,42 @@ public class ClientApp {
 
   public static void main(String[] args) {
     System.out.println("[과제관리 시스템]");
+
+    try {
+
+      // 1) 서버와 연결한 후 연결 정보 준비
+      // => new Socket(서버주소, 포트번호)
+      //    - 서버 주소: IP 주소, 도메인명
+      //    - 포트 번호: 서버 포트 번호
+      // => 로컬 컴퓨터를 가리키는
+      //    - IP 주소: 127.0.0.1
+      //    - 도메인명: localhost
+      System.out.println("서버 연결 중...");
+      Socket socket = new Socket("localhost", 8888);
+      System.out.println("서버와 연결 되었음!");
+
+      DataInputStream in = new DataInputStream(socket.getInputStream());
+      DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+      System.out.println("입출력 준비 완료!");
+
+      out.writeUTF("board");
+      out.writeUTF("findAll");
+      out.writeUTF("");
+      System.out.println("서버에 데이터 전송완료!");
+
+      String response = in.readUTF();
+      ArrayList<Board> list =
+          (ArrayList<Board>) new GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+              .fromJson(response, TypeToken.getParameterized(ArrayList.class, Board.class));
+      
+      for (Board board : list) {
+        System.out.println(board);
+      }
+
+    } catch (Exception e) {
+      System.out.println("통신 오류!");
+      e.printStackTrace();
+    }
     //    new ClientApp().run();
   }
 
