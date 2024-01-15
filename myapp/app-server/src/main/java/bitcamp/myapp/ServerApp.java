@@ -48,20 +48,30 @@ public class ServerApp {
     }
   }
 
-  void service(Socket socket) throws Exception {
-    System.out.println("클라이언트와 연결됨!");
-    DataInputStream in = new DataInputStream(socket.getInputStream());
-    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+  void service(Socket socket) {
+    try (Socket s = socket;
+        DataInputStream in = new DataInputStream(socket.getInputStream());
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
+      System.out.println("클라이언트와 연결됨!");
 
-    while (true) {
-      System.out.println("---------------------------------------");
-      processRequest(in, out);
+      while (processRequest(in, out) != -1) {
+        System.out.println("---------------------------------------");
+      }
+
+      System.out.println("클라이언트 연결종료!");
+      
+    } catch (Exception e) {
+      System.out.println("클라이언트 연결 오류!");
     }
   }
 
-  void processRequest(DataInputStream in, DataOutputStream out) throws IOException {
+  int processRequest(DataInputStream in, DataOutputStream out) throws IOException {
     System.out.println("[클라이언트 요청]");
     String dataName = in.readUTF();
+    if (dataName.equals("quit")) {
+      out.writeUTF("Good bye!");
+      return -1;
+    }
     String command = in.readUTF();
     String value = in.readUTF();
 
@@ -78,8 +88,8 @@ public class ServerApp {
       Object[] args = getArguments(commandHandler, value);
 
       // 메소드의 리턴 타입을 알아낸다.
-      Class<?> returnType = commandHandler.getReturnType();
-      System.out.printf("리턴: %s\n", returnType.getName());
+      //      Class<?> returnType = commandHandler.getReturnType();
+      //      System.out.printf("리턴: %s\n", returnType.getName());
 
       // 메소드를 호출한다.
       Object returnValue = commandHandler.invoke(dao, args);
@@ -96,6 +106,7 @@ public class ServerApp {
       out.writeUTF("500");
       out.writeUTF(gson.toJson(e.getMessage()));
     }
+    return 0;
   }
 
   Method findMethod(Class<?> clazz, String name) {
