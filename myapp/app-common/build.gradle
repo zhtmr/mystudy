@@ -7,7 +7,7 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    id 'java-library'
 }
 
 repositories {
@@ -16,12 +16,6 @@ repositories {
 }
 
 dependencies {
-    // vo 객체, dao 인터페이스
-    implementation project(':app-common')
-
-    // dao stub 객체
-    implementation project(':app-api')
-
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
 
@@ -39,10 +33,6 @@ java {
     }
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'bitcamp.myapp.ClientApp'
-}
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
@@ -56,6 +46,3 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-run {
-    standardInput = System.in
-}

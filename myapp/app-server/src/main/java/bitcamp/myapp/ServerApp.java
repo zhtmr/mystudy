@@ -34,8 +34,7 @@ public class ServerApp {
 
   void run() {
     System.out.println("[과제관리 서버시스템]");
-    try {
-      ServerSocket serverSocket = new ServerSocket(8888);
+    try (ServerSocket serverSocket = new ServerSocket(8888)) {
       System.out.println("서버 실행!");
 
       while (true) {
@@ -59,7 +58,7 @@ public class ServerApp {
       }
 
       System.out.println("클라이언트 연결종료!");
-      
+
     } catch (Exception e) {
       System.out.println("클라이언트 연결 오류!");
     }
