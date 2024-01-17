@@ -44,7 +44,7 @@ public class ClientApp {
 
   void prepareNetwork() {
     try {
-      DaoProxyGenerator daoProxyGenerator = new DaoProxyGenerator("192.168.0.12", 8888);
+      DaoProxyGenerator daoProxyGenerator = new DaoProxyGenerator("localhost", 8888);
 
       boardDao = daoProxyGenerator.create(BoardDao.class, "board");
       greetingDao = daoProxyGenerator.create(BoardDao.class, "greeting");
