@@ -30,7 +30,7 @@ public class ServerApp {
 
   // non-static nested class(inner class)는 바깥 클래스(enclosing class)의 인스턴스 주소를
   // 자동으로 받는다.  => 바깥 클래스의 인스턴스 멤버를 사용할 수 있다.
-  class RequestResolver extends Thread {
+  class RequestResolver implements Runnable {
     Socket socket;
 
     RequestResolver(Socket socket) {
@@ -58,7 +58,7 @@ public class ServerApp {
       System.out.println("서버 실행!");
 
       while (true) {
-        new RequestResolver(serverSocket.accept()).start();
+        new Thread(new RequestResolver(serverSocket.accept())).start();
       }
 
     } catch (Exception e) {
