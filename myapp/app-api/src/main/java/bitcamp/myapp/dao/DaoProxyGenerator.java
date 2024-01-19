@@ -24,7 +24,7 @@ public class DaoProxyGenerator {
   public <T> T create(Class<T> clazz, String dataName) {
     return (T) Proxy.newProxyInstance(DaoProxyGenerator.class.getClassLoader(),
         new Class<?>[] {clazz}, (proxy, method, args) -> {
-          // 서버에 요청할 때마다 연결한다.
+          // 서버에 요청할 때마다 연결한다. (stateless)
           try (Socket socket = new Socket(host, port);
               DataInputStream in = new DataInputStream(socket.getInputStream());
               DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
