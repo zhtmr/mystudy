@@ -28,25 +28,6 @@ public class ServerApp {
     gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
   }
 
-  // non-static nested class(inner class)는 바깥 클래스(enclosing class)의 인스턴스 주소를
-  // 자동으로 받는다.  => 바깥 클래스의 인스턴스 멤버를 사용할 수 있다.
-  class RequestResolver implements Runnable {
-    Socket socket;
-
-    RequestResolver(Socket socket) {
-      this.socket = socket;
-    }
-
-    @Override
-    public void run() {
-      try {
-        ServerApp.this.service(socket);
-      } catch (Exception e) {
-        System.out.println("클라이언트 요청 처리 중 오류 발생!");
-        e.printStackTrace();
-      }
-    }
-  }
 
   public static void main(String[] args) {
     new ServerApp().run();
@@ -58,7 +39,15 @@ public class ServerApp {
       System.out.println("서버 실행!");
 
       while (true) {
-        new Thread(new RequestResolver(serverSocket.accept())).start();
+        Socket socket = serverSocket.accept();
+        new Thread(() -> {
+          try {
+            service(socket);
+          } catch (Exception e) {
+            System.out.println("클라이언트 요청 처리 중 오류 발생!");
+            e.printStackTrace();
+          }
+        }).start();
       }
 
     } catch (Exception e) {
