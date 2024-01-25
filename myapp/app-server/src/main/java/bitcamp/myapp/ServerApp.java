@@ -42,7 +42,7 @@ public class ServerApp {
 
       while (true) {
         Socket socket = serverSocket.accept();
-        threadPool.get().setWorker(() -> service(socket));
+        threadPool.get().setWorker(() -> service(socket));   // notify() 호출
       }
     } catch (Exception e) {
       System.out.println("통신 오류!");

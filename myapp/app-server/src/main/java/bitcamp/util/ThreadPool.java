@@ -27,7 +27,7 @@ public class ThreadPool implements Pooling<WorkerThread> {
 
   private WorkerThread create() {
     WorkerThread thread = new WorkerThread(this);
-    thread.start();
+    thread.start();  // wait() 호출
     try {
       Thread.sleep(500);
     } catch (Exception e) {
