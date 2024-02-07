@@ -17,7 +17,10 @@ public class Exam0330 {
     }
 
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
         PreparedStatement stmt = con.prepareStatement(
             "select * from x_board where board_id = ?")) {
 

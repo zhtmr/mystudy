@@ -35,7 +35,10 @@ public class Exam0220 {
     }
 
     try (Connection con = DriverManager.getConnection( //
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
 
         // => 게시글을 입력할 때 자동 생성된 PK 값을 받겠다고 설정한다.
         PreparedStatement boardStmt = con.prepareStatement(
@@ -102,7 +105,7 @@ public class Exam0220 {
 
     } catch (Exception e) {
       System.out.println("게시글 입력 중 오류 발생!");
-
+      
       // 만약에 입력 도중에 실패했다면,
       // 현재까지 작업한 결과를 모두 취소하라고 DBMS에게 통보한다.
       // => commit()을 호출하지 않고 커넥션 객체를 닫으면,

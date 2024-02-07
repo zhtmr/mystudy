@@ -34,7 +34,10 @@ public class Exam0110 {
     }
 
     try (Connection con = DriverManager.getConnection( //
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
 
         // 게시글 입력 처리 객체
         PreparedStatement boardStmt = con.prepareStatement(

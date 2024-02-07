@@ -25,7 +25,10 @@ public class Exam0340 {
     }
 
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
         PreparedStatement stmt = con.prepareStatement(
             "update x_board set title = ?, contents = ? where board_id = ?")) {
 

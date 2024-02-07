@@ -25,7 +25,10 @@ public class Exam0120 {
     }
 
     try (Connection con = DriverManager.getConnection( //
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
         Statement stmt = con.createStatement()) {
 
       // SQL 삽입 공격

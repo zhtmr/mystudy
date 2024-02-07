@@ -15,7 +15,10 @@ import java.util.List;
 public class BoardDao {
   public int delete(int no) throws Exception {
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
         Statement stmt = con.createStatement()) {
 
       // 첨부파일 삭제
@@ -28,7 +31,10 @@ public class BoardDao {
 
   public List<Board> findAll() throws Exception {
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from x_board order by board_id desc")) {
 
@@ -48,7 +54,10 @@ public class BoardDao {
 
   public int insert(Board board) throws Exception {
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
         Statement stmt = con.createStatement();) {
 
       String sql = String.format(
@@ -62,7 +71,10 @@ public class BoardDao {
 
   public int update(Board board) throws Exception {
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
         Statement stmt = con.createStatement()) {
 
       String sql = String.format(
@@ -77,7 +89,10 @@ public class BoardDao {
 
   public Board findBy(String no) throws Exception {
     try (Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        "jdbc:mysql://localhost:3306/studydb", // jdbcURL
+        "study", // username
+        "Bitcamp!@#123" // password
+        );
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from x_board where board_id = " + no)) {
 
