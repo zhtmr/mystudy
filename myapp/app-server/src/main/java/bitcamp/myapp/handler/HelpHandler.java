@@ -5,8 +5,6 @@ import bitcamp.util.Prompt;
 
 public class HelpHandler extends AbstractMenuHandler {
 
-  public HelpHandler() {
-  }
 
   @Override
   protected void action(Prompt prompt) {
