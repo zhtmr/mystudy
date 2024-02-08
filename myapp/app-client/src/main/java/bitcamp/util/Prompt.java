@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.util.Scanner;
 
-public class Prompt {
+public class Prompt implements AutoCloseable{
 
   private Scanner keyIn;
 
@@ -13,7 +13,7 @@ public class Prompt {
   }
 
   public String input(String title, Object... args) {
-    System.out.print(String.format(title, args));
+    System.out.printf(title, args);
     return this.keyIn.nextLine();
   }
 
@@ -33,6 +33,7 @@ public class Prompt {
     return Date.valueOf(this.input(title, args));
   }
 
+  @Override
   public void close() {
     this.keyIn.close();
   }

@@ -9,17 +9,16 @@ public class BoardModifyHandler extends AbstractMenuHandler {
 
   private BoardDao boardDao;
 
-  public BoardModifyHandler(BoardDao boardDao, Prompt prompt) {
-    super(prompt);
+  public BoardModifyHandler(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
 
   @Override
-  protected void action() {
-    int no = this.prompt.inputInt("번호? ");
+  protected void action(Prompt prompt) {
+    int no = prompt.inputInt("번호? ");
     Board oldBoard = boardDao.findBy(no);
     if (oldBoard == null) {
-      System.out.println("게시글 번호가 유효하지 않습니다.");
+      prompt.println("게시글 번호가 유효하지 않습니다.");
       return;
     }
 
@@ -31,6 +30,6 @@ public class BoardModifyHandler extends AbstractMenuHandler {
     board.setCreatedDate(oldBoard.getCreatedDate());
 
     boardDao.update(board);
-    System.out.println("게시글을 변경했습니다.");
+    prompt.println("게시글을 변경했습니다.");
   }
 }

@@ -2,10 +2,7 @@ package bitcamp.menu;
 
 import bitcamp.util.Prompt;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 // Composite 패턴에서 '복합 객체(composite object)' 역할을 하는 클래스
 // - 다른 Menu 객체를 포함한다.
@@ -23,16 +20,18 @@ public class MenuGroup extends AbstractMenu {
   }
 
   @Override
-  public void execute(Prompt prompt) {
+  public void execute(Prompt prompt) throws Exception {
     // 메뉴를 실행할 때 메뉴의 제목을 breadcrumb 에 추가한다.
     breadcrumb.push(title);
-    this.printMenu();
+    this.printMenu(prompt);
 
     while (true) {
-      String input = prompt.input("%s> ", this.getMenuPath());
+      prompt.printf("%s>", this.getMenuPath());
+      prompt.end();
+      String input = prompt.input();
 
       if (input.equals("menu")) {
-        this.printMenu();
+        this.printMenu(prompt);
         continue;
       } else if (input.equals("0")) {
         break;
@@ -54,17 +53,18 @@ public class MenuGroup extends AbstractMenu {
     breadcrumb.pop(); // 메뉴 나갈때 메뉴 제목을 제거한다.
   }
 
-  private void printMenu() {
-    System.out.printf("[%s]\n", this.getTitle());
+  private void printMenu(Prompt prompt) {
+
+    prompt.printf("[%s]\n", this.getTitle());
 
     Iterator<Menu> iterator = this.menus.iterator();
     int i = 1;
     while (iterator.hasNext()) {
       Menu menu = iterator.next();
-      System.out.printf("%d. %s\n", i++, menu.getTitle());
+      prompt.printf("%d. %s\n", i++, menu.getTitle());
     }
 
-    System.out.printf("0. %s\n", "이전");
+    prompt.printf("0. %s\n", "이전");
   }
 
   public void add(Menu menu) {

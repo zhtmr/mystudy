@@ -25,7 +25,7 @@ public class MenuItem extends AbstractMenu {
   public void execute(Prompt prompt) {
     if (this.menuHandler != null) {
       try {
-        this.menuHandler.action(this);
+        this.menuHandler.action(this, prompt);
       } catch (Exception e) {
         e.printStackTrace();
         System.out.println("실 행 오 류");
