@@ -24,9 +24,9 @@ public class BoardModifyHandler extends AbstractMenuHandler {
 
     Board board = new Board();
     board.setNo(oldBoard.getNo());
-    board.setTitle(this.prompt.input("제목(%s)? ", oldBoard.getTitle()));
-    board.setContent(this.prompt.input("내용(%s)? ", oldBoard.getContent()));
-    board.setWriter(this.prompt.input("작성자(%s)? ", oldBoard.getWriter()));
+    board.setTitle(prompt.input("제목(%s)? ", oldBoard.getTitle()));
+    board.setContent(prompt.input("내용(%s)? ", oldBoard.getContent()));
+    board.setWriter(prompt.input("작성자(%s)? ", oldBoard.getWriter()));
     board.setCreatedDate(oldBoard.getCreatedDate());
 
     boardDao.update(board);

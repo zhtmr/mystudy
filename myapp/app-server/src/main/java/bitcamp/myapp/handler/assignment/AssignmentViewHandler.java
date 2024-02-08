@@ -10,23 +10,22 @@ public class AssignmentViewHandler extends AbstractMenuHandler {
   private AssignmentDao assignmentDao;
 
 
-  public AssignmentViewHandler(AssignmentDao assignmentDao, Prompt prompt) {
-    super(prompt);
+  public AssignmentViewHandler(AssignmentDao assignmentDao) {
     this.assignmentDao = assignmentDao;
   }
 
   @Override
-  protected void action() {
-    int no = this.prompt.inputInt("번호? ");
+  protected void action(Prompt prompt) {
+    int no = prompt.inputInt("번호? ");
     Assignment assignment = assignmentDao.findBy(no);
     if (assignment == null) {
-      System.out.println("과제 번호가 유효하지 않습니다.");
+      prompt.println("과제 번호가 유효하지 않습니다.");
       return;
     }
-    System.out.printf("과제번호: %s\n", assignment.getNo());
-    System.out.printf("과제명: %s\n", assignment.getTitle());
-    System.out.printf("내용: %s\n", assignment.getContent());
-    System.out.printf("제출 마감일: %s\n", assignment.getDeadline());
+    prompt.printf("과제번호: %s\n", assignment.getNo());
+    prompt.printf("과제명: %s\n", assignment.getTitle());
+    prompt.printf("내용: %s\n", assignment.getContent());
+    prompt.printf("제출 마감일: %s\n", assignment.getDeadline());
 
   }
 

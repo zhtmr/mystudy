@@ -70,7 +70,7 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public Board findBy(int no) {
     try (PreparedStatement pstmt = con.prepareStatement("select * from boards where board_no =?")) {
-      pstmt.setInt(1, this.category);
+      pstmt.setInt(1, no);
       try (ResultSet rs = pstmt.executeQuery()) {
         if (rs.next()) {
           Board board = new Board();
@@ -95,7 +95,7 @@ public class BoardDaoImpl implements BoardDao {
       pstmt.setString(1, board.getTitle());
       pstmt.setString(2, board.getContent());
       pstmt.setString(3, board.getWriter());
-      pstmt.setInt(4, this.category);
+      pstmt.setInt(4, board.getNo());
 
       return pstmt.executeUpdate();
 
