@@ -13,6 +13,7 @@ public class ClientApp {
   public static void main(String[] args) {
     new ClientApp()
         .server("localhost")
+//        .server("192.168.0.49")
         .port(8888)
         .run();
   }

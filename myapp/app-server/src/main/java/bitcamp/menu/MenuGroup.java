@@ -10,23 +10,23 @@ public class MenuGroup extends AbstractMenu {
 
   private List<Menu> menus = new LinkedList<>();
 
-  private MenuGroup(String title, Stack<String> breadcrumb) {
-    super(title, breadcrumb);
+  private MenuGroup(String title) {
+    super(title);
   }
 
   // 팩토리 메서드
   public static MenuGroup getInstance(String title) {
-    return new MenuGroup(title, new Stack<>());
+    return new MenuGroup(title);
   }
 
   @Override
   public void execute(Prompt prompt) throws Exception {
     // 메뉴를 실행할 때 메뉴의 제목을 breadcrumb 에 추가한다.
-    breadcrumb.push(title);
+    prompt.pushPath(title);
     this.printMenu(prompt);
 
     while (true) {
-      String input = prompt.input("%s>", this.getMenuPath());
+      String input = prompt.input("%s>", prompt.getFullPath());
 
       if (input.equals("menu")) {
         this.printMenu(prompt);
@@ -48,7 +48,7 @@ public class MenuGroup extends AbstractMenu {
       }
     }
 
-    breadcrumb.pop(); // 메뉴 나갈때 메뉴 제목을 제거한다.
+    prompt.popPath(); // 메뉴 나갈때 메뉴 제목을 제거한다.
   }
 
   private void printMenu(Prompt prompt) {
@@ -70,13 +70,13 @@ public class MenuGroup extends AbstractMenu {
   }
 
   public MenuItem addItem(String title, MenuHandler handler) {
-    MenuItem menuItem = new MenuItem(title, handler, breadcrumb);
+    MenuItem menuItem = new MenuItem(title, handler);
     add(menuItem);
     return menuItem;
   }
 
   public MenuGroup addGroup(String title) {
-    MenuGroup menuGroup = new MenuGroup(title, breadcrumb);
+    MenuGroup menuGroup = new MenuGroup(title);
     add(menuGroup);
     return menuGroup;
   }
