@@ -3,7 +3,7 @@ package bitcamp.myapp.dao.mysql;
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.vo.Assignment;
-import bitcamp.util.ThreadConnection;
+import bitcamp.util.DBConnectionPool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,17 +11,17 @@ import java.util.List;
 
 public class AssignmentDaoImpl implements AssignmentDao {
 
-  ThreadConnection threadConnection;
+  DBConnectionPool connectionPool;
 
-  public AssignmentDaoImpl(ThreadConnection threadConnection) {
-    this.threadConnection = threadConnection;
+  public AssignmentDaoImpl(DBConnectionPool connectionPool) {
+    this.connectionPool = connectionPool;
   }
 
   @Override
   public List<Assignment> findAll() {
     Connection con = null;
     try {
-      con = threadConnection.get();
+      con = connectionPool.getConnection();
       try (PreparedStatement pstmt = con.prepareStatement(
           "select assignment_no, title, deadline from assignments order by assignment_no desc");
           ResultSet rs = pstmt.executeQuery()) {
@@ -46,7 +46,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
   public Assignment findBy(int no) {
     Connection con = null;
     try {
-      con = threadConnection.get();
+      con = connectionPool.getConnection();
       try (PreparedStatement pstmt = con.prepareStatement(
           "select * from assignments where assignment_no=?")) {
         pstmt.setInt(1, no);
@@ -71,7 +71,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
   public void add(Assignment assignment) {
     Connection con = null;
     try {
-      con = threadConnection.get();
+      con = connectionPool.getConnection();
       try (PreparedStatement pstmt = con.prepareStatement(
           "insert into assignments(title, content, deadline) values (?,?,?)")) {
         pstmt.setString(1, assignment.getTitle());
@@ -89,7 +89,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
   public int delete(int no) {
     Connection con = null;
     try {
-      con = threadConnection.get();
+      con = connectionPool.getConnection();
       try (PreparedStatement pstmt = con.prepareStatement(
           "delete from assignments where assignment_no=?")) {
         pstmt.setInt(1, no);
@@ -104,7 +104,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
   public int update(Assignment assignment) {
     Connection con = null;
     try {
-      con = threadConnection.get();
+      con = connectionPool.getConnection();
       try (PreparedStatement pstmt = con.prepareStatement(
           "update assignments set title=?, content=?, deadline=? where assignment_no=?")) {
         pstmt.setString(1, assignment.getTitle());
