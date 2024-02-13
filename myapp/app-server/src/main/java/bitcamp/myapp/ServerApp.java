@@ -18,8 +18,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -87,14 +85,14 @@ public class ServerApp {
       // JVM 이 JDBC 드라이버 파일(.jar)에 설정된대로 자동으로 처리한다.
       //      Driver driver = new com.mysql.jdbc.Driver();
       //      DriverManager.registerDriver(driver);
-      Connection con = DriverManager.getConnection(
-          //              "jdbc:log4jbdc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-          "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123");
+//      Connection con = DriverManager.getConnection(
+//          //              "jdbc:log4jbdc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
+//          "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123");
 
-      boardDao = new BoardDaoImpl(con, 1);
-      greetingDao = new BoardDaoImpl(con, 2);
-      assignmentDao = new AssignmentDaoImpl(con);
-      memberDao = new MemberDaoImpl(con);
+      boardDao = new BoardDaoImpl(1);
+      greetingDao = new BoardDaoImpl(2);
+      assignmentDao = new AssignmentDaoImpl();
+      memberDao = new MemberDaoImpl();
 
     } catch (Exception e) {
       System.out.println("통신 오류!");
