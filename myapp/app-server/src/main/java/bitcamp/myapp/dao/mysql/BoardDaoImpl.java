@@ -3,6 +3,7 @@ package bitcamp.myapp.dao.mysql;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.vo.Board;
+import bitcamp.util.ThreadConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,8 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 public class BoardDaoImpl implements BoardDao {
   int category;
+  ThreadConnection threadConnection;
 
-  public BoardDaoImpl(int category) {
+  public BoardDaoImpl(ThreadConnection threadConnection, int category) {
+    this.threadConnection = threadConnection;
     this.category = category;
   }
 
@@ -20,8 +23,7 @@ public class BoardDaoImpl implements BoardDao {
   public void add(Board board) {
     Connection con = null;
     try {
-      con = DriverManager.getConnection("jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb",
-          "study", "Bitcamp!@#123");
+      con = threadConnection.get();
       con.setAutoCommit(false);
       try (PreparedStatement pstmt = con.prepareStatement(
           "insert into boards(title, content, writer, category) values (?, ?, ?, ?)")) {
@@ -43,16 +45,6 @@ public class BoardDaoImpl implements BoardDao {
       } catch (SQLException ex) {
       }
       throw new DaoException("데이터 입력 오류", e);
-    } finally {
-      try {
-        con.setAutoCommit(true);
-      } catch (SQLException e) {
-      }
-      try {
-        con.close();
-      } catch (Exception e) {
-
-      }
     }
   }
 
@@ -60,19 +52,13 @@ public class BoardDaoImpl implements BoardDao {
   public int delete(int no) {
     Connection con = null;
     try {
-      con = DriverManager.getConnection("jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb",
-          "study", "Bitcamp!@#123");
+      con = threadConnection.get();
       try (PreparedStatement pstmt = con.prepareStatement("delete from boards where board_no=?")) {
         pstmt.setInt(1, no);
         return pstmt.executeUpdate();
       }
     } catch (Exception e) {
       throw new DaoException("데이터 삭제 오류", e);
-    } finally {
-      try {
-        con.close();
-      } catch (Exception e) {
-      }
     }
   }
 
@@ -81,8 +67,7 @@ public class BoardDaoImpl implements BoardDao {
   public List<Board> findAll() {
     Connection con = null;
     try {
-      con = DriverManager.getConnection("jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb",
-          "study", "Bitcamp!@#123");
+      con = threadConnection.get();
       try (PreparedStatement pstmt = con.prepareStatement(
           "select * from boards where category=?")) {
         pstmt.setInt(1, this.category);
@@ -103,11 +88,6 @@ public class BoardDaoImpl implements BoardDao {
       }
     } catch (Exception e) {
       throw new DaoException("데이터 가져오기 오류", e);
-    } finally {
-      try {
-        con.close();
-      } catch (Exception e) {
-      }
     }
   }
 
@@ -115,8 +95,7 @@ public class BoardDaoImpl implements BoardDao {
   public Board findBy(int no) {
     Connection con = null;
     try {
-      con = DriverManager.getConnection("jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb",
-          "study", "Bitcamp!@#123");
+      con = threadConnection.get();
       try (PreparedStatement pstmt = con.prepareStatement(
           "select * from boards where board_no =?")) {
         pstmt.setInt(1, no);
@@ -136,11 +115,6 @@ public class BoardDaoImpl implements BoardDao {
       }
     } catch (Exception e) {
       throw new DaoException("데이터 가져오기 오류", e);
-    } finally {
-      try {
-        con.close();
-      } catch (Exception e) {
-      }
     }
   }
 
@@ -148,8 +122,7 @@ public class BoardDaoImpl implements BoardDao {
   public int update(Board board) {
     Connection con = null;
     try {
-      con = DriverManager.getConnection("jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb",
-          "study", "Bitcamp!@#123");
+      con = threadConnection.get();
       try (PreparedStatement pstmt = con.prepareStatement(
           "update boards set title=?, content=?, writer=? where board_no=?")) {
         pstmt.setString(1, board.getTitle());
@@ -161,11 +134,6 @@ public class BoardDaoImpl implements BoardDao {
       }
     } catch (Exception e) {
       throw new DaoException("데이터 변경 오류", e);
-    } finally {
-      try {
-        con.close();
-      } catch (Exception e) {
-      }
     }
   }
 }
