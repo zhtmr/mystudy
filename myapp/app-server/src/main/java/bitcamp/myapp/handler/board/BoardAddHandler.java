@@ -12,10 +12,10 @@ import java.util.concurrent.TimeUnit;
 public class BoardAddHandler extends AbstractMenuHandler {
 
   private BoardDao boardDao;
-  DBConnectionPool threadConnection;
+  DBConnectionPool connectionPool;
 
-  public BoardAddHandler(DBConnectionPool threadConnection, BoardDao boardDao) {
-    this.threadConnection = threadConnection;
+  public BoardAddHandler(DBConnectionPool connectionPool, BoardDao boardDao) {
+    this.connectionPool = connectionPool;
     this.boardDao = boardDao;
   }
 
@@ -29,7 +29,7 @@ public class BoardAddHandler extends AbstractMenuHandler {
     Connection con = null;
 
     try {
-      con = threadConnection.getConnection();
+      con = connectionPool.getConnection();
       con.setAutoCommit(false);
 
       boardDao.add(board);
@@ -41,6 +41,12 @@ public class BoardAddHandler extends AbstractMenuHandler {
       con.commit();
     } catch (Exception e) {
       try {con.rollback();} catch (Exception e2) {}
+    } finally {
+      try {
+        con.setAutoCommit(true);
+      } catch (Exception e) {
+      }
+      connectionPool.returnConnection(con);
     }
   }
 }
