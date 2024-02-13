@@ -5,10 +5,11 @@ import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.vo.Board;
 import bitcamp.util.ThreadConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class BoardDaoImpl implements BoardDao {
   int category;
@@ -24,7 +25,6 @@ public class BoardDaoImpl implements BoardDao {
     Connection con = null;
     try {
       con = threadConnection.get();
-      con.setAutoCommit(false);
       try (PreparedStatement pstmt = con.prepareStatement(
           "insert into boards(title, content, writer, category) values (?, ?, ?, ?)")) {
         pstmt.setString(1, board.getTitle());
@@ -33,17 +33,8 @@ public class BoardDaoImpl implements BoardDao {
         pstmt.setInt(4, this.category);
 
         pstmt.executeUpdate();
-        pstmt.executeUpdate();
-
-        TimeUnit.SECONDS.sleep(10);
-        pstmt.executeUpdate();
       }
-      con.commit();
     } catch (Exception e) {
-      try {
-        con.rollback();
-      } catch (SQLException ex) {
-      }
       throw new DaoException("데이터 입력 오류", e);
     }
   }

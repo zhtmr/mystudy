@@ -72,7 +72,6 @@ public class AssignmentDaoImpl implements AssignmentDao {
     Connection con = null;
     try {
       con = threadConnection.get();
-      con.setAutoCommit(false);
       try (PreparedStatement pstmt = con.prepareStatement(
           "insert into assignments(title, content, deadline) values (?,?,?)")) {
         pstmt.setString(1, assignment.getTitle());
@@ -80,9 +79,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
         pstmt.setDate(3, assignment.getDeadline());
 
         pstmt.executeUpdate();
-        pstmt.executeUpdate();
       }
-      con.rollback();
     } catch (Exception e) {
       throw new DaoException("데이터 입력 오류", e);
     }

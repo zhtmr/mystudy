@@ -4,24 +4,40 @@ import bitcamp.menu.AbstractMenuHandler;
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.util.Prompt;
+import bitcamp.util.ThreadConnection;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class AssignmentAddHandler extends AbstractMenuHandler {
 
   private AssignmentDao assignmentDao;
+  private ThreadConnection threadConnection;
 
 
-  public AssignmentAddHandler(AssignmentDao assignmentDao) {
+  public AssignmentAddHandler(ThreadConnection threadConnection, AssignmentDao assignmentDao) {
+    this.threadConnection = threadConnection;
     this.assignmentDao = assignmentDao;
   }
 
   @Override
-  protected void action(Prompt prompt) { // MenuHandler 인터페이스 대신 AbstractMenuHandler 클래스에 선언된 action() 추상 메서드 구현
-    // --> super.action() 을 여기서 직접 호출할 필요가 없어진다.
-    Assignment assignment = new Assignment();
-    assignment.setTitle(prompt.input("과제명? "));
-    assignment.setContent(prompt.input("내용? "));
-    assignment.setDeadline(prompt.inputDate("제출 마감일?(ex: 2023-12-25) "));
+  protected void action(Prompt prompt) {
+    try {
+      Assignment assignment = new Assignment();
+      assignment.setTitle(prompt.input("과제명? "));
+      assignment.setContent(prompt.input("내용? "));
+      assignment.setDeadline(prompt.inputDate("제출 마감일?(ex: 2023-12-25) "));
 
-    this.assignmentDao.add(assignment);
+      Connection con = threadConnection.get();
+      con.setAutoCommit(false);
+
+      assignmentDao.add(assignment);
+      assignmentDao.add(assignment);
+
+      con.rollback();
+    } catch (SQLException e) {
+      prompt.println("과제 입력 중 오류 발생!");
+      prompt.println("다시 입력해주세요");
+    }
   }
 }
