@@ -41,6 +41,7 @@ public class BoardModifyHandler extends AbstractMenuHandler {
       board.setTitle(prompt.input("제목(%s)? ", oldBoard.getTitle()));
       board.setContent(prompt.input("내용(%s)? ", oldBoard.getContent()));
       board.setWriter(prompt.input("작성자(%s)? ", oldBoard.getWriter()));
+      board.setCreatedDate(oldBoard.getCreatedDate());
 
       ArrayList<AttachedFile> list = new ArrayList<>();
       for (AttachedFile file : files) {
@@ -49,8 +50,6 @@ public class BoardModifyHandler extends AbstractMenuHandler {
         file.setNo(file.getNo());
         list.add(file);
       }
-
-      board.setCreatedDate(oldBoard.getCreatedDate());
 
       boardDao.update(board);
       fileDao.update(list);
