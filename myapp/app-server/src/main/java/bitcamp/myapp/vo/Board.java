@@ -2,6 +2,7 @@ package bitcamp.myapp.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Board implements Serializable {
 
@@ -12,16 +13,15 @@ public class Board implements Serializable {
   private String content;
   private String writer;
   private Date createdDate;
-  
-  @Override
-  public String toString() {
-    return "Board{" +
-        "no=" + no +
-        ", title='" + title + '\'' +
-        ", content='" + content + '\'' +
-        ", writer='" + writer + '\'' +
-        ", createdDate=" + createdDate +
-        '}';
+  private List<AttachedFile> files;
+  private int fileCount;
+
+  public int getFileCount() {
+    return fileCount;
+  }
+
+  public void setFileCount(int fileCount) {
+    this.fileCount = fileCount;
   }
 
   public int getNo() {
@@ -62,5 +62,18 @@ public class Board implements Serializable {
 
   public void setCreatedDate(Date createdDate) {
     this.createdDate = createdDate;
+  }
+
+  public List<AttachedFile> getFiles() {
+    return files;
+  }
+
+  public void setFiles(List<AttachedFile> files) {
+    this.files = files;
+  }
+
+  @Override
+  public String toString() {
+    return "Board{" + "no=" + no + ", title='" + title + '\'' + ", content='" + content + '\'' + ", writer='" + writer + '\'' + ", createdDate=" + createdDate + ", files=" + files + ", fileCount=" + fileCount + '}';
   }
 }

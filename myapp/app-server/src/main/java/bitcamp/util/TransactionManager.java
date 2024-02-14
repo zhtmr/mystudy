@@ -23,6 +23,7 @@ public class TransactionManager {
 
   public void rollback() throws SQLException {
     connectionPool.getConnection().rollback();
+    System.out.printf("[%s] 트랜잭션 롤백!!\n", Thread.currentThread().getName());
     complete();
   }
 
