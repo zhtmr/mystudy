@@ -45,10 +45,7 @@ public class BoardModifyHandler extends AbstractMenuHandler {
 
       ArrayList<AttachedFile> list = new ArrayList<>();
       for (AttachedFile file : files) {
-        file.setBoardNo(no);
-        file.setFilePath(prompt.input("파일변경(%s)? ", file.getFilePath()));
-        file.setNo(file.getNo());
-        list.add(file);
+        list.add(file.filePath(prompt.input("파일변경(%s)? ", file.getFilePath())));
       }
 
       boardDao.update(board);
