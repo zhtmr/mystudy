@@ -22,18 +22,15 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public void add(Board board) {
-    Connection con = null;
-    try {
-      con = threadConnection.getConnection();
-      try (PreparedStatement pstmt = con.prepareStatement(
-          "insert into boards(title, content, writer, category) values (?, ?, ?, ?)")) {
-        pstmt.setString(1, board.getTitle());
-        pstmt.setString(2, board.getContent());
-        pstmt.setString(3, board.getWriter());
-        pstmt.setInt(4, this.category);
+    try (Connection con = threadConnection.getConnection();
+        PreparedStatement pstmt = con.prepareStatement(
+            "insert into boards(title, content, writer, category) values (?, ?, ?, ?)")) {
+      pstmt.setString(1, board.getTitle());
+      pstmt.setString(2, board.getContent());
+      pstmt.setString(3, board.getWriter());
+      pstmt.setInt(4, this.category);
 
-        pstmt.executeUpdate();
-      }
+      pstmt.executeUpdate();
     } catch (Exception e) {
       throw new DaoException("데이터 입력 오류", e);
     }
@@ -41,13 +38,10 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public int delete(int no) {
-    Connection con = null;
-    try {
-      con = threadConnection.getConnection();
-      try (PreparedStatement pstmt = con.prepareStatement("delete from boards where board_no=?")) {
-        pstmt.setInt(1, no);
-        return pstmt.executeUpdate();
-      }
+    try (Connection con = threadConnection.getConnection();
+        PreparedStatement pstmt = con.prepareStatement("delete from boards where board_no=?")) {
+      pstmt.setInt(1, no);
+      return pstmt.executeUpdate();
     } catch (Exception e) {
       throw new DaoException("데이터 삭제 오류", e);
     }
@@ -56,26 +50,22 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public List<Board> findAll() {
-    Connection con = null;
-    try {
-      con = threadConnection.getConnection();
-      try (PreparedStatement pstmt = con.prepareStatement(
-          "select * from boards where category=?")) {
-        pstmt.setInt(1, this.category);
-        try (ResultSet rs = pstmt.executeQuery()) {
-          ArrayList<Board> list = new ArrayList<>();
+    try (Connection con = threadConnection.getConnection();
+        PreparedStatement pstmt = con.prepareStatement("select * from boards where category=?")) {
+      pstmt.setInt(1, this.category);
+      try (ResultSet rs = pstmt.executeQuery()) {
+        ArrayList<Board> list = new ArrayList<>();
 
-          while (rs.next()) {
-            Board board = new Board();
-            board.setNo(rs.getInt("board_no"));
-            board.setTitle(rs.getString("title"));
-            board.setContent(rs.getString("content"));
-            board.setWriter(rs.getString("writer"));
-            board.setCreatedDate(rs.getDate("created_date"));
-            list.add(board);
-          }
-          return list;
+        while (rs.next()) {
+          Board board = new Board();
+          board.setNo(rs.getInt("board_no"));
+          board.setTitle(rs.getString("title"));
+          board.setContent(rs.getString("content"));
+          board.setWriter(rs.getString("writer"));
+          board.setCreatedDate(rs.getDate("created_date"));
+          list.add(board);
         }
+        return list;
       }
     } catch (Exception e) {
       throw new DaoException("데이터 가져오기 오류", e);
@@ -84,26 +74,22 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public Board findBy(int no) {
-    Connection con = null;
-    try {
-      con = threadConnection.getConnection();
-      try (PreparedStatement pstmt = con.prepareStatement(
-          "select * from boards where board_no =?")) {
-        pstmt.setInt(1, no);
-        try (ResultSet rs = pstmt.executeQuery()) {
-          if (rs.next()) {
-            Board board = new Board();
-            board.setNo(rs.getInt("board_no"));
-            board.setTitle(rs.getString("title"));
-            board.setContent(rs.getString("content"));
-            board.setWriter(rs.getString("writer"));
-            board.setCreatedDate(rs.getDate("created_date"));
+    try (Connection con = threadConnection.getConnection();
+        PreparedStatement pstmt = con.prepareStatement("select * from boards where board_no =?")) {
+      pstmt.setInt(1, no);
+      try (ResultSet rs = pstmt.executeQuery()) {
+        if (rs.next()) {
+          Board board = new Board();
+          board.setNo(rs.getInt("board_no"));
+          board.setTitle(rs.getString("title"));
+          board.setContent(rs.getString("content"));
+          board.setWriter(rs.getString("writer"));
+          board.setCreatedDate(rs.getDate("created_date"));
 
-            return board;
-          }
+          return board;
         }
-        return null;
       }
+      return null;
     } catch (Exception e) {
       throw new DaoException("데이터 가져오기 오류", e);
     }
@@ -111,18 +97,15 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public int update(Board board) {
-    Connection con = null;
-    try {
-      con = threadConnection.getConnection();
-      try (PreparedStatement pstmt = con.prepareStatement(
-          "update boards set title=?, content=?, writer=? where board_no=?")) {
-        pstmt.setString(1, board.getTitle());
-        pstmt.setString(2, board.getContent());
-        pstmt.setString(3, board.getWriter());
-        pstmt.setInt(4, board.getNo());
+    try (Connection con = threadConnection.getConnection();
+        PreparedStatement pstmt = con.prepareStatement(
+            "update boards set title=?, content=?, writer=? where board_no=?")) {
+      pstmt.setString(1, board.getTitle());
+      pstmt.setString(2, board.getContent());
+      pstmt.setString(3, board.getWriter());
+      pstmt.setInt(4, board.getNo());
 
-        return pstmt.executeUpdate();
-      }
+      return pstmt.executeUpdate();
     } catch (Exception e) {
       throw new DaoException("데이터 변경 오류", e);
     }

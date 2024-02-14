@@ -3,26 +3,19 @@ package bitcamp.myapp.handler.board;
 import bitcamp.menu.AbstractMenuHandler;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.Board;
-import bitcamp.util.DBConnectionPool;
 import bitcamp.util.Prompt;
-
-import java.sql.Connection;
 
 public class BoardModifyHandler extends AbstractMenuHandler {
 
   private BoardDao boardDao;
-  private DBConnectionPool connectionPool;
 
-  public BoardModifyHandler(DBConnectionPool connectionPool, BoardDao boardDao) {
-    this.connectionPool = connectionPool;
+  public BoardModifyHandler(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
 
   @Override
   protected void action(Prompt prompt) {
-    Connection con = null;
     try {
-      con = connectionPool.getConnection();
       int no = prompt.inputInt("번호? ");
       Board oldBoard = boardDao.findBy(no);
       if (oldBoard == null) {
@@ -41,8 +34,6 @@ public class BoardModifyHandler extends AbstractMenuHandler {
       prompt.println("게시글을 변경했습니다.");
     } catch (Exception e) {
       prompt.println("게시글 변경 오류!");
-    } finally {
-      connectionPool.returnConnection(con);
     }
   }
 }
