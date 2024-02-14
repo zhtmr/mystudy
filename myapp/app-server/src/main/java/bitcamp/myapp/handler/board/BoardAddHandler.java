@@ -4,18 +4,17 @@ import bitcamp.menu.AbstractMenuHandler;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.Board;
 import bitcamp.util.Prompt;
-import bitcamp.util.DBConnectionPool;
+import bitcamp.util.TransactionManager;
 
-import java.sql.Connection;
 import java.util.concurrent.TimeUnit;
 
 public class BoardAddHandler extends AbstractMenuHandler {
 
   private BoardDao boardDao;
-  DBConnectionPool connectionPool;
+  TransactionManager txManager;
 
-  public BoardAddHandler(DBConnectionPool connectionPool, BoardDao boardDao) {
-    this.connectionPool = connectionPool;
+  public BoardAddHandler(TransactionManager txManager, BoardDao boardDao) {
+    this.txManager = txManager;
     this.boardDao = boardDao;
   }
 
@@ -26,11 +25,8 @@ public class BoardAddHandler extends AbstractMenuHandler {
     board.setContent(prompt.input("내용? "));
     board.setWriter(prompt.input("작성자? "));
 
-    Connection con = null;
-
     try {
-      con = connectionPool.getConnection();
-      con.setAutoCommit(false);
+      txManager.begin();
 
       boardDao.add(board);
       boardDao.add(board);
@@ -38,15 +34,9 @@ public class BoardAddHandler extends AbstractMenuHandler {
       TimeUnit.SECONDS.sleep(10);
       boardDao.add(board);
 
-      con.commit();
+      txManager.commit();
     } catch (Exception e) {
-      try {con.rollback();} catch (Exception e2) {}
-    } finally {
-      try {
-        con.setAutoCommit(true);
-      } catch (Exception e) {
-      }
-      connectionPool.returnConnection(con);
+      try {txManager.rollback();} catch (Exception e2) {}
     }
   }
 }
