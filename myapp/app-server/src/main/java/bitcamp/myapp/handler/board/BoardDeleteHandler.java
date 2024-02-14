@@ -31,9 +31,9 @@ public class BoardDeleteHandler extends AbstractMenuHandler {
           prompt.println("게시글 번호가 유효하지 않습니다.");
         } else {
           prompt.println("삭제했습니다.");
+          txManager.commit();
         }
       }
-      txManager.commit();
     } catch (Exception e) {
       try {
         txManager.rollback();
