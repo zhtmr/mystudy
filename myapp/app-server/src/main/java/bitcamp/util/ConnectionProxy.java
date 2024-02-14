@@ -14,6 +14,13 @@ public class ConnectionProxy implements Connection {
     this.original = original;
   }
 
+  public void realClose() {
+    try {
+      original.close();
+    } catch (SQLException e) {
+    }
+  }
+
   @Override
   public void close() throws SQLException {
     if (original.getAutoCommit()) {
