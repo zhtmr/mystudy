@@ -48,8 +48,9 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public int delete(int no) {
     try (Connection con = threadConnection.getConnection();
-        PreparedStatement pstmt = con.prepareStatement("delete from boards where board_no=?")) {
+        PreparedStatement pstmt = con.prepareStatement("delete from boards where board_no=? and category=?")) {
       pstmt.setInt(1, no);
+      pstmt.setInt(2, category);
       return pstmt.executeUpdate();
     } catch (Exception e) {
       throw new DaoException("데이터 삭제 오류", e);

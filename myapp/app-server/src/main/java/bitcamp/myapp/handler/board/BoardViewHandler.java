@@ -34,10 +34,10 @@ public class BoardViewHandler extends AbstractMenuHandler {
       prompt.printf("내용: %s\n", board.getContent());
       prompt.printf("작성자: %s\n", board.getWriter());
       prompt.printf("작성일: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS\n", board.getCreatedDate());
-      prompt.printf("첨부파일:");
+      prompt.printf("첨부파일:\n");
 
       for (AttachedFile file : files) {
-        prompt.printf("  %s\n", file.getFilePath());
+        prompt.printf("  - %s\n", file.getFilePath());
       }
 
     } catch (Exception e) {
