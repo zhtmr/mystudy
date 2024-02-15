@@ -8,7 +8,6 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id 'eclipse'
 }
 
 repositories {
@@ -17,6 +16,12 @@ repositories {
 }
 
 dependencies {
+    // vo 객체, dao 인터페이스
+//    implementation project(':app-common')
+
+    // dao stub 객체
+//    implementation project(':app-api')
+
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
 
@@ -24,7 +29,14 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:32.1.1-jre'
-    implementation 'com.google.code.gson:gson:2.10.1'
+//    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Mysql
+    implementation 'com.mysql:mysql-connector-j:8.3.0'
+
+    // https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -49,17 +61,6 @@ tasks.withType(JavaCompile).configureEach {
     // 프로젝트의 소스•파일• 인코딩을 gradle 에게 알려준다.
 // $javac -encoding UTF-8.•
     options.encoding = 'UTF-8'
-}
-
-eclipse {
-    project {
-        name = "myapp"
-    }
-    jdt {
-        sourceCompatibility = 21 // 컴파일 버전
-        targetCompatibility = 21 //jvm 최소 버전 (생략가능)
-        javaRuntimeName = "JavaSE-21"
-    }
 }
 
 run {

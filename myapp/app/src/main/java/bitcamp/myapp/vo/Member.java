@@ -1,12 +1,10 @@
 package bitcamp.myapp.vo;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Member implements Serializable/*, CsvString */ {
+public class Member implements Serializable {
 
-  @Serial
   private static final long serialVersionUID = 100L;
 
   private int no;
@@ -15,6 +13,16 @@ public class Member implements Serializable/*, CsvString */ {
   private String password;
   private Date createdDate;
 
+  @Override
+  public String toString() {
+    return "Member{" +
+        "no=" + no +
+        ", email='" + email + '\'' +
+        ", name='" + name + '\'' +
+        ", password='" + password + '\'' +
+        ", createdDate=" + createdDate +
+        '}';
+  }
 
   public int getNo() {
     return no;
@@ -22,11 +30,6 @@ public class Member implements Serializable/*, CsvString */ {
 
   public void setNo(int no) {
     this.no = no;
-  }
-
-  @Override
-  public String toString() {
-    return "Member{" + "no=" + no + ", email='" + email + '\'' + ", name='" + name + '\'' + ", password='" + password + '\'' + ", createdDate=" + createdDate + '}';
   }
 
   public String getEmail() {
@@ -59,6 +62,16 @@ public class Member implements Serializable/*, CsvString */ {
 
   public void setCreatedDate(Date createdDate) {
     this.createdDate = createdDate;
+  }
+
+  public Member name(String name) {
+    this.name = name;
+    return this;
+  }
+
+  public Member no(int no) {
+    this.no = no;
+    return this;
   }
 
 }

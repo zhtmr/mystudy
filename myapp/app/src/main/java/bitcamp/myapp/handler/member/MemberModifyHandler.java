@@ -9,27 +9,30 @@ public class MemberModifyHandler extends AbstractMenuHandler {
 
   private MemberDao memberDao;
 
-  public MemberModifyHandler(MemberDao memberDao, Prompt prompt) {
-    super(prompt);
+  public MemberModifyHandler(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 
   @Override
-  protected void action() {
-    int index = this.prompt.inputInt("번호? ");
-    Member old = this.memberDao.findBy(index);
-    if (old == null) {
-      System.out.println("회원 번호가 유효하지 않습니다");
-      return;
+  protected void action(Prompt prompt) {
+    try {
+      int index = prompt.inputInt("번호? ");
+      Member old = this.memberDao.findBy(index);
+      if (old == null) {
+        prompt.println("회원 번호가 유효하지 않습니다");
+        return;
+      }
+
+      Member member = new Member();
+      member.setNo(old.getNo());
+      member.setEmail(prompt.input("이메일(%s)? ", old.getEmail()));
+      member.setName(prompt.input("이름(%s)? ", old.getName()));
+      member.setPassword(prompt.input("새 암호? "));
+      member.setCreatedDate(old.getCreatedDate());
+
+      this.memberDao.update(member);
+    } catch (Exception e) {
+      prompt.println("멤버 수정 오류!");
     }
-
-    Member member = new Member();
-    member.setNo(old.getNo());
-    member.setEmail(this.prompt.input("이메일(%s)? ", old.getEmail()));
-    member.setName(this.prompt.input("이름(%s)? ", old.getName()));
-    member.setPassword(this.prompt.input("새 암호? "));
-    member.setCreatedDate(old.getCreatedDate());
-
-    this.memberDao.update(member);
   }
 }

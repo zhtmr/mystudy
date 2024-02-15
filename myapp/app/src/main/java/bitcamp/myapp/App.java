@@ -2,78 +2,160 @@ package bitcamp.myapp;
 
 import bitcamp.menu.MenuGroup;
 import bitcamp.myapp.dao.AssignmentDao;
+import bitcamp.myapp.dao.AttachedFileDao;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.dao.MemberDao;
-import bitcamp.myapp.dao.json.AssignmentDaoImpl;
-import bitcamp.myapp.dao.json.BoardDaoImpl;
-import bitcamp.myapp.dao.json.MemberDaoImpl;
+import bitcamp.myapp.dao.mysql.AssignmentDaoImpl;
+import bitcamp.myapp.dao.mysql.AttachedFileDaoImpl;
+import bitcamp.myapp.dao.mysql.BoardDaoImpl;
+import bitcamp.myapp.dao.mysql.MemberDaoImpl;
+import bitcamp.myapp.handler.AboutHandler;
 import bitcamp.myapp.handler.HelpHandler;
 import bitcamp.myapp.handler.assignment.*;
+import bitcamp.myapp.handler.auth.LoginHandler;
+import bitcamp.myapp.handler.auth.LogoutHandler;
 import bitcamp.myapp.handler.board.*;
 import bitcamp.myapp.handler.member.*;
+import bitcamp.util.DBConnectionPool;
 import bitcamp.util.Prompt;
+import bitcamp.util.TransactionManager;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.NoSuchElementException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class App {
-  Prompt prompt = new Prompt(System.in);
-  MemberDao memberDao = new MemberDaoImpl("member.json");
-  AssignmentDao assignmentDao = new AssignmentDaoImpl("assignment.json");
-  BoardDao boardDao = new BoardDaoImpl("board.json");
-  BoardDao greetingDao = new BoardDaoImpl("greeting.json");
+  ExecutorService executorService = Executors.newCachedThreadPool();
+
+  TransactionManager txManager;
+  DBConnectionPool connectionPool;
+  BoardDao boardDao;
+  BoardDao greetingDao;
+  AssignmentDao assignmentDao;
+  MemberDao memberDao;
+  AttachedFileDao fileDao;
   MenuGroup mainMenu;
 
   App() {
-
+    prepareDatabase();
     prepareMenu();
   }
 
   public static void main(String[] args) {
-    new App().run();
+    System.out.println("[과제관리 시스템 서버 실행!]");
   }
 
   void run() {
-    while (true) { // 예외가 발생해도 App을 종료하지 않음.
-      try {
-        mainMenu.execute(prompt);
-        prompt.close();
-        break;
-      } catch (Exception e) {
-        System.out.println("main() 예외 발생");
+    try (ServerSocket serverSocket = new ServerSocket(8888)) {
+
+      while (true) {
+        Socket socket = serverSocket.accept();
+        executorService.execute(() -> processRequest(socket));
       }
+
+    } catch (Exception e) {
+      System.out.println("서버 소켓 생성 오류!");
+      e.printStackTrace();
+    } finally {
+      connectionPool.closeAll();
+    }
+  }
+
+  void processRequest(Socket socket) {
+    try (Socket s = socket;
+        DataOutputStream out = new DataOutputStream(s.getOutputStream());
+        DataInputStream in = new DataInputStream(s.getInputStream());
+        Prompt prompt = new Prompt(in, out)) {
+
+      while (true) {
+        try {
+          mainMenu.execute(prompt);
+          prompt.print("[[quit!]]");
+          prompt.end();
+          break;
+        } catch (NoSuchElementException e) {
+          System.out.println("main() 예외 발생");
+          e.printStackTrace();
+        }
+      }
+
+    } catch (Exception e) {
+      System.out.println("클라이언트 통신 오류!");
+      e.printStackTrace();
+    } finally {
+//      threadConnection.remove();
+    }
+  }
+
+
+  void prepareDatabase() {
+    try {
+      // JVM 이 JDBC 드라이버 파일(.jar)에 설정된대로 자동으로 처리한다.
+      //      Driver driver = new com.mysql.jdbc.Driver();
+      //      DriverManager.registerDriver(driver);
+      //      Connection con = DriverManager.getConnection(
+      //          //              "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
+      //          "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123");
+
+      connectionPool =
+          new DBConnectionPool(
+//              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
+              "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123"
+          );
+      txManager = new TransactionManager(connectionPool);
+
+      boardDao = new BoardDaoImpl(connectionPool, 1);
+      greetingDao = new BoardDaoImpl(connectionPool, 2);
+      assignmentDao = new AssignmentDaoImpl(connectionPool);
+      memberDao = new MemberDaoImpl(connectionPool);
+      fileDao = new AttachedFileDaoImpl(connectionPool);
+
+    } catch (Exception e) {
+      System.out.println("통신 오류!");
+      e.printStackTrace();
     }
   }
 
   void prepareMenu() {
     mainMenu = MenuGroup.getInstance("메인");
 
+    mainMenu.addItem("로그인", new LoginHandler(memberDao));
+    mainMenu.addItem("로그아웃", new LogoutHandler());
+
     MenuGroup assignmentMenu = mainMenu.addGroup("과제");
-    assignmentMenu.addItem("등록", new AssignmentAddHandler(assignmentDao, prompt));
-    assignmentMenu.addItem("조회", new AssignmentViewHandler(assignmentDao, prompt));
-    assignmentMenu.addItem("변경", new AssignmentModifyHandler(assignmentDao, prompt));
-    assignmentMenu.addItem("삭제", new AssignmentDeleteHandler(assignmentDao, prompt));
-    assignmentMenu.addItem("목록", new AssignmentListHandler(assignmentDao, prompt));
+    assignmentMenu.addItem("등록", new AssignmentAddHandler(txManager, assignmentDao));
+    assignmentMenu.addItem("조회", new AssignmentViewHandler(assignmentDao));
+    assignmentMenu.addItem("변경", new AssignmentModifyHandler(assignmentDao));
+    assignmentMenu.addItem("삭제", new AssignmentDeleteHandler(assignmentDao));
+    assignmentMenu.addItem("목록", new AssignmentListHandler(assignmentDao));
 
     MenuGroup boardMenu = mainMenu.addGroup("게시글");
-    boardMenu.addItem("등록", new BoardAddHandler(boardDao, prompt));
-    boardMenu.addItem("조회", new BoardViewHandler(boardDao, prompt));
-    boardMenu.addItem("변경", new BoardModifyHandler(boardDao, prompt));
-    boardMenu.addItem("삭제", new BoardDeleteHandler(boardDao, prompt));
-    boardMenu.addItem("목록", new BoardListHandler(boardDao, prompt));
+    boardMenu.addItem("등록", new BoardAddHandler(txManager, boardDao, fileDao));
+    boardMenu.addItem("조회", new BoardViewHandler(boardDao, fileDao));
+    boardMenu.addItem("변경", new BoardModifyHandler(txManager, boardDao, fileDao));
+    boardMenu.addItem("삭제", new BoardDeleteHandler(txManager, boardDao, fileDao));
+    boardMenu.addItem("목록", new BoardListHandler(boardDao));
 
     MenuGroup memberMenu = mainMenu.addGroup("회원");
-    memberMenu.addItem("등록", new MemberAddHandler(memberDao, prompt));
-    memberMenu.addItem("조회", new MemberViewHandler(memberDao, prompt));
-    memberMenu.addItem("변경", new MemberModifyHandler(memberDao, prompt));
-    memberMenu.addItem("삭제", new MemberDeleteHandler(memberDao, prompt));
-    memberMenu.addItem("목록", new MemberListHandler(memberDao, prompt));
+    memberMenu.addItem("등록", new MemberAddHandler(memberDao));
+    memberMenu.addItem("조회", new MemberViewHandler(memberDao));
+    memberMenu.addItem("변경", new MemberModifyHandler(memberDao));
+    memberMenu.addItem("삭제", new MemberDeleteHandler(memberDao));
+    memberMenu.addItem("목록", new MemberListHandler(memberDao));
 
     MenuGroup greetingMenu = mainMenu.addGroup("가입인사");
-    greetingMenu.addItem("등록", new BoardAddHandler(greetingDao, prompt));
-    greetingMenu.addItem("조회", new BoardViewHandler(greetingDao, prompt));
-    greetingMenu.addItem("변경", new BoardModifyHandler(greetingDao, prompt));
-    greetingMenu.addItem("삭제", new BoardDeleteHandler(greetingDao, prompt));
-    greetingMenu.addItem("목록", new BoardListHandler(greetingDao, prompt));
+    greetingMenu.addItem("등록", new BoardAddHandler(txManager, greetingDao, fileDao));
+    greetingMenu.addItem("조회", new BoardViewHandler(greetingDao, fileDao));
+    greetingMenu.addItem("변경", new BoardModifyHandler (txManager, greetingDao, fileDao));
+    greetingMenu.addItem("삭제", new BoardDeleteHandler(txManager, greetingDao, fileDao));
+    greetingMenu.addItem("목록", new BoardListHandler(greetingDao));
 
-    mainMenu.addItem("도움말", new HelpHandler(prompt));
+    mainMenu.addItem("도움말", new HelpHandler());
+    mainMenu.addItem("...대하여", new AboutHandler());
   }
 
 }
