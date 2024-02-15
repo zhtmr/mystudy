@@ -35,7 +35,6 @@ public class BoardModifyHandler extends AbstractMenuHandler {
         prompt.println("게시글 번호가 유효하지 않습니다.");
         return;
       }
-      List<AttachedFile> files = fileDao.findAllByBoardNo(no);
       Board board = new Board();
       board.setNo(oldBoard.getNo());
       board.setTitle(prompt.input("제목(%s)? ", oldBoard.getTitle()));
@@ -43,13 +42,25 @@ public class BoardModifyHandler extends AbstractMenuHandler {
       board.setWriter(prompt.input("작성자(%s)? ", oldBoard.getWriter()));
       board.setCreatedDate(oldBoard.getCreatedDate());
 
-      ArrayList<AttachedFile> list = new ArrayList<>();
+      List<AttachedFile> files = fileDao.findAllByBoardNo(no);
+      prompt.println("첨부파일:");
       for (AttachedFile file : files) {
-        list.add(file.filePath(prompt.input("파일변경(%s)? ", file.getFilePath())));
+        if (prompt.input("  %s 삭제? (y/N)", file.getFilePath()).equalsIgnoreCase("y")) {
+          fileDao.deleteAll(file.getNo());
+        }
+      }
+
+      ArrayList<AttachedFile> list = new ArrayList<>();
+      while (true) {
+        String filePath = prompt.input("추가파일?(종료: 그냥 엔터) ");
+        if (filePath.isEmpty()) {
+          break;
+        }
+        list.add(new AttachedFile().filePath(filePath).no(no));
       }
 
       boardDao.update(board);
-      fileDao.update(list);
+      fileDao.addAll(list);
       prompt.println("게시글을 변경했습니다.");
       txManager.commit();
     } catch (Exception e) {
