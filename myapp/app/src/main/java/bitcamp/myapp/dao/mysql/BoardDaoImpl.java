@@ -14,12 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardDaoImpl implements BoardDao {
-  int category;
   DBConnectionPool threadConnection;
 
-  public BoardDaoImpl(DBConnectionPool threadConnection, int category) {
+  public BoardDaoImpl(DBConnectionPool threadConnection) {
     this.threadConnection = threadConnection;
-    this.category = category;
   }
 
   @Override
@@ -31,7 +29,7 @@ public class BoardDaoImpl implements BoardDao {
       pstmt.setString(1, board.getTitle());
       pstmt.setString(2, board.getContent());
       pstmt.setInt(3, board.getWriter().getNo());
-      pstmt.setInt(4, this.category);
+      pstmt.setInt(4, board.getCategory());
 
       pstmt.executeUpdate();
 
@@ -49,9 +47,8 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public int delete(int no) {
     try (Connection con = threadConnection.getConnection();
-        PreparedStatement pstmt = con.prepareStatement("delete from boards where board_no=? and category=?")) {
+        PreparedStatement pstmt = con.prepareStatement("delete from boards where board_no=?")) {
       pstmt.setInt(1, no);
-      pstmt.setInt(2, category);
       return pstmt.executeUpdate();
     } catch (Exception e) {
       throw new DaoException("데이터 삭제 오류", e);
@@ -60,7 +57,7 @@ public class BoardDaoImpl implements BoardDao {
 
 
   @Override
-  public List<Board> findAll() {
+  public List<Board> findAll(int category) {
     try (Connection con = threadConnection.getConnection();
         PreparedStatement pstmt = con.prepareStatement("""
              select
@@ -79,7 +76,7 @@ public class BoardDaoImpl implements BoardDao {
                    order by board_no desc
             """)) {
 
-      pstmt.setInt(1, this.category);
+      pstmt.setInt(1, category);
       try (ResultSet rs = pstmt.executeQuery()) {
         ArrayList<Board> list = new ArrayList<>();
 

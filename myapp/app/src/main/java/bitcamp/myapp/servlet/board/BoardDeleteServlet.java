@@ -29,13 +29,16 @@ public class BoardDeleteServlet extends HttpServlet {
         //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
         "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
     txManager = new TransactionManager(connectionPool);
-    boardDao = new BoardDaoImpl(connectionPool, 1);
+    boardDao = new BoardDaoImpl(connectionPool);
     fileDao = new AttachedFileDaoImpl(connectionPool);
   }
 
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+
+    int category = Integer.parseInt(req.getParameter("category"));
+    String title = category == 1 ? "게시글" : "가입인사";
 
     resp.setContentType("text/html;charset=UTF-8");
     PrintWriter out = resp.getWriter();
@@ -47,7 +50,7 @@ public class BoardDeleteServlet extends HttpServlet {
     out.println("<title>부트캠프 5기</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시글</h1>");
+    out.printf("<h1>%s</h1>\n", title);
 
     Member loginUser = (Member) req.getSession().getAttribute("loginUser");
     if (loginUser == null) {
@@ -61,7 +64,7 @@ public class BoardDeleteServlet extends HttpServlet {
       int no = Integer.parseInt(req.getParameter("no"));
       Board board = boardDao.findBy(no);
       if (board == null) {
-        out.println("<p>게시글 번호가 유효하지 않습니다.</p>");
+        out.println("<p> 번호가 유효하지 않습니다.</p>");
         out.println("</body>");
         out.println("</html>");
         return;
@@ -76,7 +79,7 @@ public class BoardDeleteServlet extends HttpServlet {
       boardDao.delete(no);
 
       out.println("<script>");
-      out.println("  location.href = '/board/list';");
+      out.printf("  location.href = '/board/list?category=%d';\n", category);
       out.println("</script>");
 
     } catch (Exception e) {

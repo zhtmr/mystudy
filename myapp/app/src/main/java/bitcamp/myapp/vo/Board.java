@@ -15,6 +15,15 @@ public class Board implements Serializable {
   private Date createdDate;
   private List<AttachedFile> files;
   private int fileCount;
+  private int category;
+
+  public int getCategory() {
+    return category;
+  }
+
+  public void setCategory(int category) {
+    this.category = category;
+  }
 
   public int getFileCount() {
     return fileCount;
@@ -74,6 +83,6 @@ public class Board implements Serializable {
 
   @Override
   public String toString() {
-    return "Board{" + "no=" + no + ", title='" + title + '\'' + ", content='" + content + '\'' + ", writer=" + writer + ", createdDate=" + createdDate + ", files=" + files + ", fileCount=" + fileCount + '}';
+    return "Board{" + "no=" + no + ", title='" + title + '\'' + ", content='" + content + '\'' + ", writer=" + writer + ", createdDate=" + createdDate + ", files=" + files + ", fileCount=" + fileCount + ", category=" + category + '}';
   }
 }

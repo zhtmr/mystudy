@@ -31,13 +31,16 @@ public class BoardUpdateServlet extends HttpServlet {
         //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
         "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
     txManager = new TransactionManager(connectionPool);
-    boardDao = new BoardDaoImpl(connectionPool, 1);
+    boardDao = new BoardDaoImpl(connectionPool);
     fileDao = new AttachedFileDaoImpl(connectionPool);
   }
 
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+
+    int category = Integer.parseInt(req.getParameter("category"));
+    String title = category == 1 ? "게시글" : "가입인사";
 
     resp.setContentType("text/html;charset=UTF-8");
     PrintWriter out = resp.getWriter();
@@ -49,21 +52,27 @@ public class BoardUpdateServlet extends HttpServlet {
     out.println("<title>부트캠프 5기</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시글</h1>");
-
-    Member loginUser = (Member) req.getSession().getAttribute("loginUser");
-    if (loginUser == null) {
-      out.println("로그인을 해주세요.");
-      out.println("</body>");
-      out.println("</html>");
-      return;
-    }
+    out.printf("<h1>%s</h1>\n", title);
 
     try {
       int no = Integer.parseInt(req.getParameter("no"));
       Board board = boardDao.findBy(no);
+
       if (board == null) {
-        out.println("<p>게시글 번호가 유효하지 않습니다.</p>");
+        out.println("<p>번호가 유효하지 않습니다.</p>");
+        out.println("</body>");
+        out.println("</html>");
+        return;
+      }
+
+      Member loginUser = (Member) req.getSession().getAttribute("loginUser");
+      if (loginUser == null) {
+        out.println("로그인을 해주세요.");
+        out.println("</body>");
+        out.println("</html>");
+        return;
+      } else if (board.getWriter().getNo() != loginUser.getNo()) {
+        out.println("<p>권한이 없습니다.</p>");
         out.println("</body>");
         out.println("</html>");
         return;
@@ -73,13 +82,15 @@ public class BoardUpdateServlet extends HttpServlet {
       board.setContent(req.getParameter("content"));
 
       ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
-      String[] files = req.getParameterValues("files");
-      if (files != null) {
-        for (String file : files) {
-          if (file.isEmpty()) {
-            continue;
+      if (category == 1) {
+        String[] files = req.getParameterValues("files");
+        if (files != null) {
+          for (String file : files) {
+            if (file.isEmpty()) {
+              continue;
+            }
+            attachedFiles.add(new AttachedFile().filePath(file));
           }
-          attachedFiles.add(new AttachedFile().filePath(file));
         }
       }
 
@@ -94,13 +105,13 @@ public class BoardUpdateServlet extends HttpServlet {
       }
 
       txManager.commit();
-      out.println("<p>게시글 변경완료</p>");
+      out.println("<p> 변경완료</p>");
     } catch (Exception e) {
       try {
         txManager.rollback();
       } catch (Exception e2) {
       }
-      out.println("<p>게시글 등록 오류!</p>");
+      out.println("<p> 등록 오류!</p>");
       out.println("<pre>");
       e.printStackTrace(out);
       out.println("</pre>");

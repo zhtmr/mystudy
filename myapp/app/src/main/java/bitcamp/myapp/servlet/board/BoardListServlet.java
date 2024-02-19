@@ -22,12 +22,15 @@ public class BoardListServlet extends GenericServlet {
     DBConnectionPool connectionPool = new DBConnectionPool(
         //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
         "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-    this.boardDao = new BoardDaoImpl(connectionPool, 1);
+    this.boardDao = new BoardDaoImpl(connectionPool);
   }
 
   @Override
   public void service(ServletRequest servletRequest, ServletResponse servletResponse)
       throws ServletException, IOException {
+
+    int category = Integer.parseInt(servletRequest.getParameter("category"));
+    String title = category == 1 ? "게시글" : "가입인사";
 
     servletResponse.setContentType("text/html;charset=UTF-8");
     PrintWriter out = servletResponse.getWriter();
@@ -39,9 +42,10 @@ public class BoardListServlet extends GenericServlet {
     out.println("<title>부트캠프 5기</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시글</h1>");
 
-    out.println("<a href='/board/form.html'>새 글</a>");
+    out.printf("<h1>%s</h1>\n", title);
+
+    out.printf("<a href='/board/form?category=%d'>새 글</a>\n", category);
     out.println("<a href='/'>HOME</a>");
     try {
       out.println("<table border='1'>");
@@ -55,12 +59,13 @@ public class BoardListServlet extends GenericServlet {
       out.println("</tr>");
       out.println("</thead>");
       out.println("<tbody>");
-      List<Board> list = boardDao.findAll();
+
+      List<Board> list = boardDao.findAll(category);
 
       for (Board board : list) {
         out.printf(
-            "<tr> <td>%d</td> <td><a href='/board/view?no=%1$d'>%s</a></td> <td>%s</td> <td>%s</td> <td>%d</td> <tr>",
-            board.getNo(), board.getTitle(), board.getWriter().getName(), board.getCreatedDate(),
+            "<tr> <td>%d</td> <td><a href='/board/view?category=%d&no=%1$d'>%s</a></td> <td>%s</td> <td>%s</td> <td>%d</td> <tr>",
+            board.getNo(), category, board.getTitle(), board.getWriter().getName(), board.getCreatedDate(),
             board.getFileCount());
       }
       out.println("</tbody>");

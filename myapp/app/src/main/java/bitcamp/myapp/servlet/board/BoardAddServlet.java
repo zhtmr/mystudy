@@ -31,13 +31,15 @@ public class BoardAddServlet extends HttpServlet {
         //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
         "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
     txManager = new TransactionManager(connectionPool);
-    boardDao = new BoardDaoImpl(connectionPool, 1);
+    boardDao = new BoardDaoImpl(connectionPool);
     fileDao = new AttachedFileDaoImpl(connectionPool);
   }
 
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    int category = Integer.parseInt(req.getParameter("category"));
+    String title = category == 1 ? "게시글" : "가입인사";
 
     resp.setContentType("text/html;charset=UTF-8");
     PrintWriter out = resp.getWriter();
@@ -49,7 +51,7 @@ public class BoardAddServlet extends HttpServlet {
     out.println("<title>부트캠프 5기</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시글</h1>");
+    out.printf("<h1>%s</h1>\n", title);
 
     Member loginUser = (Member) req.getSession().getAttribute("loginUser");
     if (loginUser == null) {
@@ -60,20 +62,22 @@ public class BoardAddServlet extends HttpServlet {
     }
     
     try {
-
       Board board = new Board();
+      board.setCategory(category);
       board.setTitle(req.getParameter("title"));
       board.setContent(req.getParameter("content"));
       board.setWriter(loginUser);
 
       ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
-      String[] files = req.getParameterValues("files");
-      if (files != null) {
-        for (String file : files) {
-          if (file.isEmpty()) {
-            continue;
+      if (category == 1) {
+        String[] files = req.getParameterValues("files");
+        if (files != null) {
+          for (String file : files) {
+            if (file.isEmpty()) {
+              continue;
+            }
+            attachedFiles.add(new AttachedFile().filePath(file));
           }
-          attachedFiles.add(new AttachedFile().filePath(file));
         }
       }
 
@@ -88,13 +92,13 @@ public class BoardAddServlet extends HttpServlet {
       }
 
       txManager.commit();
-      out.println("<p>게시글 등록완료</p>");
+      out.println("<p>등록완료</p>");
     } catch (Exception e) {
       try {
         txManager.rollback();
       } catch (Exception e2) {
       }
-      out.println("<p>게시글 등록 오류!</p>");
+      out.println("<p>등록 오류!</p>");
       out.println("<pre>");
       e.printStackTrace(out);
       out.println("</pre>");
