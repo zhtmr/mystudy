@@ -1,36 +1,37 @@
-package bitcamp.myapp.servlet.board;
+package bitcamp.myapp.servlet.member;
 
-import bitcamp.myapp.dao.BoardDao;
-import bitcamp.myapp.dao.mysql.BoardDaoImpl;
-import bitcamp.myapp.vo.Board;
+import bitcamp.myapp.dao.MemberDao;
+import bitcamp.myapp.dao.mysql.MemberDaoImpl;
+import bitcamp.myapp.vo.Member;
 import bitcamp.util.DBConnectionPool;
 
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/board/list")
-public class BoardListServlet extends GenericServlet {
-  private BoardDao boardDao;
+@WebServlet("/member/list")
+public class MemberListServlet extends HttpServlet {
 
-  public BoardListServlet() {
+  private MemberDao memberDao;
+
+  public MemberListServlet() {
     DBConnectionPool connectionPool = new DBConnectionPool(
         //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
         "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-    this.boardDao = new BoardDaoImpl(connectionPool, 1);
+    this.memberDao = new MemberDaoImpl(connectionPool);
   }
 
   @Override
-  public void service(ServletRequest servletRequest, ServletResponse servletResponse)
+  protected void service(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
-    servletResponse.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = servletResponse.getWriter();
+    resp.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = resp.getWriter();
 
     out.println("<!DOCTYPE html>");
     out.println("<html lang='en'>");
@@ -39,29 +40,28 @@ public class BoardListServlet extends GenericServlet {
     out.println("<title>부트캠프 5기</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>게시글</h1>");
+    out.println("<h1>회원</h1>");
 
-    out.println("<a href='/board/form.html'>새 글</a>");
+    out.println("<a href='/member/form.html'>새 회원</a>");
     out.println("<a href='/'>HOME</a>");
+
     try {
       out.println("<table border='1'>");
       out.println("<thead>");
       out.println("<tr>");
       out.println("<th>번호</th>");
-      out.println("<th>제목</th>");
-      out.println("<th>작성자</th>");
+      out.println("<th>이름</th>");
+      out.println("<th>이메일</th>");
       out.println("<th>등록일</th>");
-      out.println("<th>첨부파일</th>");
       out.println("</tr>");
       out.println("</thead>");
       out.println("<tbody>");
-      List<Board> list = boardDao.findAll();
 
-      for (Board board : list) {
+      List<Member> list = memberDao.findAll();
+      for (Member member : list) {
         out.printf(
-            "<tr> <td>%d</td> <td><a href='/board/view?no=%1$d'>%s</a></td> <td>%s</td> <td>%s</td> <td>%d</td> <tr>",
-            board.getNo(), board.getTitle(), board.getWriter().getName(), board.getCreatedDate(),
-            board.getFileCount());
+            "<tr> <td>%d</td> <td><a href='/member/view?no=%1$d'>%s</a></td> <td>%s</td> <td>%s</td> <tr>",
+            member.getNo(), member.getName(), member.getEmail(), member.getCreatedDate());
       }
       out.println("</tbody>");
       out.println("</table>");

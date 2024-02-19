@@ -17,4 +17,6 @@ public interface AttachedFileDao {
   int update(List<AttachedFile> files);
 
   List<AttachedFile> findAllByBoardNo(int boardNo);
+
+  AttachedFile findByNo(int no);
 }
