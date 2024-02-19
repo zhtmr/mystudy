@@ -32,7 +32,7 @@ public class BoardFormServlet extends HttpServlet {
     out.printf("<h1>%s</h1>\n", title);
 
     out.printf("<form action='/board/add?category=%d'>\n", category);
-    out.printf("<input name='category' type='text' value='%d'>\n", category);
+    out.printf("<input name='category' type='hidden' value='%d'>\n", category);
     out.println("<div>");
     out.println("제목: <input type='text' name='title'>");
     out.println("</div>");

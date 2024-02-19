@@ -58,7 +58,7 @@ public class BoardViewServlet extends HttpServlet {
       List<AttachedFile> files = fileDao.findAllByBoardNo(no);
 
       out.println("<form action='/board/update'>");
-      out.printf("<input name='category' type='text' value='%d'>\n", category);
+      out.printf("<input name='category' type='hidden' value='%d'>\n", category);
       out.println("<div>");
       out.printf("번호: <input readonly type='text' name='no' value=%s>\n", board.getNo());
       out.println("</div>");
