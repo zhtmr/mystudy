@@ -4,6 +4,7 @@ import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.dao.mysql.AssignmentDaoImpl;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.util.DBConnectionPool;
+import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,12 +18,12 @@ import java.io.PrintWriter;
 public class AssignmentViewServlet extends HttpServlet {
 
   private AssignmentDao assignmentDao;
+  private TransactionManager txManager;
 
-  public AssignmentViewServlet() {
-    DBConnectionPool connectionPool = new DBConnectionPool(
-        //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
-        "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-    this.assignmentDao = new AssignmentDaoImpl(connectionPool);
+  @Override
+  public void init() throws ServletException {
+    assignmentDao = (AssignmentDao) this.getServletContext().getAttribute("assignmentDao");
+    txManager = (TransactionManager) this.getServletContext().getAttribute("txManager");
   }
 
   @Override

@@ -18,11 +18,9 @@ public class MemberDeleteServlet extends HttpServlet {
 
   private MemberDao memberDao;
 
-  public MemberDeleteServlet() {
-    DBConnectionPool connectionPool = new DBConnectionPool(
-        //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
-        "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-    this.memberDao = new MemberDaoImpl(connectionPool);
+  @Override
+  public void init() throws ServletException {
+    memberDao = (MemberDao) getServletContext().getAttribute("memberDao");
   }
 
   @Override

@@ -23,12 +23,10 @@ public class AssignmentUpdateServlet extends HttpServlet {
   private AssignmentDao assignmentDao;
   private TransactionManager txManager;
 
-  public AssignmentUpdateServlet() {
-    DBConnectionPool connectionPool = new DBConnectionPool(
-        //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
-        "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-    assignmentDao = new AssignmentDaoImpl(connectionPool);
-    txManager = new TransactionManager(connectionPool);
+  @Override
+  public void init() throws ServletException {
+    assignmentDao = (AssignmentDao) this.getServletContext().getAttribute("assignmentDao");
+    txManager = (TransactionManager) this.getServletContext().getAttribute("txManager");
   }
 
   @Override

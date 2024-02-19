@@ -2,12 +2,9 @@ package bitcamp.myapp.servlet.board;
 
 import bitcamp.myapp.dao.AttachedFileDao;
 import bitcamp.myapp.dao.BoardDao;
-import bitcamp.myapp.dao.mysql.AttachedFileDaoImpl;
-import bitcamp.myapp.dao.mysql.BoardDaoImpl;
 import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.DBConnectionPool;
 import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletException;
@@ -23,16 +20,15 @@ import java.util.ArrayList;
 public class BoardUpdateServlet extends HttpServlet {
 
   private BoardDao boardDao;
-  private AttachedFileDao fileDao;
   private TransactionManager txManager;
+  private AttachedFileDao fileDao;
 
-  public BoardUpdateServlet() {
-    DBConnectionPool connectionPool = new DBConnectionPool(
-        //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
-        "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-    txManager = new TransactionManager(connectionPool);
-    boardDao = new BoardDaoImpl(connectionPool);
-    fileDao = new AttachedFileDaoImpl(connectionPool);
+
+  @Override
+  public void init() throws ServletException {
+    boardDao = (BoardDao) getServletContext().getAttribute("boardDao");
+    txManager = (TransactionManager) getServletContext().getAttribute("txManager");
+    fileDao = (AttachedFileDao) getServletContext().getAttribute("fileDao");
   }
 
   @Override

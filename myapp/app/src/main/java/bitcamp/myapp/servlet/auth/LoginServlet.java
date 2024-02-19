@@ -1,40 +1,29 @@
 package bitcamp.myapp.servlet.auth;
 
 import bitcamp.myapp.dao.MemberDao;
-import bitcamp.myapp.dao.mysql.MemberDaoImpl;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.DBConnectionPool;
 
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 @WebServlet("/auth/login")
-public class LoginServlet extends GenericServlet {
+public class LoginServlet extends HttpServlet {
 
   MemberDao memberDao;
 
-  public LoginServlet() {
-    DBConnectionPool connectionPool = new DBConnectionPool(
-        //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
-        "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-    this.memberDao = new MemberDaoImpl(connectionPool);
+
+  @Override
+  public void init() throws ServletException {
+    memberDao = (MemberDao) this.getServletContext().getAttribute("memberDao");
   }
 
   @Override
-  public void service(ServletRequest servletRequest, ServletResponse servletResponse)
+  protected void service(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
-
-    // 서블릿 컨테이너가 service()를 호출할 때 넘겨주는 값을
-    // HttpServletRequest 와 HttpServletResponse 다.
-    // 파라미터로 넘어온 객체를 제대로 사용하고 싶다면 원래 타입으로 형변환
-    HttpServletRequest req = (HttpServletRequest) servletRequest;
-    HttpServletResponse res = (HttpServletResponse) servletResponse;
 
     String email = req.getParameter("email");
     String password = req.getParameter("password");
