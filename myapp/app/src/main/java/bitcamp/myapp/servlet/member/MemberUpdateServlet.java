@@ -1,9 +1,7 @@
 package bitcamp.myapp.servlet.member;
 
 import bitcamp.myapp.dao.MemberDao;
-import bitcamp.myapp.dao.mysql.MemberDaoImpl;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.DBConnectionPool;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,20 +22,13 @@ public class MemberUpdateServlet extends HttpServlet {
   }
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse resp)
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     resp.setContentType("text/html;charset=UTF-8");
+    req.setCharacterEncoding("UTF-8");
     PrintWriter out = resp.getWriter();
 
-    out.println("<!DOCTYPE html>");
-    out.println("<html lang='en'>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>부트캠프 5기</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h1>회원</h1>");
 
     try {
       int no = Integer.parseInt(req.getParameter("no"));
@@ -54,8 +45,18 @@ public class MemberUpdateServlet extends HttpServlet {
       member.setPassword(req.getParameter("password"));
 
       memberDao.update(member);
-      out.println("<p>회원 변경완료</p>");
+      resp.sendRedirect("list");
+      return;
     } catch (Exception e) {
+      out.println("<!DOCTYPE html>");
+      out.println("<html lang='en'>");
+      out.println("<head>");
+      out.println("<meta charset='UTF-8'>");
+      out.println("<title>부트캠프 5기</title>");
+      out.println("</head>");
+      out.println("<body>");
+      out.println("<h1>회원</h1>");
+
       out.println("<p>회원 변경 오류!</p>");
       out.println("<pre>");
       e.printStackTrace(out);

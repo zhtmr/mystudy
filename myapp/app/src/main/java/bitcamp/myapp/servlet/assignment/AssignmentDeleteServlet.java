@@ -1,10 +1,8 @@
 package bitcamp.myapp.servlet.assignment;
 
 import bitcamp.myapp.dao.AssignmentDao;
-import bitcamp.myapp.dao.mysql.AssignmentDaoImpl;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.DBConnectionPool;
 import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletException;
@@ -28,7 +26,7 @@ public class AssignmentDeleteServlet extends HttpServlet {
   }
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse resp)
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     resp.setContentType("text/html;charset=UTF-8");
@@ -57,8 +55,7 @@ public class AssignmentDeleteServlet extends HttpServlet {
       Assignment assignment = assignmentDao.findBy(no);
       if (assignment == null) {
         out.println("<p>과제 번호가 유효하지 않습니다.</p>");
-        out.println("</body>");
-        out.println("</html>");
+        resp.setHeader("Refresh", "1;url=list");
         return;
       } else  {
         assignmentDao.delete(no);

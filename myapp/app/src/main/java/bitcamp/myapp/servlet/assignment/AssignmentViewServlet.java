@@ -1,9 +1,7 @@
 package bitcamp.myapp.servlet.assignment;
 
 import bitcamp.myapp.dao.AssignmentDao;
-import bitcamp.myapp.dao.mysql.AssignmentDaoImpl;
 import bitcamp.myapp.vo.Assignment;
-import bitcamp.util.DBConnectionPool;
 import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletException;
@@ -27,7 +25,7 @@ public class AssignmentViewServlet extends HttpServlet {
   }
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse resp)
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     resp.setContentType("text/html;charset=UTF-8");
@@ -52,7 +50,7 @@ public class AssignmentViewServlet extends HttpServlet {
         return;
       }
 
-      out.println("<form action='/assignment/update'>");
+      out.println("<form action='/assignment/update' method='post'>");
       out.println("<div>");
       out.printf("번호: <input readonly type='text' name='no' value=%s>\n", assignment.getNo());
       out.println("</div>");

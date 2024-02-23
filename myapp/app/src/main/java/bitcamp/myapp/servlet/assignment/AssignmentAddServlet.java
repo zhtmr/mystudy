@@ -29,10 +29,11 @@ public class AssignmentAddServlet extends HttpServlet {
 
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse resp)
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     resp.setContentType("text/html;charset=UTF-8");
+    req.setCharacterEncoding("UTF-8");
     PrintWriter out = resp.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -63,8 +64,8 @@ public class AssignmentAddServlet extends HttpServlet {
       assignmentDao.add(assignment);
 
       txManager.commit();
-      out.println("<p>과제 등록완료</p>");
-
+      resp.sendRedirect("/assignment/list");
+      return;
     } catch (Exception e) {
       try {
         txManager.rollback();

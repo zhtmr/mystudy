@@ -22,7 +22,7 @@ public class LoginServlet extends HttpServlet {
   }
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse res)
+  protected void doPost(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
 
     String email = req.getParameter("email");
@@ -46,9 +46,10 @@ public class LoginServlet extends HttpServlet {
       if (member != null) {
         req.getSession().setAttribute("loginUser", member);
         out.printf("<p>%s님 환영합니다.</p>\n", member.getName());
-        out.println("<a href='/'>HOME</a>");
+        res.setHeader("Refresh", "1;url=/");
       } else {
         out.println("<p>이메일 또는 암호가 맞지 않습니다.</p>");
+        res.setHeader("Refresh", "1;url=/auth/form.html");
       }
 
     } catch (Exception e) {

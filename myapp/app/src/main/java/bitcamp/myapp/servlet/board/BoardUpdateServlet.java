@@ -32,7 +32,7 @@ public class BoardUpdateServlet extends HttpServlet {
   }
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse resp)
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     int category = Integer.parseInt(req.getParameter("category"));
@@ -101,7 +101,8 @@ public class BoardUpdateServlet extends HttpServlet {
       }
 
       txManager.commit();
-      out.println("<p> 변경완료</p>");
+      resp.sendRedirect("/board/list?category=" + category);
+      return;
     } catch (Exception e) {
       try {
         txManager.rollback();

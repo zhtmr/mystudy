@@ -1,10 +1,8 @@
 package bitcamp.myapp.servlet.assignment;
 
 import bitcamp.myapp.dao.AssignmentDao;
-import bitcamp.myapp.dao.mysql.AssignmentDaoImpl;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.DBConnectionPool;
 import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletException;
@@ -30,10 +28,11 @@ public class AssignmentUpdateServlet extends HttpServlet {
   }
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse resp)
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     resp.setContentType("text/html;charset=UTF-8");
+    req.setCharacterEncoding("UTF-8");
     PrintWriter out = resp.getWriter();
 
     out.println("<!DOCTYPE html>");
@@ -59,6 +58,7 @@ public class AssignmentUpdateServlet extends HttpServlet {
       Assignment old = this.assignmentDao.findBy(no);
       if (old == null) {
         out.println("과제 번호가 유효하지 않습니다.");
+        resp.setHeader("Refresh","1;url=list");
         return;
       }
       txManager.begin();
@@ -69,8 +69,8 @@ public class AssignmentUpdateServlet extends HttpServlet {
       assignment.setDeadline(Date.valueOf(req.getParameter("deadline")));
       assignmentDao.update(assignment);
       txManager.commit();
-      out.println("<p>과제 변경완료</p>");
-      out.println("<a href='/assignment/list'>List</a>");
+      resp.sendRedirect("/assignment/list");
+      return;
     } catch (Exception e) {
       try {
         txManager.rollback();

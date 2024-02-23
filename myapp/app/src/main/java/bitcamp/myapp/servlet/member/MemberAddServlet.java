@@ -23,20 +23,12 @@ public class MemberAddServlet extends HttpServlet {
   }
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse resp)
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     resp.setContentType("text/html;charset=UTF-8");
+    req.setCharacterEncoding("UTF-8");
     PrintWriter out = resp.getWriter();
-
-    out.println("<!DOCTYPE html>");
-    out.println("<html lang='en'>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>부트캠프 5기</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h1>회원</h1>");
 
     try {
       Member member = new Member();
@@ -45,8 +37,17 @@ public class MemberAddServlet extends HttpServlet {
       member.setPassword(req.getParameter("password"));
 
       memberDao.add(member);
-      out.println("<p>회원 등록완료</p>");
+      resp.sendRedirect("list");
     } catch (Exception e) {
+      out.println("<!DOCTYPE html>");
+      out.println("<html lang='en'>");
+      out.println("<head>");
+      out.println("<meta charset='UTF-8'>");
+      out.println("<title>부트캠프 5기</title>");
+      out.println("</head>");
+      out.println("<body>");
+      out.println("<h1>회원</h1>");
+
       out.println("<p>회원 등록 오류!</p>");
       out.println("<pre>");
       e.printStackTrace(out);

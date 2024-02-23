@@ -1,9 +1,7 @@
 package bitcamp.myapp.servlet.assignment;
 
 import bitcamp.myapp.dao.AssignmentDao;
-import bitcamp.myapp.dao.mysql.AssignmentDaoImpl;
 import bitcamp.myapp.vo.Assignment;
-import bitcamp.util.DBConnectionPool;
 import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletException;
@@ -28,7 +26,7 @@ public class AssignmentListServlet extends HttpServlet {
   }
 
   @Override
-  protected void service(HttpServletRequest req, HttpServletResponse resp)
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     resp.setContentType("text/html;charset=UTF-8");
