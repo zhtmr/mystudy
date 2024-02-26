@@ -55,7 +55,7 @@ public class BoardViewServlet extends HttpServlet {
       req.getRequestDispatcher("/header").include(req, resp);
       out.printf("<h1>%s</h1>\n", title);
 
-      out.println("<form action='/board/update' method='post'>");
+      out.println("<form action='/board/update' method='post' enctype='multipart/form-data'>");
       out.printf("<input name='category' type='hidden' value='%d'>\n", category);
       out.println("<div>");
       out.printf("번호: <input readonly type='text' name='no' value=%s>\n", board.getNo());
@@ -76,7 +76,7 @@ public class BoardViewServlet extends HttpServlet {
         out.println("첨부파일: <input name='files' type='file' multiple >");
         out.println("<ul>");
         for (AttachedFile file : files) {
-          out.printf("<li>%s <a href='/board/file/delete?category=%d&no=%d'>삭제</a></li>\n",
+          out.printf("<li><a href='/upload/board/%s'>%1$s</a> [<a href='/board/file/delete?category=%d&no=%d'>삭제</a>]</li>\n",
               file.getFilePath(), category, file.getNo());
         }
         out.println("</ul>");

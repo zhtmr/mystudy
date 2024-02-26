@@ -8,20 +8,26 @@ import bitcamp.myapp.vo.Member;
 import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 
+@MultipartConfig(maxFileSize = 1024 * 1024 * 10)
 @WebServlet("/board/add")
 public class BoardAddServlet extends HttpServlet {
 
   private BoardDao boardDao;
   private AttachedFileDao fileDao;
   private TransactionManager txManager;
+  private String uploadDir;
 
 
   @Override
@@ -29,6 +35,7 @@ public class BoardAddServlet extends HttpServlet {
     boardDao = (BoardDao) this.getServletContext().getAttribute("boardDao");
     txManager = (TransactionManager) this.getServletContext().getAttribute("txManager");
     fileDao = (AttachedFileDao) this.getServletContext().getAttribute("fileDao");
+    uploadDir = getServletContext().getRealPath("/upload/board");
   }
 
   @Override
@@ -51,7 +58,9 @@ public class BoardAddServlet extends HttpServlet {
     req.getRequestDispatcher("/header").include(req, resp);
     out.printf("<h1>%s</h1>\n", title);
 
-    out.printf("<form action='/board/add?category=%d' method='post'>\n", category);
+    out.printf(
+        "<form action='/board/add?category=%d' method='post' enctype='multipart/form-data'>\n",
+        category);
     out.printf("<input name='category' type='hidden' value='%d'>\n", category);
     out.println("<div>");
     out.println("제목: <input type='text' name='title'>");
@@ -62,7 +71,7 @@ public class BoardAddServlet extends HttpServlet {
     out.println("</div>");
     if (category == 1) {
       out.println("<div>");
-      out.println("첨부파일: <input name='files' type='file' multiple >");
+      out.println("첨부파일: <input name='files' type='file' multiple>");
       out.println("</div>");
     }
     out.println("<div>");
@@ -77,6 +86,8 @@ public class BoardAddServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+
+    req.setCharacterEncoding("UTF-8");
     String title = "";
     try {
       int category = Integer.parseInt(req.getParameter("category"));
@@ -95,14 +106,14 @@ public class BoardAddServlet extends HttpServlet {
 
       ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
       if (category == 1) {
-        String[] files = req.getParameterValues("files");
-        if (files != null) {
-          for (String file : files) {
-            if (file.isEmpty()) {
-              continue;
-            }
-            attachedFiles.add(new AttachedFile().filePath(file));
+        Collection<Part> parts = req.getParts();
+        for (Part part : parts) {
+          if (!part.getName().equals("files") || part.getSize() == 0) {
+            continue;
           }
+          String filename = UUID.randomUUID().toString();
+          part.write(uploadDir + "/" + filename);
+          attachedFiles.add(new AttachedFile().filePath(filename));
         }
       }
 

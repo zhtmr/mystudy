@@ -8,19 +8,25 @@ import bitcamp.myapp.vo.Member;
 import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 
+@MultipartConfig(maxFileSize = 1024 * 1024 * 10)
 @WebServlet("/board/update")
 public class BoardUpdateServlet extends HttpServlet {
 
   private BoardDao boardDao;
   private TransactionManager txManager;
   private AttachedFileDao fileDao;
+  private String uploadDir;
 
 
   @Override
@@ -28,11 +34,14 @@ public class BoardUpdateServlet extends HttpServlet {
     boardDao = (BoardDao) getServletContext().getAttribute("boardDao");
     txManager = (TransactionManager) getServletContext().getAttribute("txManager");
     fileDao = (AttachedFileDao) getServletContext().getAttribute("fileDao");
+    uploadDir = getServletContext().getRealPath("/upload/board");
   }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+
+    req.setCharacterEncoding("UTF-8");
     String title = "";
     try {
       int category = Integer.parseInt(req.getParameter("category"));
@@ -58,14 +67,14 @@ public class BoardUpdateServlet extends HttpServlet {
 
       ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
       if (category == 1) {
-        String[] files = req.getParameterValues("files");
-        if (files != null) {
-          for (String file : files) {
-            if (file.isEmpty()) {
-              continue;
-            }
-            attachedFiles.add(new AttachedFile().filePath(file));
+        Collection<Part> parts = req.getParts();
+        for (Part part : parts) {
+          if (!part.getName().equals("files") || part.getSize() == 0) {
+            continue;
           }
+          String filename = UUID.randomUUID().toString();
+          part.write(uploadDir + "/" + filename);
+          attachedFiles.add(new AttachedFile().filePath(filename));
         }
       }
 
