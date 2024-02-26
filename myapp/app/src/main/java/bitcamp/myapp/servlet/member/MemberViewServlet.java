@@ -25,27 +25,25 @@ public class MemberViewServlet extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
-    resp.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = resp.getWriter();
-
-    out.println("<!DOCTYPE html>");
-    out.println("<html lang='en'>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>부트캠프 5기</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h1>회원</h1>");
-
     try {
       int no = Integer.parseInt(req.getParameter("no"));
       Member member = memberDao.findBy(no);
       if (member == null) {
-        out.println("<p>회원 번호가 유효하지 않습니다.</p>");
-        out.println("</body>");
-        out.println("</html>");
-        return;
+        throw new Exception("회원 번호가 유효하지 않습니다.");
       }
+
+      resp.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = resp.getWriter();
+
+      out.println("<!DOCTYPE html>");
+      out.println("<html lang='en'>");
+      out.println("<head>");
+      out.println("<meta charset='UTF-8'>");
+      out.println("<title>부트캠프 5기</title>");
+      out.println("</head>");
+      out.println("<body>");
+      req.getRequestDispatcher("/header").include(req, resp);
+      out.println("<h1>회원</h1>");
 
       out.println("<form action='/member/update' method='post'>");
       out.println("<div>");
@@ -65,14 +63,13 @@ public class MemberViewServlet extends HttpServlet {
       out.printf("<a href='/member/delete?no=%d'>삭제</a>\n", no);
       out.println("</div>");
       out.println("</form>");
-
+      req.getRequestDispatcher("/footer").include(req, resp);
+      out.println("</body>");
+      out.println("</html>");
     } catch (Exception e) {
-      out.println("<p>회원 상세 오류!</p>");
-      out.println("<pre>");
-      e.printStackTrace(out);
-      out.println("</pre>");
+      req.setAttribute("message", "회원 조회 오류 발생!");
+      req.setAttribute("exception", e);
+      req.getRequestDispatcher("/error").forward(req, resp);
     }
-    out.println("</body>");
-    out.println("</html>");
   }
 }

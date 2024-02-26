@@ -30,31 +30,30 @@ public class BoardViewServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-
-    int category = Integer.parseInt(req.getParameter("category"));
-    String title = category == 1 ? "게시글" : "가입인사";
-
-    resp.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = resp.getWriter();
-    out.println("<!DOCTYPE html>");
-    out.println("<html lang='en'>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>부트캠프 5기</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.printf("<h1>%s</h1>\n", title);
-
+    String title = "";
     try {
+      int category = Integer.parseInt(req.getParameter("category"));
+      title = category == 1 ? "게시글" : "가입인사";
+
       int no = Integer.parseInt(req.getParameter("no"));
       Board board = boardDao.findBy(no);
       if (board == null) {
-        out.println("<p>번호가 유효하지 않습니다.</p>");
-        out.println("</body>");
-        out.println("</html>");
-        return;
+        throw new Exception("번호가 유효하지 않습니다.");
       }
+
       List<AttachedFile> files = fileDao.findAllByBoardNo(no);
+
+      resp.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = resp.getWriter();
+      out.println("<!DOCTYPE html>");
+      out.println("<html lang='en'>");
+      out.println("<head>");
+      out.println("<meta charset='UTF-8'>");
+      out.println("<title>부트캠프 5기</title>");
+      out.println("</head>");
+      out.println("<body>");
+      req.getRequestDispatcher("/header").include(req, resp);
+      out.printf("<h1>%s</h1>\n", title);
 
       out.println("<form action='/board/update' method='post'>");
       out.printf("<input name='category' type='hidden' value='%d'>\n", category);
@@ -88,14 +87,13 @@ public class BoardViewServlet extends HttpServlet {
       out.printf("<a href='/board/delete?category=%d&no=%d'>삭제</a>\n", category, no);
       out.println("</div>");
       out.println("</form>");
-
+      req.getRequestDispatcher("/footer").include(req, resp);
+      out.println("</body>");
+      out.println("</html>");
     } catch (Exception e) {
-      out.println("<p>상세 오류!</p>");
-      out.println("<pre>");
-      e.printStackTrace(out);
-      out.println("</pre>");
+      req.setAttribute("message", String.format("%s 게시글 조회 오류 발생!", title));
+      req.setAttribute("exception", e);
+      req.getRequestDispatcher("/error").forward(req, resp);
     }
-    out.println("</body>");
-    out.println("</html>");
   }
 }

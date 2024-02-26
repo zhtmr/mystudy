@@ -48,6 +48,7 @@ public class BoardAddServlet extends HttpServlet {
     out.println("<title>부트캠프 5기</title>");
     out.println("</head>");
     out.println("<body>");
+    req.getRequestDispatcher("/header").include(req, resp);
     out.printf("<h1>%s</h1>\n", title);
 
     out.printf("<form action='/board/add?category=%d' method='post'>\n", category);
@@ -56,7 +57,8 @@ public class BoardAddServlet extends HttpServlet {
     out.println("제목: <input type='text' name='title'>");
     out.println("</div>");
     out.println("<div>");
-    out.println("<label for='content'>내용: </label><textarea name='content' id='content'></textarea>");
+    out.println(
+        "<label for='content'>내용: </label><textarea name='content' id='content'></textarea>");
     out.println("</div>");
     if (category == 1) {
       out.println("<div>");
@@ -67,7 +69,7 @@ public class BoardAddServlet extends HttpServlet {
     out.println("<button>등록</button>");
     out.println("</div>");
     out.println("</form>");
-
+    req.getRequestDispatcher("/footer").include(req, resp);
     out.println("</body>");
     out.println("</html>");
   }
@@ -75,30 +77,16 @@ public class BoardAddServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    int category = Integer.parseInt(req.getParameter("category"));
-    String title = category == 1 ? "게시글" : "가입인사";
-
-    resp.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = resp.getWriter();
-
-    out.println("<!DOCTYPE html>");
-    out.println("<html lang='en'>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>부트캠프 5기</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.printf("<h1>%s</h1>\n", title);
-
-    Member loginUser = (Member) req.getSession().getAttribute("loginUser");
-    if (loginUser == null) {
-      out.println("로그인을 해주세요.");
-      out.println("</body>");
-      out.println("</html>");
-      return;
-    }
-    
+    String title = "";
     try {
+      int category = Integer.parseInt(req.getParameter("category"));
+      title = category == 1 ? "게시글" : "가입인사";
+
+      Member loginUser = (Member) req.getSession().getAttribute("loginUser");
+      if (loginUser == null) {
+        throw new Exception("로그인을 해주세요.");
+      }
+
       Board board = new Board();
       board.setCategory(category);
       board.setTitle(req.getParameter("title"));
@@ -130,18 +118,14 @@ public class BoardAddServlet extends HttpServlet {
 
       txManager.commit();
       resp.sendRedirect("/board/list?category=" + category);
-      return;
     } catch (Exception e) {
       try {
         txManager.rollback();
       } catch (Exception e2) {
       }
-      out.println("<p>등록 오류!</p>");
-      out.println("<pre>");
-      e.printStackTrace(out);
-      out.println("</pre>");
+      req.setAttribute("message", String.format("%s 게시글 입력 중 오류 발생!", title));
+      req.setAttribute("exception", e);
+      req.getRequestDispatcher("/error").forward(req, resp);
     }
-    out.println("</body>");
-    out.println("</html>");
   }
 }

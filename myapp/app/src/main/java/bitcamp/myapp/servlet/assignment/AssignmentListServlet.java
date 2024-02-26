@@ -39,9 +39,10 @@ public class AssignmentListServlet extends HttpServlet {
     out.println("<title>부트캠프 5기</title>");
     out.println("</head>");
     out.println("<body>");
+    req.getRequestDispatcher("/header").include(req, resp);
+
     out.println("<h1>과제</h1>");
-    out.println("<a href='/assignment/form.html'>새 글</a>");
-    out.println("<a href='/'>HOME</a>");
+    out.println("<a href='/assignment/add'>새 글</a>");
 
     try {
       out.println("<table border='1'>");
@@ -59,8 +60,17 @@ public class AssignmentListServlet extends HttpServlet {
         out.printf("<tr> <td>%s</td> <td><a href='/assignment/view?no=%1$d'>%s</a></td> <td>%s</td> </tr>", assignment.getNo(), assignment.getTitle(),
             assignment.getDeadline());
       }
+      out.println("</tbody>");
+      out.println("</table>");
+
     } catch (Exception e) {
-      out.println("목록 오류!");
+      req.setAttribute("message", "과제 목록 오류 발생!");
+      req.setAttribute("exception", e);
+      req.getRequestDispatcher("/error").forward(req, resp);
     }
+    req.getRequestDispatcher("/footer").include(req, resp);
+    out.println("</body>");
+    out.println("</html>");
+
   }
 }

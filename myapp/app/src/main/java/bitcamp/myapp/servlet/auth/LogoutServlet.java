@@ -17,5 +17,4 @@ public class LogoutServlet extends HttpServlet {
     res.sendRedirect("/");
 
   }
-
 }

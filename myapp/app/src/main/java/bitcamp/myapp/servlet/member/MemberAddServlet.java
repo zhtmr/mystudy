@@ -23,12 +23,55 @@ public class MemberAddServlet extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
     resp.setContentType("text/html;charset=UTF-8");
-    req.setCharacterEncoding("UTF-8");
     PrintWriter out = resp.getWriter();
+
+    out.println("<!DOCTYPE html>");
+    out.println("<html lang='en'>");
+    out.println("<head>");
+    out.println("<meta charset='UTF-8'>");
+    out.println("<title>비트캠프 5기</title>");
+    out.println("</head>");
+    out.println("<body>");
+    req.getRequestDispatcher("/header").include(req, resp);
+
+    out.println("<h1>회원</h1>");
+
+    out.println("<form action='/member/add' method='post'>");
+    out.println("<div>");
+    out.println("<label>");
+    out.println("이름:");
+    out.println("<input type='text' name='name'>");
+    out.println("</label>");
+    out.println("</div>");
+    out.println("<div>");
+    out.println("<label>");
+    out.println("이메일:");
+    out.println("<input type='text' name='email'>");
+    out.println("</label>");
+    out.println("</div>");
+    out.println("<div>");
+    out.println("<label>");
+    out.println("암호:");
+    out.println("<input type='password' name='password'>");
+    out.println("</label>");
+    out.println("</div>");
+    out.println("<div>");
+    out.println("<button>등록</button>");
+    out.println("</div>");
+    out.println("</form>");
+    req.getRequestDispatcher("/footer").include(req, resp);
+    out.println("</body>");
+    out.println("</html>");
+
+  }
+
+  @Override
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
 
     try {
       Member member = new Member();
@@ -39,21 +82,9 @@ public class MemberAddServlet extends HttpServlet {
       memberDao.add(member);
       resp.sendRedirect("list");
     } catch (Exception e) {
-      out.println("<!DOCTYPE html>");
-      out.println("<html lang='en'>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>부트캠프 5기</title>");
-      out.println("</head>");
-      out.println("<body>");
-      out.println("<h1>회원</h1>");
-
-      out.println("<p>회원 등록 오류!</p>");
-      out.println("<pre>");
-      e.printStackTrace(out);
-      out.println("</pre>");
-      out.println("</body>");
-      out.println("</html>");
+      req.setAttribute("message", "회원 등록 중 오류 발생!");
+      req.setAttribute("exception", e);
+      req.getRequestDispatcher("/error").forward(req, resp);
     }
   }
 }
