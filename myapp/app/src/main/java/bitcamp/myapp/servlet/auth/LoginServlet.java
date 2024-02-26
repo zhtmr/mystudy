@@ -5,6 +5,7 @@ import bitcamp.myapp.vo.Member;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,17 @@ public class LoginServlet extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
 
+    String email = "";
+    Cookie[] cookies = req.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals("email")) {
+          email = cookie.getValue();
+          break;
+        }
+      }
+    }
+
     res.setContentType("text/html;charset=UTF-8");
     PrintWriter out = res.getWriter();
 
@@ -45,7 +57,7 @@ public class LoginServlet extends HttpServlet {
     out.println("<div>");
     out.println("<label>");
     out.println("이메일:");
-    out.println("<input type='text' name='email'>");
+    out.printf("<input type='text' name='email' value='%s'>\n", email);
     out.println("</label>");
     out.println("</div>");
     out.println("<div>");
@@ -55,7 +67,9 @@ public class LoginServlet extends HttpServlet {
     out.println("</label>");
     out.println("</div>");
     out.println("<button>로그인</button>");
-
+    out.println("<label>");
+    out.println("<input type='checkbox' name='saveEmail'> 이메일 저장");
+    out.println("</label>");
     out.println("</form>");
 
     req.getRequestDispatcher("/footer").include(req, res);
@@ -69,6 +83,17 @@ public class LoginServlet extends HttpServlet {
     try {
       String email = req.getParameter("email");
       String password = req.getParameter("password");
+      String saveEmail = req.getParameter("saveEmail");
+      Cookie cookie;
+      if (saveEmail != null) {
+        cookie = new Cookie("email", email);
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+      } else {
+        cookie = new Cookie("email", "");
+        cookie.setMaxAge(0);
+      }
+      res.addCookie(cookie);
+
       Member member = memberDao.findByEmailAndPassword(email, password);
 
       res.setContentType("text/html;charset=UTF-8");
