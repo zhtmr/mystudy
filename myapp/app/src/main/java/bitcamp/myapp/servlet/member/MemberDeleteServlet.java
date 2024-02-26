@@ -8,16 +8,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 
 @WebServlet("/member/delete")
 public class MemberDeleteServlet extends HttpServlet {
 
   private MemberDao memberDao;
+  private String uploadDir;
 
   @Override
   public void init() throws ServletException {
     memberDao = (MemberDao) getServletContext().getAttribute("memberDao");
+    uploadDir = getServletContext().getRealPath("/upload");
   }
 
   @Override
@@ -32,6 +35,10 @@ public class MemberDeleteServlet extends HttpServlet {
       }
 
       memberDao.delete(no);
+      String filename = member.getPhoto();
+      if (filename != null) {
+        new File(uploadDir + "/" + filename).delete();
+      }
       resp.sendRedirect("list");
 
     } catch (Exception e) {

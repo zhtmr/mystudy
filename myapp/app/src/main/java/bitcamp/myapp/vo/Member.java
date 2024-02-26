@@ -11,17 +11,20 @@ public class Member implements Serializable {
   private String email;
   private String name;
   private String password;
+  private String photo;
   private Date createdDate;
 
   @Override
   public String toString() {
-    return "Member{" +
-        "no=" + no +
-        ", email='" + email + '\'' +
-        ", name='" + name + '\'' +
-        ", password='" + password + '\'' +
-        ", createdDate=" + createdDate +
-        '}';
+    return "Member{" + "no=" + no + ", email='" + email + '\'' + ", name='" + name + '\'' + ", password='" + password + '\'' + ", photo='" + photo + '\'' + ", createdDate=" + createdDate + '}';
+  }
+
+  public String getPhoto() {
+    return photo;
+  }
+
+  public void setPhoto(String photo) {
+    this.photo = photo;
   }
 
   public int getNo() {
