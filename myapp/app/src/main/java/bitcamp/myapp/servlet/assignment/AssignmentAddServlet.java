@@ -67,7 +67,6 @@ public class AssignmentAddServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-
     try {
       Assignment assignment = new Assignment();
       assignment.setTitle(req.getParameter("title"));

@@ -44,7 +44,7 @@ public class MemberDeleteServlet extends HttpServlet {
     } catch (Exception e) {
       req.setAttribute("message", "회원 삭제 중 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error").forward(req, resp);
+      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

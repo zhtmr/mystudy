@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -31,31 +32,34 @@ public class MemberUpdateServlet extends HttpServlet {
       throws ServletException, IOException {
 
     try {
-      req.setCharacterEncoding("UTF-8");
       int no = Integer.parseInt(req.getParameter("no"));
-      Member member = memberDao.findBy(no);
-      if (member == null) {
+      Member old = memberDao.findBy(no);
+      if (old == null) {
         throw new Exception("회원 번호가 유효하지 않습니다.");
       }
 
+      Member member = new Member();
+      member.setNo(old.getNo());
       member.setName(req.getParameter("name"));
       member.setEmail(req.getParameter("email"));
       member.setPassword(req.getParameter("password"));
+      member.setCreatedDate(old.getCreatedDate());
 
       Part photoPart = req.getPart("photo");
       if (photoPart.getSize() > 0) {
         String filename = UUID.randomUUID().toString();
         member.setPhoto(filename);
         photoPart.write(this.uploadDir + "/" + filename);
+        new File(uploadDir + "/" + old.getPhoto()).delete();
       } else {
-        member.setPhoto(member.getPhoto());
+        member.setPhoto(old.getPhoto());
       }
       memberDao.update(member);
       resp.sendRedirect("list");
     } catch (Exception e) {
       req.setAttribute("message", "회원 변경 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error").forward(req, resp);
+      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

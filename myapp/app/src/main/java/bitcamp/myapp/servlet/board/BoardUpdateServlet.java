@@ -41,7 +41,6 @@ public class BoardUpdateServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
-    req.setCharacterEncoding("UTF-8");
     String title = "";
     try {
       int category = Integer.parseInt(req.getParameter("category"));
