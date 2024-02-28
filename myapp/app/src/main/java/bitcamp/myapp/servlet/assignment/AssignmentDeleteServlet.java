@@ -37,7 +37,7 @@ public class AssignmentDeleteServlet extends HttpServlet {
     } catch (Exception e) {
       req.setAttribute("message", "과제 삭제 중 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error").forward(req, resp);
+      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

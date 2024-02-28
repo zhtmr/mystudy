@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet("/board/view")
@@ -34,7 +33,6 @@ public class BoardViewServlet extends HttpServlet {
     try {
       int category = Integer.parseInt(req.getParameter("category"));
       title = category == 1 ? "게시글" : "가입인사";
-
       int no = Integer.parseInt(req.getParameter("no"));
       Board board = boardDao.findBy(no);
       if (board == null) {
@@ -43,57 +41,15 @@ public class BoardViewServlet extends HttpServlet {
 
       List<AttachedFile> files = fileDao.findAllByBoardNo(no);
 
-      resp.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = resp.getWriter();
-      out.println("<!DOCTYPE html>");
-      out.println("<html lang='en'>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>부트캠프 5기</title>");
-      out.println("</head>");
-      out.println("<body>");
-      req.getRequestDispatcher("/header").include(req, resp);
-      out.printf("<h1>%s</h1>\n", title);
+      req.setAttribute("category", category);
+      req.setAttribute("board", board);
+      req.setAttribute("files", files);
 
-      out.println("<form action='/board/update' method='post' enctype='multipart/form-data'>");
-      out.printf("<input name='category' type='hidden' value='%d'>\n", category);
-      out.println("<div>");
-      out.printf("번호: <input readonly type='text' name='no' value=%s>\n", board.getNo());
-      out.println("</div>");
-      out.println("<div>");
-      out.printf("제목: <input type='text' name='title' value=%s>\n", board.getTitle());
-      out.println("</div>");
-      out.println("<div>");
-      out.printf("<label for='content'>내용: </label><textarea name='content'>%s</textarea>\n",
-          board.getContent());
-      out.println("</div>");
-      out.println("<div>");
-      out.printf("작성자: <input readonly type='text' value=%s disabled>\n",
-          board.getWriter().getName());
-      out.println("</div>");
-      if (category == 1) {
-        out.println("<div>");
-        out.println("첨부파일: <input name='files' type='file' multiple >");
-        out.println("<ul>");
-        for (AttachedFile file : files) {
-          out.printf("<li><a href='/upload/board/%s'>%1$s</a> [<a href='/board/file/delete?category=%d&no=%d'>삭제</a>]</li>\n",
-              file.getFilePath(), category, file.getNo());
-        }
-        out.println("</ul>");
-        out.println("</div>");
-      }
-      out.println("<div>");
-      out.println("<button>변경</button>");
-      out.printf("<a href='/board/delete?category=%d&no=%d'>삭제</a>\n", category, no);
-      out.println("</div>");
-      out.println("</form>");
-      req.getRequestDispatcher("/footer").include(req, resp);
-      out.println("</body>");
-      out.println("</html>");
+      req.getRequestDispatcher("/board/view.jsp").forward(req, resp);
     } catch (Exception e) {
-      req.setAttribute("message", String.format("%s 게시글 조회 오류 발생!", title));
+      req.setAttribute("message", String.format("%s 조회 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error").forward(req, resp);
+      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

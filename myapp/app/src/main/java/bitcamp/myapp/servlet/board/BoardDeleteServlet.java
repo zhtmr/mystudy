@@ -73,7 +73,7 @@ public class BoardDeleteServlet extends HttpServlet {
       }
       req.setAttribute("message", String.format("%s 삭제 중 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error").forward(req, resp);
+      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

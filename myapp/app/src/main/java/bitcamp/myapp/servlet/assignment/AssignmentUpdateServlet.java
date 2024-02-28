@@ -51,7 +51,7 @@ public class AssignmentUpdateServlet extends HttpServlet {
       }
       req.setAttribute("message", "과제 변경 중 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error").forward(req, resp);
+      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

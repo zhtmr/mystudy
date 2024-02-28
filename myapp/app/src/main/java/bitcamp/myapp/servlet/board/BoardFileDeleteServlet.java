@@ -61,7 +61,7 @@ public class BoardFileDeleteServlet extends HttpServlet {
     } catch (Exception e) {
       req.setAttribute("message", String.format("%s 파일삭제 중 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error").forward(req, resp);
+      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

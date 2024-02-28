@@ -94,9 +94,9 @@ public class BoardUpdateServlet extends HttpServlet {
         txManager.rollback();
       } catch (Exception e2) {
       }
-      req.setAttribute("message", String.format("%s 게시글 변경 오류 발생!", title));
+      req.setAttribute("message", String.format("%s 변경 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error").forward(req, resp);
+      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }
