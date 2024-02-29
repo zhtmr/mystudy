@@ -10,7 +10,7 @@
 <head>
     <meta charset='UTF-8'>
     <c:if test="${not empty loginUser}">
-        <meta http-equiv="Refresh" content="1;url=/">
+        <meta http-equiv="Refresh" content="1;url=/index.html">
     </c:if>
     <c:if test="${empty loginUser}">
         <meta http-equiv="Refresh" content="1;url=/auth/login">

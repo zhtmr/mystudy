@@ -24,12 +24,10 @@ public class MemberListServlet extends HttpServlet {
       throws ServletException, IOException {
     try {
       req.setAttribute("list", memberDao.findAll());
-      req.getRequestDispatcher("/member/list.jsp").forward(req, resp);
+      req.setAttribute("viewUrl", "/member/list.jsp");
 
     } catch (Exception e) {
-      req.setAttribute("message", "회원 목록 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

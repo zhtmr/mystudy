@@ -31,11 +31,9 @@ public class MemberViewServlet extends HttpServlet {
         throw new Exception("회원 번호가 유효하지 않습니다.");
       }
       req.setAttribute("member", member);
-      req.getRequestDispatcher("/member/view.jsp").forward(req, resp);
+      req.setAttribute("viewUrl","/member/view.jsp");
     } catch (Exception e) {
-      req.setAttribute("message", "회원 조회 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }
