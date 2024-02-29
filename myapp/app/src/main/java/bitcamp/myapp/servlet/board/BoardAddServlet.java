@@ -43,7 +43,9 @@ public class BoardAddServlet extends HttpServlet {
 
     int category = Integer.parseInt(req.getParameter("category"));
 
+    String title = category == 1 ? "게시글" : "가입인사";
     req.setAttribute("category", category);
+    req.setAttribute("title", title);
     req.getRequestDispatcher("/board/form.jsp").forward(req, resp);
   }
 

@@ -16,7 +16,7 @@
     <div>
         <label>
             이메일:
-            <input type='text' name='email' value='<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>'>
+            <input type='text' name='email' value='${email}'>
         </label>
     </div>
     <div>

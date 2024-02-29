@@ -1,7 +1,5 @@
-<%@ page import="bitcamp.myapp.vo.Member" %>
-<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang='en'>
@@ -27,23 +25,27 @@
     </thead>
     <tbody>
 
-    <%
-        List<Member> list = (List<Member>) request.getAttribute("list");
-        for (Member member : list) { %>
-    <tr>
-        <td><%= member.getNo()%></td>
-        <td>
-<%          if (member.getPhoto() != null) { %>
-                <img src='/upload/<%= member.getPhoto()%>' height='20px'>
-<%          } else { %>
-                <img src='/img/default-photo.png' height='20px'>
-<%          } %>
-            <a href='/member/view?no=<%= member.getNo()%>'><%= member.getName()%></a>
-        </td>
-        <td><%= member.getEmail()%></td>
-        <td><%= member.getCreatedDate()%></td>
-    <tr>
-    <% } %>
+    <c:forEach items="${list}" var="member">
+        <tr>
+            <td>${member.no}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty member.photo}">
+                        <img src='/upload/${member.photo}' height='20px'>
+                    </c:when>
+                    <c:otherwise>
+                        <img src='/img/default-photo.png' height='20px'>
+                    </c:otherwise>
+                </c:choose>
+                <a href='/member/view?no=${member.no}'>${member.name}
+                </a>
+            </td>
+            <td>${member.email}
+            </td>
+            <td>${member.createdDate}
+            </td>
+        </tr>
+    </c:forEach>
     </tbody>
 </table>
 

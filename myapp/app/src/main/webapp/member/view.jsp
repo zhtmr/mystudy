@@ -1,6 +1,5 @@
-<%@ page import="bitcamp.myapp.vo.Member" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang='en'>
@@ -10,42 +9,39 @@
 </head>
 <body>
 <jsp:include page="/header.jsp"></jsp:include>
-<% Member member = (Member) request.getAttribute("member"); %>
 <h1>회원</h1>
 
 <form action='/member/update' method='post' enctype='multipart/form-data'>
     <div>
-        <%
-            String photoUrl;
-            if (member.getPhoto() != null) {
-                photoUrl = "/upload/" + member.getPhoto();
-            } else {
-                photoUrl = "/img/default-photo.png";
-            }
-        %>
-        사진: <a href='<%= photoUrl %>'><img src='<%= photoUrl %>' height='80px'></a><br>
+        사진:
+        <c:if test="${not empty member.photo}">
+            <a href='/upload/${member.photo}'><img src='/upload/${member.photo}' height='80px'></a><br>
+        </c:if>
+        <c:if test="${empty member.photo}">
+            <a href='/img/default-photo.png'><img src='/img/default-photo.png' height='80px'></a><br>
+        </c:if>
         <input type='file' name='photo'></div>
     <div>
         번호:
-        <input readonly type='text' name='no' value='<%= member.getNo()%>'>
+        <input readonly type='text' name='no' value='${member.no}'>
     </div>
     <div>
-        이름: <input type='text' name='name' value='<%=member.getName()%>'>
+        이름: <input type='text' name='name' value='${member.email}'>
     </div>
     <div>
-        이메일: <input type='text' name='email' value='<%=member.getEmail()%>'>
+        이메일: <input type='text' name='email' value='${member.name}'>
     </div>
     <div>
         비밀번호: <input type='password' name='password'>
     </div>
     <div>
         <div>
-            가입일: <input readonly type='text' value='<%= member.getCreatedDate()%>'>
+            가입일: <input readonly type='text' value='${member.createdDate}'>
         </div>
     </div>
     <div>
         <button>변경</button>
-        <a href='/member/delete?no=<%=member.getNo()%>'>삭제</a>
+        <a href='/member/delete?no=${member.no}'>삭제</a>
     </div>
 </form>
 

@@ -34,6 +34,7 @@ public class AssignmentDeleteServlet extends HttpServlet {
         throw new Exception("과제 번호가 유효하지 않습니다.");
       }
       assignmentDao.delete(no);
+      resp.sendRedirect("list");
     } catch (Exception e) {
       req.setAttribute("message", "과제 삭제 중 오류 발생!");
       req.setAttribute("exception", e);

@@ -1,7 +1,5 @@
-<%@ page import="java.util.List" %>
-<%@ page import="bitcamp.myapp.vo.Board" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang='en'>
@@ -11,16 +9,11 @@
 </head>
 <body>
 <jsp:include page="/header.jsp"></jsp:include>
-<%
-    int category = (int) request.getAttribute("category");
-    String title = category == 1 ? "게시글" : "가입인사";
-    List<Board> list = (List<Board>) request.getAttribute("list");
-%>
 
-<h1><%=title%>
+<h1>${title}
 </h1>
 
-<a href='/board/add?category=<%= category%>'>새 글</a>
+<a href='/board/add?category=${category}'>새 글</a>
 
 <table border='1'>
     <thead>
@@ -33,21 +26,20 @@
     </tr>
     </thead>
     <tbody>
-    <%
-        for (Board board : list) { %>
-            <tr>
-                <td><%=board.getNo()%>
-                </td>
-                <td><a href='/board/view?category=<%=category%>&no=<%=board.getNo()%>'><%=board.getTitle()%>
-                </a></td>
-                <td><%=board.getWriter().getName()%>
-                </td>
-                <td><%=board.getCreatedDate()%>
-                </td>
-                <td><%=board.getFileCount()%>
-                </td>
-            <tr>
-        <% } %>
+    <c:forEach items="${list}" var="board">
+    <tr>
+        <td>${board.no}
+        </td>
+        <td><a href='/board/view?category=${category}&no=${board.no}'>${board.title}
+        </a></td>
+        <td>${board.writer.name}
+        </td>
+        <td>${board.createdDate}
+        </td>
+        <td>${board.fileCount}
+        </td>
+    <tr>
+        </c:forEach>
     </tbody>
 </table>
 

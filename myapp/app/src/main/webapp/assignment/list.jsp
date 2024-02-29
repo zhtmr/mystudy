@@ -1,7 +1,5 @@
-<%@ page import="java.util.List" %>
-<%@ page import="bitcamp.myapp.vo.Assignment" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang='en'>
@@ -11,9 +9,6 @@
 </head>
 <body>
 <jsp:include page="/header.jsp"></jsp:include>
-<%
-    List<Assignment> list = (List<Assignment>) request.getAttribute("list");
-%>
 <h1>과제</h1>
 <a href='/assignment/add'>새 글</a>
 <table border='1'>
@@ -22,19 +17,18 @@
         <th>번호</th>
         <th>과제</th>
         <th>제출마감일</th>
-        </tr>
+    </tr>
     </thead>
     <tbody>
-<%
-    for (Assignment assignment : list) { %>
+    <c:forEach items="${list}" var="assignment">
         <tr>
-            <td><%= assignment.getNo()%></td>
-            <td><a href='/assignment/view?no=<%= assignment.getNo()%>'><%= assignment.getTitle()%></a></td>
-            <td><%= assignment.getDeadline()%></td>
+            <td>${assignment.no}</td>
+            <td><a href='/assignment/view?no=${assignment.no}'>${assignment.title}</a></td>
+            <td>${assignment.deadline}</td>
         </tr>
-    <% } %>
-        </tbody>
-    </table>
+    </c:forEach>
+    </tbody>
+</table>
 
 <jsp:include page="/footer.jsp"></jsp:include>
 </body>

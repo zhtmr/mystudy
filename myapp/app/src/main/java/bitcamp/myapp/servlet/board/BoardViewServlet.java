@@ -42,6 +42,7 @@ public class BoardViewServlet extends HttpServlet {
       List<AttachedFile> files = fileDao.findAllByBoardNo(no);
 
       req.setAttribute("category", category);
+      req.setAttribute("title", title);
       req.setAttribute("board", board);
       req.setAttribute("files", files);
 
