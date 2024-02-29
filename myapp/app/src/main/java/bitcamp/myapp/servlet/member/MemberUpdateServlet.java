@@ -55,11 +55,9 @@ public class MemberUpdateServlet extends HttpServlet {
         member.setPhoto(old.getPhoto());
       }
       memberDao.update(member);
-      resp.sendRedirect("list");
+      req.setAttribute("viewUrl","redirect:list");
     } catch (Exception e) {
-      req.setAttribute("message", "회원 변경 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

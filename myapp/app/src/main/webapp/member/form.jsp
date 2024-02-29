@@ -12,7 +12,7 @@
 
 <h1>회원</h1>
 
-<form action='/member/add' method='post' enctype='multipart/form-data'>
+<form action='/app/member/add' method='post' enctype='multipart/form-data'>
     <div>
         <label>
             이름:

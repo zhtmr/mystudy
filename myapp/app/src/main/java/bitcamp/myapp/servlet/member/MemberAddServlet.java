@@ -29,7 +29,7 @@ public class MemberAddServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    req.getRequestDispatcher("/member/form.jsp").forward(req, resp);
+    req.setAttribute("viewUrl","/member/form.jsp");
   }
 
   @Override
@@ -48,11 +48,10 @@ public class MemberAddServlet extends HttpServlet {
         photoPart.write(this.uploadDir + "/" + filename);
       }
       memberDao.add(member);
-      resp.sendRedirect("list");
+      req.setAttribute("viewUrl","redirect:list");
+
     } catch (Exception e) {
-      req.setAttribute("message", "회원 등록 중 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

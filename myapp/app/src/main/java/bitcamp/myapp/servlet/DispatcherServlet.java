@@ -1,6 +1,7 @@
 package bitcamp.myapp.servlet;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+@MultipartConfig(maxFileSize = 1024 * 1024 * 10)
 @WebServlet("/app/*")
 public class DispatcherServlet extends HttpServlet {
 
@@ -34,7 +36,11 @@ public class DispatcherServlet extends HttpServlet {
     }
     // 페이지 컨트롤러가 알려준 jsp 로 포워딩 한다.
     String viewUrl = (String) req.getAttribute("viewUrl");
-    req.getRequestDispatcher(viewUrl).forward(req, res);
+    if (viewUrl.startsWith("redirect:")) {
+      res.sendRedirect(viewUrl.substring(9));
+    } else {
+      req.getRequestDispatcher(viewUrl).forward(req, res);
+    }
 
   }
 }
