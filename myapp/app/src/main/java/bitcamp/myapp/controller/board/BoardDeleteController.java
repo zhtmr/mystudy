@@ -32,38 +32,40 @@ public class BoardDeleteController implements PageController {
 
   @Override
   public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    String title = "";
     int category = Integer.parseInt(request.getParameter("category"));
-    title = category == 1 ? "게시글" : "가입인사";
-
-    Member loginUser = (Member) request.getSession().getAttribute("loginUser");
-    if (loginUser == null) {
-      throw new Exception("로그인하시기 바랍니다.");
-    }
-
-    int no = Integer.parseInt(request.getParameter("no"));
-    Board board = boardDao.findBy(no);
-    if (board == null) {
-      throw new Exception("번호가 유효하지 않습니다.");
-    } else if (board.getWriter().getNo() != loginUser.getNo()) {
-      throw new Exception("권한이 없습니다.");
-    }
-
-    List<AttachedFile> files = fileDao.findAllByBoardNo(no);
-    txManager.begin();
-
-    fileDao.deleteAll(no);
-    boardDao.delete(no);
-
-    txManager.commit();
-    for (AttachedFile file : files) {
-      new File(uploadDir + "/" + file.getFilePath()).delete();
-    }
-
     try {
-      txManager.rollback();
-    } catch (SQLException ex) {
+
+      Member loginUser = (Member) request.getSession().getAttribute("loginUser");
+      if (loginUser == null) {
+        throw new Exception("로그인하시기 바랍니다.");
+      }
+
+      int no = Integer.parseInt(request.getParameter("no"));
+      Board board = boardDao.findBy(no);
+      if (board == null) {
+        throw new Exception("번호가 유효하지 않습니다.");
+      } else if (board.getWriter().getNo() != loginUser.getNo()) {
+        throw new Exception("권한이 없습니다.");
+      }
+
+      List<AttachedFile> files = fileDao.findAllByBoardNo(no);
+      txManager.begin();
+
+      fileDao.deleteAll(no);
+      boardDao.delete(no);
+
+      txManager.commit();
+      for (AttachedFile file : files) {
+        new File(uploadDir + "/" + file.getFilePath()).delete();
+      }
+
+      return "redirect:list?category=" + category;
+    } catch (Exception e) {
+      try {
+        txManager.rollback();
+      } catch (SQLException ex) {
+      }
+      throw e;
     }
-    return  "redirect:list?category=" + category;
   }
 }

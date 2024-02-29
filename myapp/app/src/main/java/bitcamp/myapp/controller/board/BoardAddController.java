@@ -44,50 +44,49 @@ public class BoardAddController implements PageController {
       return "/board/form.jsp";
     }
 
-    String title = "";
     int category = Integer.parseInt(request.getParameter("category"));
-    title = category == 1 ? "게시글" : "가입인사";
-
-    Member loginUser = (Member) request.getSession().getAttribute("loginUser");
-    if (loginUser == null) {
-      throw new Exception("로그인을 해주세요.");
-    }
-
-    Board board = new Board();
-    board.setCategory(category);
-    board.setTitle(request.getParameter("title"));
-    board.setContent(request.getParameter("content"));
-    board.setWriter(loginUser);
-
-    ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
-    if (category == 1) {
-      Collection<Part> parts = request.getParts();
-      for (Part part : parts) {
-        if (!part.getName().equals("files") || part.getSize() == 0) {
-          continue;
-        }
-        String filename = UUID.randomUUID().toString();
-        part.write(uploadDir + "/" + filename);
-        attachedFiles.add(new AttachedFile().filePath(filename));
-      }
-    }
-
-    txManager.begin();
-
-    boardDao.add(board);
-    if (!attachedFiles.isEmpty()) {
-      for (AttachedFile attachedFile : attachedFiles) {
-        attachedFile.setBoardNo(board.getNo());
-      }
-      fileDao.addAll(attachedFiles);
-    }
-
-    txManager.commit();
     try {
-      txManager.rollback();
-    } catch (Exception e2) {
-    }
+      Member loginUser = (Member) request.getSession().getAttribute("loginUser");
+      if (loginUser == null) {
+        throw new Exception("로그인을 해주세요.");
+      }
 
-    return  "redirect:list?category=" + category;
+      Board board = new Board();
+      board.setCategory(category);
+      board.setTitle(request.getParameter("title"));
+      board.setContent(request.getParameter("content"));
+      board.setWriter(loginUser);
+
+      ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
+      if (category == 1) {
+        Collection<Part> parts = request.getParts();
+        for (Part part : parts) {
+          if (!part.getName().equals("files") || part.getSize() == 0) {
+            continue;
+          }
+          String filename = UUID.randomUUID().toString();
+          part.write(uploadDir + "/" + filename);
+          attachedFiles.add(new AttachedFile().filePath(filename));
+        }
+      }
+
+      txManager.begin();
+
+      boardDao.add(board);
+      if (!attachedFiles.isEmpty()) {
+        for (AttachedFile attachedFile : attachedFiles) {
+          attachedFile.setBoardNo(board.getNo());
+        }
+        fileDao.addAll(attachedFiles);
+      }
+      txManager.commit();
+      return "redirect:list?category=" + category;
+    } catch (Exception e) {
+      try {
+        txManager.rollback();
+      } catch (Exception e2) {
+      }
+     throw e;
+    }
   }
 }
