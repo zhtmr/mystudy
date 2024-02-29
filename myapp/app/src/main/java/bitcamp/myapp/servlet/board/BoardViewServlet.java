@@ -46,11 +46,9 @@ public class BoardViewServlet extends HttpServlet {
       req.setAttribute("board", board);
       req.setAttribute("files", files);
 
-      req.getRequestDispatcher("/board/view.jsp").forward(req, resp);
+      req.setAttribute("viewUrl","/board/view.jsp");
     } catch (Exception e) {
-      req.setAttribute("message", String.format("%s 조회 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

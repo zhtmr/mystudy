@@ -15,7 +15,7 @@
 <h1>${title}
 </h1>
 
-<form action='/board/add?category=${category}' method='post' enctype='multipart/form-data'>
+<form action='/app/board/add?category=${category}' method='post' enctype='multipart/form-data'>
     <input name='category' type='hidden' value='${category}'>
     <div>
         제목: <input type='text' name='title'>

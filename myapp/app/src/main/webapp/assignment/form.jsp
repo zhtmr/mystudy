@@ -13,7 +13,7 @@
 <jsp:include page="/header.jsp"></jsp:include>
 <h1>과제</h1>
 
-<form action='/assignment/add' method='post'>
+<form action='/app/assignment/add' method='post'>
     <div>
         제목: <input type='text' name='title'>
     </div>

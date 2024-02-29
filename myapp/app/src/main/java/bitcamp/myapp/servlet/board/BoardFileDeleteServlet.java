@@ -56,12 +56,12 @@ public class BoardFileDeleteServlet extends HttpServlet {
 
       fileDao.delete(fileNo);
       new File(uploadDir + "/" + file.getFilePath()).delete();
-      resp.sendRedirect(req.getHeader("Referer"));
+//      resp.sendRedirect(req.getHeader("Referer"));
+      req.setAttribute("viewUrl",
+          "redirect:../view?category=" + category + "&no=" + file.getBoardNo());
 
     } catch (Exception e) {
-      req.setAttribute("message", String.format("%s 파일삭제 중 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

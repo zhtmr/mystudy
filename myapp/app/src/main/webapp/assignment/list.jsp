@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="/header.jsp"></jsp:include>
 <h1>과제</h1>
-<a href='/assignment/add'>새 글</a>
+<a href='/app/assignment/add'>새 글</a>
 <table border='1'>
     <thead>
     <tr>
@@ -23,7 +23,7 @@
     <c:forEach items="${list}" var="assignment">
         <tr>
             <td>${assignment.no}</td>
-            <td><a href='/assignment/view?no=${assignment.no}'>${assignment.title}</a></td>
+            <td><a href='/app/assignment/view?no=${assignment.no}'>${assignment.title}</a></td>
             <td>${assignment.deadline}</td>
         </tr>
     </c:forEach>

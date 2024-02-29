@@ -31,12 +31,10 @@ public class AssignmentListServlet extends HttpServlet {
     try {
       List<Assignment> list = assignmentDao.findAll();
       req.setAttribute("list", list);
-      req.getRequestDispatcher("/assignment/list.jsp").forward(req, resp);
+      req.setAttribute("viewUrl","/assignment/list.jsp");
 
     } catch (Exception e) {
-      req.setAttribute("message", "과제 목록 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
 
   }

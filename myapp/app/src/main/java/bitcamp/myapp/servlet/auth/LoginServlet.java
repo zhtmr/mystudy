@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet("/auth/login")
 public class LoginServlet extends HttpServlet {
@@ -35,7 +36,7 @@ public class LoginServlet extends HttpServlet {
         }
       }
     }
-    req.getRequestDispatcher("/auth/form.jsp").forward(req, res);
+    req.setAttribute("viewUrl","/auth/form.jsp");
   }
 
   @Override
@@ -46,26 +47,26 @@ public class LoginServlet extends HttpServlet {
       String password = req.getParameter("password");
       String saveEmail = req.getParameter("saveEmail");
       Cookie cookie;
+      ArrayList<Cookie> cookies = new ArrayList<>();
       if (saveEmail != null) {
         cookie = new Cookie("email", email);
         cookie.setMaxAge(60 * 60 * 24 * 7);
+        cookies.add(cookie);
       } else {
         cookie = new Cookie("email", "");
         cookie.setMaxAge(0);
+        cookies.add(cookie);
       }
-      res.addCookie(cookie);
-
+      req.setAttribute("cookies", cookies);
       Member member = memberDao.findByEmailAndPassword(email, password);
 
       if (member != null) {
         req.getSession().setAttribute("loginUser", member);
       }
 
-      req.getRequestDispatcher("/auth/login.jsp").forward(req, res);
+      req.setAttribute("viewUrl","/auth/login.jsp");
     } catch (Exception e) {
-      req.setAttribute("message", "로그인 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, res);
     }
   }
 }

@@ -43,15 +43,13 @@ public class AssignmentUpdateServlet extends HttpServlet {
       assignment.setDeadline(Date.valueOf(req.getParameter("deadline")));
       assignmentDao.update(assignment);
       txManager.commit();
-      resp.sendRedirect("/assignment/list");
+      req.setAttribute("viewUrl","redirect:list");
     } catch (Exception e) {
       try {
         txManager.rollback();
       } catch (SQLException ex) {
       }
-      req.setAttribute("message", "과제 변경 중 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

@@ -11,7 +11,7 @@
 <jsp:include page="/header.jsp"></jsp:include>
 <h1>과제</h1>
 
-<form action='/assignment/update' method='post'>
+<form action='/app/assignment/update' method='post'>
     <div>
         번호: <input readonly type='text' name='no' value=${assignment.no}>
     </div>
@@ -25,7 +25,7 @@
         마감일: <input type='date' name='deadline' value=${assignment.deadline}>
     </div>
     <button>변경</button>
-    <a href='/assignment/delete?no=${assignment.no}'>삭제</a>
+    <a href='/app/assignment/delete?no=${assignment.no}'>삭제</a>
 </form>
 
 <jsp:include page="/footer.jsp"></jsp:include>

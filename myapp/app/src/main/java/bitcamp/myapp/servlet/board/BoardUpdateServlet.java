@@ -88,15 +88,13 @@ public class BoardUpdateServlet extends HttpServlet {
       }
 
       txManager.commit();
-      resp.sendRedirect("/board/list?category=" + category);
+      req.setAttribute("viewUrl", "redirect:list?category=" + category);
     } catch (Exception e) {
       try {
         txManager.rollback();
       } catch (Exception e2) {
       }
-      req.setAttribute("message", String.format("%s 변경 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

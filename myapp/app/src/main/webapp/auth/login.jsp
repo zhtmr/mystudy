@@ -13,7 +13,7 @@
         <meta http-equiv="Refresh" content="1;url=/index.html">
     </c:if>
     <c:if test="${empty loginUser}">
-        <meta http-equiv="Refresh" content="1;url=/auth/login">
+        <meta http-equiv="Refresh" content="1;url=/app/auth/login">
     </c:if>
     <title>비트캠프 5기</title>
 </head>

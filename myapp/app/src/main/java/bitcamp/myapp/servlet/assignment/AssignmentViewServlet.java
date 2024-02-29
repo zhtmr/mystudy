@@ -35,11 +35,9 @@ public class AssignmentViewServlet extends HttpServlet {
       }
 
       req.setAttribute("assignment", assignment);
-      req.getRequestDispatcher("/assignment/view.jsp").forward(req, resp);
+      req.setAttribute("viewUrl","/assignment/view.jsp");
     } catch (Exception e) {
-      req.setAttribute("message", "과제 상세보기 중 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

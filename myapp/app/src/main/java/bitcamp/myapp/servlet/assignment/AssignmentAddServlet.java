@@ -27,8 +27,8 @@ public class AssignmentAddServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-
-    req.getRequestDispatcher("/assignment/form.jsp").forward(req, resp);
+    req.setAttribute("viewUrl", "/assignment/form.jsp");
+//    req.getRequestDispatcher("/assignment/form.jsp").forward(req, resp);
   }
 
   @Override
@@ -42,11 +42,9 @@ public class AssignmentAddServlet extends HttpServlet {
 
       assignmentDao.add(assignment);
 
-      resp.sendRedirect("/assignment/list");
+      req.setAttribute("viewUrl","redirect:list");
     } catch (Exception e) {
-      req.setAttribute("message", "과제 입력 중 오류 발생!");
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

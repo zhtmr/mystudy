@@ -46,7 +46,7 @@ public class BoardAddServlet extends HttpServlet {
     String title = category == 1 ? "게시글" : "가입인사";
     req.setAttribute("category", category);
     req.setAttribute("title", title);
-    req.getRequestDispatcher("/board/form.jsp").forward(req, resp);
+    req.setAttribute("viewUrl","/board/form.jsp");
   }
 
   @Override
@@ -93,15 +93,13 @@ public class BoardAddServlet extends HttpServlet {
       }
 
       txManager.commit();
-      resp.sendRedirect("/board/list?category=" + category);
+      req.setAttribute("viewUrl", "redirect:list?category=" + category);
     } catch (Exception e) {
       try {
         txManager.rollback();
       } catch (Exception e2) {
       }
-      req.setAttribute("message", String.format("%s 게시글 입력 중 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }

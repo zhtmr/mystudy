@@ -34,11 +34,9 @@ public class BoardListServlet extends HttpServlet {
       req.setAttribute("list", list);
       req.setAttribute("category", category);
       req.setAttribute("title", title);
-      req.getRequestDispatcher("/board/list.jsp").forward(req, resp);
+      req.setAttribute("viewUrl","/board/list.jsp");
     } catch (Exception e) {
-      req.setAttribute("message", String.format("%s 게시글 목록 오류 발생!", title));
       req.setAttribute("exception", e);
-      req.getRequestDispatcher("/error.jsp").forward(req, resp);
     }
   }
 }
