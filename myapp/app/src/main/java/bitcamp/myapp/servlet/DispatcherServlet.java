@@ -9,6 +9,8 @@ import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +65,9 @@ public class DispatcherServlet extends HttpServlet {
         throw new Exception(req.getPathInfo() + " 요청 페이지를 찾을 수 없습니다.");
       }
 
-      String viewUrl = (String) requestHandler.handler.invoke(requestHandler.controller, req, res);
+      Object[] args = prepareRequestHandlerArguments(requestHandler.handler, req, res);
+
+      String viewUrl = (String) requestHandler.handler.invoke(requestHandler.controller, args);
 
       // 페이지 컨트롤러가 알려준 jsp 로 포워딩 한다.
       if (viewUrl.startsWith("redirect:")) {
@@ -93,6 +98,47 @@ public class DispatcherServlet extends HttpServlet {
         }
       }
     }
+  }
+
+  private Object[] prepareRequestHandlerArguments(Method handler, HttpServletRequest request, HttpServletResponse response) {
+    Parameter[] params = handler.getParameters();
+
+    // 파라미터로 전달할 값을 담을 배열
+    Object[] args = new Object[params.length];
+
+    // 파라미터를 배열에 담는다.
+    for (int i = 0; i < params.length; i++) {
+      Parameter param = params[i];
+      if (param.getType() == HttpServletRequest.class || param.getType() == ServletRequest.class) {
+        args[i] = request;
+      } else if (param.getType() == HttpServletResponse.class || param.getType() == ServletResponse.class) {
+        args[i] = response;
+      } else {
+        RequestParam requestParam = param.getAnnotation(RequestParam.class);
+        String paramName = requestParam.value();
+        String paramValue = request.getParameter(paramName);
+        if (param.getType() == byte.class) {
+          args[i] = Byte.parseByte(paramValue);
+        } else if (param.getType() == short.class) {
+          args[i] = Short.parseShort(paramValue);
+        } else if (param.getType() == int.class) {
+          args[i] = Integer.parseInt(paramValue);
+        } else if (param.getType() == long.class) {
+          args[i] = Long.parseLong(paramValue);
+        } else if (param.getType() == float.class) {
+          args[i] = Float.parseFloat(paramValue);
+        } else if (param.getType() == double.class) {
+          args[i] = Double.parseDouble(paramValue);
+        } else if (param.getType() == boolean.class) {
+          args[i] = Boolean.parseBoolean(paramValue);
+        } else if (param.getType() == char.class) {
+          args[i] = paramValue.charAt(0);
+        } else {
+          args[i] = paramValue;
+        }
+      }
+    }
+    return args;
   }
 
 }
