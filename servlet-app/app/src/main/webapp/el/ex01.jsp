@@ -12,7 +12,7 @@
 <h1>EL 표기법</h1>
 <%-- 
 - EL(Expression Language)은 콤마(.)와 대괄호([]) 등을 사용하여 객체의 프로퍼티나,
-  리스트, 셋, 맵 객체의 값을 쉽게 꺼내고 설정하게 도와주는 문법이다.
+  리스트, 셋, 맵 객체의 값을 쉽게 꺼내고 설정하는 문법이다.
   특히 값을 꺼낼 때는 OGNL 표기법을 사용한다.
   
 - OGNL(Object Graph Navigation Language)?
