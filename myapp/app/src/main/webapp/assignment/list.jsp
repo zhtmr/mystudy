@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="/header.jsp"></jsp:include>
 <h1>과제</h1>
-<a href='/app/assignment/add'>새 글</a>
+<a href='/app/assignment/form'>새 글</a>
 <table border='1'>
     <thead>
     <tr>

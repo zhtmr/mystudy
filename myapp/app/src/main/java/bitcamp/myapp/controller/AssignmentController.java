@@ -16,15 +16,20 @@ public class AssignmentController {
     this.assignmentDao = assignmentDao;
   }
 
+  @RequestMapping("/assignment/form")
+  public String form() throws Exception {
+    return "/assignment/form.jsp";
+  }
+
   @RequestMapping("/assignment/add")
-  public String add(HttpServletRequest request) throws Exception {
-    if (request.getMethod().equals("GET")) {
-      return "/assignment/form.jsp";
-    }
+  public String add(
+      @RequestParam("title") String title,
+      @RequestParam("content") String content,
+      @RequestParam("deadline") Date deadline) throws Exception {
     Assignment assignment = new Assignment();
-    assignment.setTitle(request.getParameter("title"));
-    assignment.setContent(request.getParameter("content"));
-    assignment.setDeadline(Date.valueOf(request.getParameter("deadline")));
+    assignment.setTitle(title);
+    assignment.setContent(content);
+    assignment.setDeadline(deadline);
 
     assignmentDao.add(assignment);
 
@@ -50,24 +55,25 @@ public class AssignmentController {
   }
 
   @RequestMapping("/assignment/update")
-  public String update(HttpServletRequest request) throws Exception {
-    int no = Integer.parseInt(request.getParameter("no"));
+  public String update(@RequestParam("no") int no,
+      @RequestParam("content") String content,
+      @RequestParam("title") String title,
+      @RequestParam("deadline") Date deadline) throws Exception {
     Assignment old = this.assignmentDao.findBy(no);
     if (old == null) {
       throw new Exception("과제 번호가 유효하지 않습니다.");
     }
     Assignment assignment = new Assignment();
     assignment.setNo(old.getNo());
-    assignment.setTitle(request.getParameter("title"));
-    assignment.setContent(request.getParameter("content"));
-    assignment.setDeadline(Date.valueOf(request.getParameter("deadline")));
+    assignment.setTitle(title);
+    assignment.setContent(content);
+    assignment.setDeadline(deadline);
     assignmentDao.update(assignment);
     return "redirect:list";
   }
 
   @RequestMapping("/assignment/delete")
-  public String delete(HttpServletRequest request) throws Exception {
-    int no = Integer.parseInt(request.getParameter("no"));
+  public String delete(@RequestParam("no") int no) throws Exception {
     Assignment assignment = assignmentDao.findBy(no);
     if (assignment == null) {
       throw new Exception("과제 번호가 유효하지 않습니다.");
