@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class HomeController {
 
-  @RequestMapping
+  @RequestMapping("/home")
   public String execute(HttpServletRequest req, HttpServletResponse res)
       throws Exception {
 

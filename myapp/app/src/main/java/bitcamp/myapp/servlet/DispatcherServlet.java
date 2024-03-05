@@ -1,12 +1,6 @@
 package bitcamp.myapp.servlet;
 
-import bitcamp.myapp.controller.HomeController;
-import bitcamp.myapp.controller.RequestMapping;
-import bitcamp.myapp.controller.assignment.*;
-import bitcamp.myapp.controller.auth.LoginController;
-import bitcamp.myapp.controller.auth.LogoutController;
-import bitcamp.myapp.controller.board.*;
-import bitcamp.myapp.controller.member.*;
+import bitcamp.myapp.controller.*;
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.dao.AttachedFileDao;
 import bitcamp.myapp.dao.BoardDao;
@@ -24,7 +18,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10)
@@ -32,6 +28,7 @@ import java.util.Map;
 public class DispatcherServlet extends HttpServlet {
 
   private Map<String, Object> controllerMap = new HashMap<>();
+  private List<Object> controllers = new ArrayList<>();
 
   @Override
   public void init() throws ServletException {
@@ -42,31 +39,14 @@ public class DispatcherServlet extends HttpServlet {
     AttachedFileDao fileDao = (AttachedFileDao) ctx.getAttribute("fileDao");
     TransactionManager txManager = (TransactionManager) ctx.getAttribute("txManager");
 
-    controllerMap.put("/home", new HomeController());
-
-    String memberUploadDir = getServletContext().getRealPath("/upload");
-    controllerMap.put("/member/list", new MemberListController(memberDao));
-    controllerMap.put("/member/view", new MemberViewController(memberDao));
-    controllerMap.put("/member/add", new MemberAddController(memberDao, memberUploadDir));
-    controllerMap.put("/member/update", new MemberUpdateController(memberDao, memberUploadDir));
-    controllerMap.put("/member/delete", new MemberDeleteController(memberDao, memberUploadDir));
-
-    controllerMap.put("/assignment/list", new AssignmentListController(assignmentDao));
-    controllerMap.put("/assignment/view", new AssignmentViewController(assignmentDao));
-    controllerMap.put("/assignment/add", new AssignmentAddController(assignmentDao));
-    controllerMap.put("/assignment/update", new AssignmentUpdateController(assignmentDao));
-    controllerMap.put("/assignment/delete", new AssignmentDeleteController(assignmentDao));
-
-    controllerMap.put("/auth/login", new LoginController(memberDao));
-    controllerMap.put("/auth/logout", new LogoutController());
-
     String boardUploadDir = getServletContext().getRealPath("/upload/board");
-    controllerMap.put("/board/list", new BoardListController(boardDao));
-    controllerMap.put("/board/view", new BoardViewController(boardDao, fileDao));
-    controllerMap.put("/board/add", new BoardAddController(boardDao, fileDao, txManager, boardUploadDir));
-    controllerMap.put("/board/update", new BoardUpdateController(boardDao, txManager, fileDao, boardUploadDir));
-    controllerMap.put("/board/delete", new BoardDeleteController(boardDao, fileDao, boardUploadDir, txManager));
-    controllerMap.put("/board/file/delete", new BoardFileDeleteController(boardDao, fileDao, boardUploadDir));
+    String memberUploadDir = getServletContext().getRealPath("/upload");
+
+    controllers.add(new HomeController());
+    controllers.add(new AssignmentController(assignmentDao));
+    controllers.add(new AuthController(memberDao));
+    controllers.add(new BoardController(boardDao, fileDao, txManager, boardUploadDir));
+    controllers.add(new MemberController(memberDao, memberUploadDir));
 
   }
 
@@ -74,14 +54,17 @@ public class DispatcherServlet extends HttpServlet {
   protected void service(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
 
-    // url 에서 요청한 페이지 컨트롤러를 실행한다.
-    Object controller = controllerMap.get(req.getPathInfo());
-    if (controller == null) {
-      throw new ServletException(req.getPathInfo() + " 요청 페이지를 찾을 수 없습니다.");
-    }
-
     try {
-      Method requestHandler = findRequestHandler(controller);
+      Object controller = null;
+      Method requestHandler = null;
+      for (Object obj : controllers) {
+        requestHandler = findRequestHandler(obj, req.getPathInfo());
+        if (requestHandler != null) {
+          controller = obj;
+          break;
+        }
+      }
+
       if (requestHandler == null) {
         throw new Exception(req.getPathInfo() + " 요청 페이지를 찾을 수 없습니다.");
       }
@@ -107,11 +90,11 @@ public class DispatcherServlet extends HttpServlet {
     }
   }
 
-  private Method findRequestHandler(Object controller) {
+  private Method findRequestHandler(Object controller, String path) {
     Method[] methods = controller.getClass().getDeclaredMethods();
     for (Method m : methods) {
       RequestMapping requestMapping = m.getAnnotation(RequestMapping.class);
-      if (requestMapping != null) {
+      if (requestMapping != null && requestMapping.value().equals(path)) {
         return m;
       }
     }
