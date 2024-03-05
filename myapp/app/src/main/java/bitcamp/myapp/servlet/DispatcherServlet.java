@@ -1,7 +1,7 @@
 package bitcamp.myapp.servlet;
 
 import bitcamp.myapp.controller.HomeController;
-import bitcamp.myapp.controller.PageController;
+import bitcamp.myapp.controller.RequestMapping;
 import bitcamp.myapp.controller.assignment.*;
 import bitcamp.myapp.controller.auth.LoginController;
 import bitcamp.myapp.controller.auth.LogoutController;
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ import java.util.Map;
 @WebServlet("/app/*")
 public class DispatcherServlet extends HttpServlet {
 
-  private Map<String, PageController> controllerMap = new HashMap<>();
+  private Map<String, Object> controllerMap = new HashMap<>();
 
   @Override
   public void init() throws ServletException {
@@ -74,13 +75,18 @@ public class DispatcherServlet extends HttpServlet {
       throws ServletException, IOException {
 
     // url 에서 요청한 페이지 컨트롤러를 실행한다.
-    PageController controller = controllerMap.get(req.getPathInfo());
+    Object controller = controllerMap.get(req.getPathInfo());
     if (controller == null) {
       throw new ServletException(req.getPathInfo() + " 요청 페이지를 찾을 수 없습니다.");
     }
 
     try {
-      String viewUrl = controller.execute(req, res);
+      Method requestHandler = findRequestHandler(controller);
+      if (requestHandler == null) {
+        throw new Exception(req.getPathInfo() + " 요청 페이지를 찾을 수 없습니다.");
+      }
+
+      String viewUrl = (String) requestHandler.invoke(controller, req, res);
 
       // 페이지 컨트롤러가 알려준 jsp 로 포워딩 한다.
       if (viewUrl.startsWith("redirect:")) {
@@ -99,5 +105,16 @@ public class DispatcherServlet extends HttpServlet {
 
       req.getRequestDispatcher("/error.jsp").forward(req, res);
     }
+  }
+
+  private Method findRequestHandler(Object controller) {
+    Method[] methods = controller.getClass().getDeclaredMethods();
+    for (Method m : methods) {
+      RequestMapping requestMapping = m.getAnnotation(RequestMapping.class);
+      if (requestMapping != null) {
+        return m;
+      }
+    }
+    return null;
   }
 }

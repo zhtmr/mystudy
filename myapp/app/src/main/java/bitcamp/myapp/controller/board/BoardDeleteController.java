@@ -1,6 +1,6 @@
 package bitcamp.myapp.controller.board;
 
-import bitcamp.myapp.controller.PageController;
+import bitcamp.myapp.controller.RequestMapping;
 import bitcamp.myapp.dao.AttachedFileDao;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.AttachedFile;
@@ -14,7 +14,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 
-public class BoardDeleteController implements PageController {
+public class BoardDeleteController {
 
   private BoardDao boardDao;
   private AttachedFileDao fileDao;
@@ -30,7 +30,7 @@ public class BoardDeleteController implements PageController {
   }
 
 
-  @Override
+  @RequestMapping
   public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     int category = Integer.parseInt(request.getParameter("category"));
     try {

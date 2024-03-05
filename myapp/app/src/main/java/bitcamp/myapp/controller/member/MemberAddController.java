@@ -1,6 +1,6 @@
 package bitcamp.myapp.controller.member;
 
-import bitcamp.myapp.controller.PageController;
+import bitcamp.myapp.controller.RequestMapping;
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
 
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.util.UUID;
 
-public class MemberAddController implements PageController {
+public class MemberAddController {
 
   private MemberDao memberDao;
   private String uploadDir;
@@ -19,7 +19,7 @@ public class MemberAddController implements PageController {
     this.uploadDir = uploadDir;
   }
 
-  @Override
+  @RequestMapping
   public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     if (request.getMethod().equals("GET")) {
       return "/member/form.jsp";

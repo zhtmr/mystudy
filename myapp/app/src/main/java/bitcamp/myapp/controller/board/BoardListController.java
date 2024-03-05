@@ -1,6 +1,6 @@
 package bitcamp.myapp.controller.board;
 
-import bitcamp.myapp.controller.PageController;
+import bitcamp.myapp.controller.RequestMapping;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.Board;
 
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class BoardListController implements PageController {
+public class BoardListController {
   private BoardDao boardDao;
 
 
@@ -17,7 +17,7 @@ public class BoardListController implements PageController {
   }
 
 
-  @Override
+  @RequestMapping
   public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     String title = "";
       int category = Integer.parseInt(request.getParameter("category"));

@@ -3,9 +3,9 @@ package bitcamp.myapp.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class HomeController implements PageController {
+public class HomeController {
 
-  @Override
+  @RequestMapping
   public String execute(HttpServletRequest req, HttpServletResponse res)
       throws Exception {
 

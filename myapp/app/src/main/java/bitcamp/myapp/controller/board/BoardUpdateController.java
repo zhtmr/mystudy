@@ -1,6 +1,6 @@
 package bitcamp.myapp.controller.board;
 
-import bitcamp.myapp.controller.PageController;
+import bitcamp.myapp.controller.RequestMapping;
 import bitcamp.myapp.dao.AttachedFileDao;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.AttachedFile;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-public class BoardUpdateController implements PageController {
+public class BoardUpdateController {
 
   private BoardDao boardDao;
   private TransactionManager txManager;
@@ -32,7 +32,7 @@ public class BoardUpdateController implements PageController {
   }
 
 
-  @Override
+  @RequestMapping
   public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     int category = Integer.parseInt(request.getParameter("category"));
 
