@@ -1,6 +1,5 @@
 package bitcamp.myapp.controller;
 
-import bitcamp.myapp.controller.RequestMapping;
 import bitcamp.myapp.dao.AttachedFileDao;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.AttachedFile;
@@ -10,13 +9,11 @@ import bitcamp.util.TransactionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class BoardController {
 
@@ -26,49 +23,46 @@ public class BoardController {
   private String uploadDir;
 
 
-  public BoardController(BoardDao boardDao, AttachedFileDao fileDao,
-      TransactionManager txManager, String uploadDir) {
+  public BoardController(BoardDao boardDao, AttachedFileDao fileDao, TransactionManager txManager,
+      String uploadDir) {
     this.boardDao = boardDao;
     this.fileDao = fileDao;
     this.txManager = txManager;
     this.uploadDir = uploadDir;
   }
 
-
+  @RequestMapping("/board/form")
+  public String form(@RequestParam("category") int category, Map<String, Object> map) throws Exception {
+    String title = category == 1 ? "게시글" : "가입인사";
+    map.put("title", title);
+    map.put("category", category);
+    return "/board/form.jsp";
+  }
 
   @RequestMapping("/board/add")
-  public String add(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    if (request.getMethod().equals("GET")) {
-      int category = Integer.parseInt(request.getParameter("category"));
+  public String add(Board board, @RequestParam("files") Part[] files, HttpSession session,
+      Map<String, Object> map) throws Exception {
 
-      String title = category == 1 ? "게시글" : "가입인사";
-      request.setAttribute("category", category);
-      request.setAttribute("title", title);
-      return "/board/form.jsp";
-    }
+    int category = board.getCategory();
+    String title = category == 1 ? "게시글" : "가입인사";
+    map.put("title", title);
+    map.put("category", category);
 
-    int category = Integer.parseInt(request.getParameter("category"));
     try {
-      Member loginUser = (Member) request.getSession().getAttribute("loginUser");
+      Member loginUser = (Member) session.getAttribute("loginUser");
       if (loginUser == null) {
         throw new Exception("로그인을 해주세요.");
       }
-
-      Board board = new Board();
-      board.setCategory(category);
-      board.setTitle(request.getParameter("title"));
-      board.setContent(request.getParameter("content"));
       board.setWriter(loginUser);
 
       ArrayList<AttachedFile> attachedFiles = new ArrayList<>();
       if (category == 1) {
-        Collection<Part> parts = request.getParts();
-        for (Part part : parts) {
-          if (!part.getName().equals("files") || part.getSize() == 0) {
+        for (Part file : files) {
+          if (file.getSize() == 0) {
             continue;
           }
           String filename = UUID.randomUUID().toString();
-          part.write(uploadDir + "/" + filename);
+          file.write(uploadDir + "/" + filename);
           attachedFiles.add(new AttachedFile().filePath(filename));
         }
       }
@@ -89,7 +83,7 @@ public class BoardController {
         txManager.rollback();
       } catch (Exception e2) {
       }
-     throw e;
+      throw e;
     }
   }
 
@@ -226,7 +220,8 @@ public class BoardController {
   }
 
   @RequestMapping("/board/file/delete")
-  public String boardFileDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public String boardFileDelete(HttpServletRequest request, HttpServletResponse response)
+      throws Exception {
     String title = "";
     int category = Integer.parseInt(request.getParameter("category"));
     title = category == 1 ? "게시글" : "가입인사";

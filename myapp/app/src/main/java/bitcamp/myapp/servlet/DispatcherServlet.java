@@ -21,10 +21,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10)
@@ -128,7 +125,7 @@ public class DispatcherServlet extends HttpServlet {
         args[i] = request.getSession();
       } else {
         CookieValue cookieValueAnno = methodParam.getAnnotation(CookieValue.class);
-        if (cookieValueAnno != null) {
+        if (cookieValueAnno != null) {  // @CookieValue 어노테이션이 붙은 경우
           String value = getCookieValue(cookieValueAnno.value(), request);
           if (value != null) {
             args[i] = valueOf(value, methodParam.getType());
@@ -139,8 +136,28 @@ public class DispatcherServlet extends HttpServlet {
         RequestParam requestParam = methodParam.getAnnotation(RequestParam.class);
         if (requestParam != null) { // @RequestParam 어노테이션이 붙은 경우
           String requestParamName = requestParam.value();
-          String requestParamValue = request.getParameter(requestParamName);
-          args[i] = valueOf(requestParamValue, methodParam.getType());
+          if (methodParam.getType() == Part[].class) {  // 다중 업로드
+            Collection<Part> parts = request.getParts();
+            List<Part> fileParts = new ArrayList<>();
+            for (Part part : parts) {
+              if (part.getName().equals(requestParamName)) {
+                fileParts.add(part);
+              }
+            }
+            args[i] = fileParts.toArray(new Part[0]);
+          } else if (methodParam.getType() == Part.class) {  // 단일 파일 업로드
+            Collection<Part> parts = request.getParts();
+            for (Part part : parts) {
+              if (part.getName().equals(requestParamName)) {
+                args[i] = part;
+                break;
+              }
+            }
+
+          } else {
+            String requestParamValue = request.getParameter(requestParamName);
+            args[i] = valueOf(requestParamValue, methodParam.getType());
+          }
           continue;
         }
 
