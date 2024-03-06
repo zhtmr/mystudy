@@ -13,7 +13,7 @@
 
 <h1>회원</h1>
 
-<a href='/app/member/add'>새 회원</a>
+<a href='/app/member/form'>새 회원</a>
 <table border='1'>
     <thead>
     <tr>

@@ -34,7 +34,7 @@
     <div>
         <label>
             사진:
-            <input type='file' name='photo'>
+            <input type='file' name='file'>
         </label>
     </div>
     <div>
