@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.sql.Date;
@@ -101,47 +102,87 @@ public class DispatcherServlet extends HttpServlet {
     }
   }
 
-  private Object[] prepareRequestHandlerArguments(Method handler, HttpServletRequest request, HttpServletResponse response) {
-    Parameter[] params = handler.getParameters();
+  private Object[] prepareRequestHandlerArguments(Method handler, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    Parameter[] methodParams = handler.getParameters();
 
     // 파라미터로 전달할 값을 담을 배열
-    Object[] args = new Object[params.length];
+    Object[] args = new Object[methodParams.length];
 
     // 파라미터를 배열에 담는다.
-    for (int i = 0; i < params.length; i++) {
-      Parameter param = params[i];
-      if (param.getType() == HttpServletRequest.class || param.getType() == ServletRequest.class) {
+    for (int i = 0; i < methodParams.length; i++) {
+      Parameter methodParam = methodParams[i];
+      if (methodParam.getType() == HttpServletRequest.class || methodParam.getType() == ServletRequest.class) {
         args[i] = request;
-      } else if (param.getType() == HttpServletResponse.class || param.getType() == ServletResponse.class) {
+      } else if (methodParam.getType() == HttpServletResponse.class || methodParam.getType() == ServletResponse.class) {
         args[i] = response;
       } else {
-        RequestParam requestParam = param.getAnnotation(RequestParam.class);
-        String paramName = requestParam.value();
-        String paramValue = request.getParameter(paramName);
-        if (param.getType() == byte.class) {
-          args[i] = Byte.parseByte(paramValue);
-        } else if (param.getType() == short.class) {
-          args[i] = Short.parseShort(paramValue);
-        } else if (param.getType() == int.class) {
-          args[i] = Integer.parseInt(paramValue);
-        } else if (param.getType() == long.class) {
-          args[i] = Long.parseLong(paramValue);
-        } else if (param.getType() == float.class) {
-          args[i] = Float.parseFloat(paramValue);
-        } else if (param.getType() == double.class) {
-          args[i] = Double.parseDouble(paramValue);
-        } else if (param.getType() == boolean.class) {
-          args[i] = Boolean.parseBoolean(paramValue);
-        } else if (param.getType() == char.class) {
-          args[i] = paramValue.charAt(0);
-        } else if (param.getType() == Date.class) {
-          args[i] = Date.valueOf(paramValue);
-        } else {
-          args[i] = paramValue;
+        RequestParam requestParam = methodParam.getAnnotation(RequestParam.class);
+        if (requestParam != null) { // @RequestParam 어노테이션이 붙은 경우
+          String requestParamName = requestParam.value();
+          String requestParamValue = request.getParameter(requestParamName);
+          args[i] = valueOf(requestParamValue, methodParam.getType());
+        } else {  // 파라미터 타입이 도메인 클래스인 경우
+          args[i] = createValueObject(methodParam.getType(), request);
         }
       }
     }
     return args;
   }
 
+  private Object valueOf(String stringValue, Class<?> type) {
+    if (type == byte.class) {
+      return Byte.parseByte(stringValue);
+    } else if (type == short.class) {
+      return Short.parseShort(stringValue);
+    } else if (type == int.class) {
+      return Integer.parseInt(stringValue);
+    } else if (type == long.class) {
+      return Long.parseLong(stringValue);
+    } else if (type == float.class) {
+      return Float.parseFloat(stringValue);
+    } else if (type == double.class) {
+      return Double.parseDouble(stringValue);
+    } else if (type == boolean.class) {
+      return Boolean.parseBoolean(stringValue);
+    } else if (type == char.class) {
+      return stringValue.charAt(0);
+    } else if (type == Date.class) {
+      return Date.valueOf(stringValue);
+    } else if (type == String.class) {
+      return stringValue;
+    }
+    return null;
+  }
+
+  // 도메인 객체 생성 후 값을 담아서 리턴
+  private Object createValueObject(Class<?> type, HttpServletRequest request)
+      throws Exception {
+    // 1. 도메인 클래스 생성자
+    Constructor<?> constructor = type.getConstructor();
+
+    // 2. 도메인 객체 생성
+    Object obj = constructor.newInstance();
+
+    // 3. 도메인 클래스 메소드 정보
+    Method[] methods = type.getDeclaredMethods();
+
+    // 4. setter
+    for (Method setter : methods) {
+      if (!setter.getName().startsWith("set")) {
+        continue;
+      }
+      // 5. setter 메소드에서 프로퍼티 이름 추출
+      String propName =
+          Character.toLowerCase(setter.getName().charAt(3)) + setter.getName().substring(4);
+      // 6. 프로퍼티 이름으로 넘어온 요청 파라미터 값을 꺼낸다
+      String reqParamValue = request.getParameter(propName);
+
+      // 7. 도메인 객체의 프로퍼티 이름과 일치하는 요청 파라미터 값이 있다면 객체에 저장한다.
+      if (reqParamValue != null) {
+        Class<?> setterParameterType = setter.getParameters()[0].getType();
+        setter.invoke(obj, valueOf(reqParamValue, setterParameterType));  // => setFirstName("길동");
+      }
+    }
+    return obj;
+  }
 }
