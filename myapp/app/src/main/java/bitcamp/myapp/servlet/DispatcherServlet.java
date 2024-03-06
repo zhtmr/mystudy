@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10)
 @WebServlet("/app/*")
@@ -67,9 +68,16 @@ public class DispatcherServlet extends HttpServlet {
         throw new Exception(req.getPathInfo() + " 요청 페이지를 찾을 수 없습니다.");
       }
 
-      Object[] args = prepareRequestHandlerArguments(requestHandler.handler, req, res);
+      // 페이지 컨트롤러가 작업한 결과를 담을 보관소를 준비한다.
+      Map<String, Object> map = new HashMap<>();
+      Object[] args = prepareRequestHandlerArguments(requestHandler.handler, req, res, map);
 
       String viewUrl = (String) requestHandler.handler.invoke(requestHandler.controller, args);
+
+      // 페이지 컨트롤러의 작업이 끝난 후 map 객체에 보관된 값을 jsp 가 사용할 수 있도록 ServletRequest 로 옮긴다
+      for (Entry<String, Object> entry : map.entrySet()) {
+        req.setAttribute(entry.getKey(), entry.getValue());
+      }
 
       // 페이지 컨트롤러가 알려준 jsp 로 포워딩 한다.
       if (viewUrl.startsWith("redirect:")) {
@@ -102,7 +110,8 @@ public class DispatcherServlet extends HttpServlet {
     }
   }
 
-  private Object[] prepareRequestHandlerArguments(Method handler, HttpServletRequest request, HttpServletResponse response) throws Exception{
+  private Object[] prepareRequestHandlerArguments(Method handler, HttpServletRequest request, HttpServletResponse response,
+      Map<String, Object> map) throws Exception{
     Parameter[] methodParams = handler.getParameters();
 
     // 파라미터로 전달할 값을 담을 배열
@@ -115,6 +124,8 @@ public class DispatcherServlet extends HttpServlet {
         args[i] = request;
       } else if (methodParam.getType() == HttpServletResponse.class || methodParam.getType() == ServletResponse.class) {
         args[i] = response;
+      } else if (methodParam.getType() == Map.class) {
+        args[i] = map;
       } else {
         RequestParam requestParam = methodParam.getAnnotation(RequestParam.class);
         if (requestParam != null) { // @RequestParam 어노테이션이 붙은 경우

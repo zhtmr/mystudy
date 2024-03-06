@@ -3,10 +3,7 @@ package bitcamp.myapp.controller;
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.vo.Assignment;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Date;
-import java.util.List;
+import java.util.Map;
 
 public class AssignmentController {
 
@@ -28,37 +25,29 @@ public class AssignmentController {
   }
 
   @RequestMapping("/assignment/list")
-  public String list(HttpServletRequest request) throws Exception {
-    List<Assignment> list = assignmentDao.findAll();
-    request.setAttribute("list", list);
+  public String list(Map<String, Object> map) throws Exception {
+    map.put("list", assignmentDao.findAll());
     return "/assignment/list.jsp";
   }
 
   @RequestMapping("/assignment/view")
-  public String view(@RequestParam("no") int no, ServletRequest request) throws Exception {
+  public String view(@RequestParam("no") int no, Map<String, Object> map) throws Exception {
     Assignment assignment = assignmentDao.findBy(no);
     if (assignment == null) {
       throw new Exception("과제 번호가 유효하지 않습니다.");
     }
 
-    request.setAttribute("assignment", assignment);
+    map.put("assignment", assignment);
     return "/assignment/view.jsp";
   }
 
   @RequestMapping("/assignment/update")
-  public String update(@RequestParam("no") int no,
-      @RequestParam("content") String content,
-      @RequestParam("title") String title,
-      @RequestParam("deadline") Date deadline) throws Exception {
-    Assignment old = this.assignmentDao.findBy(no);
+  public String update(Assignment assignment) throws Exception {
+    Assignment old = this.assignmentDao.findBy(assignment.getNo());
     if (old == null) {
       throw new Exception("과제 번호가 유효하지 않습니다.");
     }
-    Assignment assignment = new Assignment();
-    assignment.setNo(old.getNo());
-    assignment.setTitle(title);
-    assignment.setContent(content);
-    assignment.setDeadline(deadline);
+
     assignmentDao.update(assignment);
     return "redirect:list";
   }
