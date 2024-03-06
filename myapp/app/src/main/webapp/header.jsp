@@ -12,7 +12,7 @@
     <a href='/app/board/list?category=2'>가입인사</a>
 
     <c:if test="${empty loginUser}">
-        <a href='/app/auth/login'>로그인</a>
+        <a href='/app/auth/form'>로그인</a>
     </c:if>
     <c:if test="${not empty loginUser}">
         <span>${loginUser.name}</span>

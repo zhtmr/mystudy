@@ -13,9 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -110,8 +108,8 @@ public class DispatcherServlet extends HttpServlet {
     }
   }
 
-  private Object[] prepareRequestHandlerArguments(Method handler, HttpServletRequest request, HttpServletResponse response,
-      Map<String, Object> map) throws Exception{
+  private Object[] prepareRequestHandlerArguments(Method handler, HttpServletRequest request,
+      HttpServletResponse response, Map<String, Object> map) throws Exception {
     Parameter[] methodParams = handler.getParameters();
 
     // 파라미터로 전달할 값을 담을 배열
@@ -126,15 +124,28 @@ public class DispatcherServlet extends HttpServlet {
         args[i] = response;
       } else if (methodParam.getType() == Map.class) {
         args[i] = map;
+      } else if (methodParam.getType() == HttpSession.class) {
+        args[i] = request.getSession();
       } else {
+        CookieValue cookieValueAnno = methodParam.getAnnotation(CookieValue.class);
+        if (cookieValueAnno != null) {
+          String value = getCookieValue(cookieValueAnno.value(), request);
+          if (value != null) {
+            args[i] = valueOf(value, methodParam.getType());
+          }
+          continue;
+        }
+
         RequestParam requestParam = methodParam.getAnnotation(RequestParam.class);
         if (requestParam != null) { // @RequestParam 어노테이션이 붙은 경우
           String requestParamName = requestParam.value();
           String requestParamValue = request.getParameter(requestParamName);
           args[i] = valueOf(requestParamValue, methodParam.getType());
-        } else {  // 파라미터 타입이 도메인 클래스인 경우
-          args[i] = createValueObject(methodParam.getType(), request);
+          continue;
         }
+
+        // 파라미터 타입이 도메인 클래스인 경우
+        args[i] = createValueObject(methodParam.getType(), request);
       }
     }
     return args;
@@ -166,8 +177,7 @@ public class DispatcherServlet extends HttpServlet {
   }
 
   // 도메인 객체 생성 후 값을 담아서 리턴
-  private Object createValueObject(Class<?> type, HttpServletRequest request)
-      throws Exception {
+  private Object createValueObject(Class<?> type, HttpServletRequest request) throws Exception {
     // 1. 도메인 클래스 생성자
     Constructor<?> constructor = type.getConstructor();
 
@@ -196,4 +206,17 @@ public class DispatcherServlet extends HttpServlet {
     }
     return obj;
   }
+
+  private String getCookieValue(String name, HttpServletRequest request) {
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals(name)) {
+          return cookie.getValue();
+        }
+      }
+    }
+    return null;
+  }
+
 }
