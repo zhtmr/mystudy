@@ -2,12 +2,14 @@ package bitcamp.myapp.controller;
 
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
+import bitcamp.util.Component;
 
 import javax.servlet.http.Part;
 import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
+@Component
 public class MemberController {
 
   private MemberDao memberDao;

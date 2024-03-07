@@ -5,6 +5,7 @@ import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
+import bitcamp.util.Component;
 import bitcamp.util.TransactionManager;
 
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Component
 public class BoardController {
 
   private BoardDao boardDao;

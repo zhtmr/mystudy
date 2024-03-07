@@ -2,9 +2,11 @@ package bitcamp.myapp.controller;
 
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.vo.Assignment;
+import bitcamp.util.Component;
 
 import java.util.Map;
 
+@Component
 public class AssignmentController {
 
   private AssignmentDao assignmentDao;

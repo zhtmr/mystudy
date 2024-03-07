@@ -18,5 +18,5 @@
         <span>${loginUser.name}</span>
         <a href='/app/auth/logout'>로그아웃</a>
     </c:if>
-    <a href='/about.html'>소개</a>
+    <a href='/app/about'>소개</a>
 </header>

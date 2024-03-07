@@ -1,19 +1,14 @@
 package bitcamp.myapp.listener;
 
-import bitcamp.myapp.dao.AssignmentDao;
-import bitcamp.myapp.dao.BoardDao;
-import bitcamp.myapp.dao.MemberDao;
-import bitcamp.myapp.dao.mysql.AssignmentDaoImpl;
-import bitcamp.myapp.dao.mysql.AttachedFileDaoImpl;
-import bitcamp.myapp.dao.mysql.BoardDaoImpl;
-import bitcamp.myapp.dao.mysql.MemberDaoImpl;
+import bitcamp.context.ApplicationContext;
 import bitcamp.util.DBConnectionPool;
-import bitcamp.util.TransactionManager;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
@@ -26,19 +21,21 @@ public class ContextLoaderListener implements ServletContextListener {
     DBConnectionPool connectionPool = new DBConnectionPool(
         //              "jdbc:mysql://db-ld27v-kr.vpc-pub-cdb.ntruss.com/studydb", "study", "Bitcamp!@#123"
         "jdbc:mysql://127.0.0.1/studydb", "study", "Bitcamp!@#123");
-    AssignmentDao assignmentDao = new AssignmentDaoImpl(connectionPool);
-    MemberDao memberDao = new MemberDaoImpl(connectionPool);
-    BoardDao boardDao = new BoardDaoImpl(connectionPool);
-    TransactionManager txManager = new TransactionManager(connectionPool);
-    AttachedFileDaoImpl fileDao = new AttachedFileDaoImpl(connectionPool);
 
-    // 서블릿에서 사용할 수 있도록 웹 어플리케이션 저장소에 보관
-    ServletContext 저장소 = sce.getServletContext();
-    저장소.setAttribute("assignmentDao", assignmentDao);
-    저장소.setAttribute("memberDao", memberDao);
-    저장소.setAttribute("boardDao", boardDao);
-    저장소.setAttribute("txManager", txManager);
-    저장소.setAttribute("fileDao", fileDao);
+    Map<String, Object> beanMap = new HashMap<>();
+    beanMap.put("connectionPool", connectionPool);
+
+    try {
+      // 공유 객체를 보관할 ApplicationContext 객체 준비
+      ApplicationContext ctx = new ApplicationContext(beanMap, "bitcamp.myapp.dao");
+
+      // 서블릿에서 사용할 수 있도록 웹 어플리케이션 저장소에 보관
+      ServletContext 저장소 = sce.getServletContext();
+      저장소.setAttribute("applicationContext", ctx);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }

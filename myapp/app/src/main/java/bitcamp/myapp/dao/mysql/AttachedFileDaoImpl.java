@@ -3,6 +3,7 @@ package bitcamp.myapp.dao.mysql;
 import bitcamp.myapp.dao.AttachedFileDao;
 import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.vo.AttachedFile;
+import bitcamp.util.Component;
 import bitcamp.util.DBConnectionPool;
 
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class AttachedFileDaoImpl implements AttachedFileDao {
   DBConnectionPool threadConnection;
 
