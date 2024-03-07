@@ -12,22 +12,28 @@ import java.util.Map;
 public class ApplicationContext {
 
   ApplicationContext parent;
-  String basePackage;
+  String[] basePackages;
   Map<String, Object> beans = new HashMap<>();
 
-  public ApplicationContext(Map<String, Object> beanMap, String basePackage) throws Exception {
+  public ApplicationContext(Map<String, Object> beanMap, String... basePackages) throws Exception {
     beans.putAll(beanMap);
-    this.basePackage = basePackage;
-    findComponents(new File("./build/classes/java/main"), "");
+    this.basePackages = basePackages;
+
+    for (String basePackage : basePackages) {
+      findComponents(new File("./build/classes/java/main"), basePackage, "");
+    }
   }
 
-  public ApplicationContext(ApplicationContext parent, String basePackage) throws Exception {
+  public ApplicationContext(ApplicationContext parent, String... basePackages) throws Exception {
     this.parent = parent;
-    this.basePackage = basePackage;
-    findComponents(new File("./build/classes/java/main"), "");
+    this.basePackages = basePackages;
+
+    for (String basePackage : basePackages) {
+      findComponents(new File("./build/classes/java/main"), basePackage, "");
+    }
   }
 
-  private void findComponents(File dir, String packageName) throws Exception {
+  private void findComponents(File dir, String basePackage, String packageName) throws Exception {
     File[] files = dir.listFiles(file -> file.isDirectory() || (file.isFile() && !file.getName()
         .contains("$") && file.getName().endsWith(".class")));
     if (!packageName.isEmpty()) {
@@ -50,7 +56,7 @@ public class ApplicationContext {
             constructor.newInstance(args));
         System.out.println(clazz.getName() + "객체생성");
       } else {
-        findComponents(file, packageName + file.getName());
+        findComponents(file, basePackage, packageName + file.getName());
       }
     }
   }

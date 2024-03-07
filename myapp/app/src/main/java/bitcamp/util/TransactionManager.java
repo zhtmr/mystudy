@@ -3,6 +3,7 @@ package bitcamp.util;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Component
 public class TransactionManager {
 
   ConnectionPool connectionPool;
