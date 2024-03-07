@@ -9,10 +9,6 @@ import java.util.Map;
 @Component
 public class AssignmentController {
 
-  public AssignmentController() {
-    System.out.println("AssignmentController 생성");
-  }
-
   private AssignmentDao assignmentDao;
 
   public AssignmentController(AssignmentDao assignmentDao) {
