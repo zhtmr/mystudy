@@ -2,7 +2,7 @@ package bitcamp.myapp.controller;
 
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.Component;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +15,7 @@ public class AuthController {
   MemberDao memberDao;
 
   public AuthController(MemberDao memberDao) {
+    System.out.println("AuthController 생성");
     this.memberDao = memberDao;
   }
 

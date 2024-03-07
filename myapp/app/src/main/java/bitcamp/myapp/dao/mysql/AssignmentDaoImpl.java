@@ -3,8 +3,8 @@ package bitcamp.myapp.dao.mysql;
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.vo.Assignment;
-import bitcamp.util.Component;
 import bitcamp.util.DBConnectionPool;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ public class AssignmentDaoImpl implements AssignmentDao {
   DBConnectionPool connectionPool;
 
   public AssignmentDaoImpl(DBConnectionPool connectionPool) {
+    System.out.println("assignmnetDaoImpl() 호출됨");
     this.connectionPool = connectionPool;
   }
 

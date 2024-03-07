@@ -5,8 +5,8 @@ import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.Component;
 import bitcamp.util.TransactionManager;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
@@ -26,6 +26,7 @@ public class BoardController {
   private String uploadDir = System.getProperty("board.upload.dir");
 
   public BoardController(BoardDao boardDao, AttachedFileDao fileDao, TransactionManager txManager) {
+    System.out.println("BoardController 생성");
     this.boardDao = boardDao;
     this.fileDao = fileDao;
     this.txManager = txManager;

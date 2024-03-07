@@ -43,6 +43,9 @@ dependencies {
     //JSTL
     implementation 'javax.servlet:jstl:1.2'
 
+    // spring ioc 컨테이너
+    implementation 'org.springframework:spring-context:5.3.32'
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

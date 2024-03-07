@@ -1,5 +1,7 @@
 package bitcamp.util;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -9,6 +11,7 @@ public class TransactionManager {
   ConnectionPool connectionPool;
 
   public TransactionManager(ConnectionPool connectionPool) {
+    System.out.println("TransactionManager() 호출됨");
     this.connectionPool = connectionPool;
   }
 

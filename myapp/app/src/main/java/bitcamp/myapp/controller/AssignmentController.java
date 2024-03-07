@@ -2,16 +2,21 @@ package bitcamp.myapp.controller;
 
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.vo.Assignment;
-import bitcamp.util.Component;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
 public class AssignmentController {
 
+  public AssignmentController() {
+    System.out.println("AssignmentController 생성");
+  }
+
   private AssignmentDao assignmentDao;
 
   public AssignmentController(AssignmentDao assignmentDao) {
+    System.out.println("AssignmentController 호출됨");
     this.assignmentDao = assignmentDao;
   }
 

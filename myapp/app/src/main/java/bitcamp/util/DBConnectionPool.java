@@ -18,6 +18,7 @@ public class DBConnectionPool implements ConnectionPool{
   private static final ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
 
   public DBConnectionPool(String jdbcUrl, String username, String password) {
+    System.out.println("DB con pool 호출됨");
     this.jdbcUrl = jdbcUrl;
     this.username = username;
     this.password = password;

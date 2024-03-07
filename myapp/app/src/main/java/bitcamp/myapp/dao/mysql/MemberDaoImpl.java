@@ -3,8 +3,8 @@ package bitcamp.myapp.dao.mysql;
 import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.Component;
 import bitcamp.util.DBConnectionPool;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +18,7 @@ public class MemberDaoImpl implements MemberDao {
   DBConnectionPool threadConnection;
 
   public MemberDaoImpl(DBConnectionPool threadConnection) {
+    System.out.println("MemberDaoImpl() 호출됨");
     this.threadConnection = threadConnection;
   }
 

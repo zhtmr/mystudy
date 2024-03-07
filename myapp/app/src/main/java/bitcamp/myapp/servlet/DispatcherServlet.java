@@ -1,9 +1,10 @@
 package bitcamp.myapp.servlet;
 
-import bitcamp.context.ApplicationContext;
 import bitcamp.myapp.controller.CookieValue;
 import bitcamp.myapp.controller.RequestMapping;
 import bitcamp.myapp.controller.RequestParam;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -34,11 +35,11 @@ public class DispatcherServlet extends HttpServlet {
       System.setProperty("board.upload.dir", getServletContext().getRealPath("/upload/board"));
       System.setProperty("member.upload.dir", getServletContext().getRealPath("/upload"));
 
-      applicationContext = new ApplicationContext(
-          (ApplicationContext) getServletContext().getAttribute("applicationContext"),
-          "bitcamp.myapp.controller");
+      ApplicationContext parent =
+          (ApplicationContext) getServletContext().getAttribute("applicationContext");
+      applicationContext = new ClassPathXmlApplicationContext(new String[] {"config/app-servlet.xml"}, parent);
 
-      prepareRequestHandlers(applicationContext.getBeans());
+      //      prepareRequestHandlers(applicationContext.getBeans());
     } catch (Exception e) {
       throw new ServletException(e);
     }

@@ -1,10 +1,14 @@
 package bitcamp.myapp.controller;
 
 
-import bitcamp.util.Component;
+import org.springframework.stereotype.Component;
 
 @Component
 public class AboutController {
+
+  public AboutController() {
+    System.out.println("AboutController 생성");
+  }
 
   @RequestMapping("/about")
   public String about()

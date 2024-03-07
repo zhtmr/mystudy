@@ -2,7 +2,7 @@ package bitcamp.myapp.controller;
 
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.Component;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Part;
 import java.io.File;
@@ -16,6 +16,7 @@ public class MemberController {
   private String uploadDir = System.getProperty("member.upload.dir");
 
   public MemberController(MemberDao memberDao) {
+    System.out.println("MemberController 생성");
     this.memberDao = memberDao;
   }
 
