@@ -25,7 +25,7 @@
     </div>
     <c:if test="${category == 1}">
         <div>
-            첨부파일: <input name='files' type='file' multiple>
+            첨부파일: <input name='attachedFiles' type='file' multiple>
         </div>
     </c:if>
     <div>

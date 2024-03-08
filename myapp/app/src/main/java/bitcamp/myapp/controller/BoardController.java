@@ -6,8 +6,11 @@ import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.TransactionManager;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.File;
@@ -17,19 +20,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Component
+@Controller
 public class BoardController {
 
   private BoardDao boardDao;
   private AttachedFileDao fileDao;
   private TransactionManager txManager;
-  private String uploadDir = System.getProperty("board.upload.dir");
+  private String uploadDir;
 
-  public BoardController(BoardDao boardDao, AttachedFileDao fileDao, TransactionManager txManager) {
+  public BoardController(BoardDao boardDao, AttachedFileDao fileDao, TransactionManager txManager, ServletContext sc) {
     System.out.println("BoardController 생성");
     this.boardDao = boardDao;
     this.fileDao = fileDao;
     this.txManager = txManager;
+    this.uploadDir = sc.getRealPath("/upload/board");
   }
 
   @RequestMapping("/board/form")
@@ -41,7 +45,7 @@ public class BoardController {
   }
 
   @RequestMapping("/board/add")
-  public String add(Board board, @RequestParam("files") Part[] files, HttpSession session,
+  public String add(Board board, @RequestParam("attachedFiles") Part[] files, HttpSession session,
       Map<String, Object> map) throws Exception {
 
     int category = board.getCategory();
@@ -122,7 +126,7 @@ public class BoardController {
 
 
   @RequestMapping("/board/update")
-  public String update(Board board, @RequestParam("files") Part[] files, HttpSession session) throws Exception {
+  public String update(Board board, @RequestParam("attachedFiles") Part[] files, HttpSession session) throws Exception {
 
     try {
       Member loginUser = (Member) session.getAttribute("loginUser");
@@ -135,7 +139,7 @@ public class BoardController {
       if (old == null) {
         throw new Exception("번호가 유효하지 않습니다.");
       } else if (old.getWriter().getNo() != loginUser.getNo()) {
-        throw new Exception("<p>권한이 없습니다.</p>");
+        throw new Exception("권한이 없습니다.");
       }
 
       ArrayList<AttachedFile> attachedFiles = new ArrayList<>();

@@ -30,7 +30,7 @@
     <c:if test="${category == 1}">
 
     <div>
-        첨부파일: <input name='files' type='file' multiple>
+        첨부파일: <input name='attachedFiles' type='file' multiple>
         <ul>
             <c:forEach items="${files}" var="file">
                 <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
