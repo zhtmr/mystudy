@@ -16,12 +16,8 @@ repositories {
 }
 
 dependencies {
-    // vo 객체, dao 인터페이스
-//    implementation project(':app-common')
-
-    // dao stub 객체
-//    implementation project(':app-api')
-
+    // 서브 프로젝트 포함
+    implementation project(':app-common')
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
 
@@ -29,26 +25,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:32.1.1-jre'
-//    implementation 'com.google.code.gson:gson:2.10.1'
-
-    // Mysql
-    implementation 'com.mysql:mysql-connector-j:8.3.0'
-
-    // https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1
-    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
-
-    // 임베디드 Tomcat 서버
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.85'
-
-    //JSTL
-    implementation 'javax.servlet:jstl:1.2'
-
-    // spring ioc 컨테이너
-//    implementation 'org.springframework:spring-context:5.3.32'
-
-    // spring mvc
-    implementation 'org.springframework:spring-webmvc:5.3.32'
-
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -60,7 +37,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'bitcamp.myapp.App'
+    mainClass = 'bitcamp.myapp.ServerApp'
 }
 
 tasks.named('test') {

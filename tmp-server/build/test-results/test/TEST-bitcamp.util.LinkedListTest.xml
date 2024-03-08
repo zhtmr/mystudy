@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="bitcamp.util.LinkedListTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2024-01-15T08:24:38" hostname="swui-MacBookPro.local" time="0.007">
+  <properties/>
+  <testcase name="toArray()" classname="bitcamp.util.LinkedListTest" time="0.002"/>
+  <testcase name="remove(int index)" classname="bitcamp.util.LinkedListTest" time="0.001"/>
+  <testcase name="add()" classname="bitcamp.util.LinkedListTest" time="0.0"/>
+  <testcase name="get()" classname="bitcamp.util.LinkedListTest" time="0.0"/>
+  <testcase name="set()" classname="bitcamp.util.LinkedListTest" time="0.001"/>
+  <testcase name="size()" classname="bitcamp.util.LinkedListTest" time="0.0"/>
+  <testcase name="toArray(final E[] arr): size 보다 작으면 배열 복사" classname="bitcamp.util.LinkedListTest" time="0.001"/>
+  <testcase name="add(int index, E value)" classname="bitcamp.util.LinkedListTest" time="0.0"/>
+  <testcase name="remove(E value)" classname="bitcamp.util.LinkedListTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

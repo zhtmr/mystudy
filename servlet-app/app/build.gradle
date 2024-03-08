@@ -1,0 +1,37 @@
+
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Use JUnit Jupiter for testing.
+    testImplementation libs.junit.jupiter
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // This dependency is used by the application.
+    implementation libs.guava
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.85'
+    // multipart/form-data 파일 업로드 처리
+    implementation 'commons-fileupload:commons-fileupload:1.5'
+    //JSTL
+    implementation 'javax.servlet:jstl:1.2'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    mainClass = 'com.eomcs.App'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

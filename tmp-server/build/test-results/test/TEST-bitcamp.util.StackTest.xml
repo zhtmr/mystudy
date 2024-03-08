@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="bitcamp.util.StackTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-01-15T08:24:38" hostname="swui-MacBookPro.local" time="0.002">
+  <properties/>
+  <testcase name="pop(): 마지막 항목을 제거한다. 제거 후 사이즈는 줄어든다." classname="bitcamp.util.StackTest" time="0.0"/>
+  <testcase name="peek(): 항상 마지막 항목이 나온다." classname="bitcamp.util.StackTest" time="0.001"/>
+  <testcase name="push(): 현재 4개 항목이 들어가있다." classname="bitcamp.util.StackTest" time="0.0"/>
+  <testcase name="empty(): 버어있으면 true" classname="bitcamp.util.StackTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

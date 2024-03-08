@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="bitcamp.myapp.AppTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-01-15T08:24:38" hostname="swui-MacBookPro.local" time="0.006">
+  <properties/>
+  <testcase name="MenuGroup 은 만들때마다 서로 다른 주소를 갖는다." classname="bitcamp.myapp.AppTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="bitcamp.util.QueueTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-01-15T08:24:38" hostname="swui-MacBookPro.local" time="0.003">
+  <properties/>
+  <testcase name="peek()" classname="bitcamp.util.QueueTest" time="0.001"/>
+  <testcase name="poll()" classname="bitcamp.util.QueueTest" time="0.0"/>
+  <testcase name="offer()" classname="bitcamp.util.QueueTest" time="0.0"/>
+  <testcase name="peek(): queue 가 비었으면 null 을 리턴한다." classname="bitcamp.util.QueueTest" time="0.0"/>
+  <testcase name="poll(): queue 가 비었으면 null 을 리턴한다." classname="bitcamp.util.QueueTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
