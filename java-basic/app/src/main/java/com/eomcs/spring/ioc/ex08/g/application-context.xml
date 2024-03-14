@@ -34,9 +34,9 @@
          이 태그는 context 네임스페이스 들어 있다. 
          이 태그를 사용하려면 먼저 context 네임스페이스를 선언해야 한다.
     -->
-    <!--  
-    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-    -->
+      
+    <!-- <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> -->
+    
     
     <context:annotation-config/>
     
