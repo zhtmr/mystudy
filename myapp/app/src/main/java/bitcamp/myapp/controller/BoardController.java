@@ -7,6 +7,7 @@ import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.TransactionManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -45,7 +46,7 @@ public class BoardController {
   }
 
   @RequestMapping("/board/add")
-  public String add(Board board, @RequestParam("attachedFiles") Part[] files, HttpSession session,
+  public String add(@RequestBody Board board, @RequestParam("attachedFiles") Part[] files, HttpSession session,
       Map<String, Object> map) throws Exception {
 
     int category = board.getCategory();

@@ -1,14 +1,23 @@
 package bitcamp.util;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+@Component
 public class DBConnectionPool implements ConnectionPool{
 
+  @Value("${jdbc.url}")
   private String jdbcUrl;
+
+  @Value("${jdbc.username}")
   private String username;
+
+  @Value("${jdbc.password}")
   private String password;
 
   // DB 커넥션 목록
@@ -17,11 +26,8 @@ public class DBConnectionPool implements ConnectionPool{
   // 개별 스레드용 db 커넥션 저장소
   private static final ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
 
-  public DBConnectionPool(String jdbcUrl, String username, String password) {
+  public DBConnectionPool() {
     System.out.println("DB con pool 호출됨");
-    this.jdbcUrl = jdbcUrl;
-    this.username = username;
-    this.password = password;
   }
 
   @Override
