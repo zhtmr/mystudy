@@ -1,34 +1,22 @@
 package bitcamp.myapp.config;
 
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.*;
 import java.io.File;
 
-public class AppWebApplicationInitializer extends AbstractDispatcherServletInitializer {
-  ServletContext servletContext;
-  AnnotationConfigWebApplicationContext rootContext;
+public class AppWebApplicationInitializer
+    extends AbstractAnnotationConfigDispatcherServletInitializer {
 
   @Override
-  protected WebApplicationContext createRootApplicationContext() {
-    rootContext = new AnnotationConfigWebApplicationContext();
-    rootContext.register(RootConfig.class);
-    rootContext.refresh();
-    return rootContext;
+  protected Class<?>[] getRootConfigClasses() {
+    return new Class[] {RootConfig.class};
   }
 
-
   @Override
-  protected WebApplicationContext createServletApplicationContext() {
-    AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
-    appContext.register(AppConfig.class);
-    appContext.setParent(rootContext);
-    appContext.setServletContext(servletContext);
-    appContext.refresh();
-    return appContext;
+  protected Class<?>[] getServletConfigClasses() {
+    return new Class[] {AppConfig.class};
   }
 
   @Override
@@ -48,9 +36,4 @@ public class AppWebApplicationInitializer extends AbstractDispatcherServletIniti
     return new Filter[] {new CharacterEncodingFilter("UTF-8")};
   }
 
-  @Override
-  public void onStartup(ServletContext servletContext) throws ServletException {
-    this.servletContext = servletContext;
-    super.onStartup(servletContext);
-  }
 }
