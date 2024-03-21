@@ -52,6 +52,9 @@ dependencies {
     // log4j 2.x 라이브러리
     implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
 
+    // mybatis
+    implementation 'org.mybatis:mybatis:3.5.15'
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

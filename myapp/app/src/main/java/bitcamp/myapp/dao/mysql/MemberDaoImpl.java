@@ -6,12 +6,13 @@ import bitcamp.myapp.vo.Member;
 import bitcamp.util.DBConnectionPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -19,10 +20,12 @@ public class MemberDaoImpl implements MemberDao {
   private final Log log = LogFactory.getLog(this.getClass());
 
   DBConnectionPool threadConnection;
+  SqlSessionFactory sqlSessionFactory;
 
-  public MemberDaoImpl(DBConnectionPool threadConnection) {
+  public MemberDaoImpl(DBConnectionPool threadConnection, SqlSessionFactory sqlSessionFactory) {
     log.debug("MemberDaoImpl() 호출됨");
     this.threadConnection = threadConnection;
+    this.sqlSessionFactory = sqlSessionFactory;
   }
 
   @Override
@@ -54,27 +57,11 @@ public class MemberDaoImpl implements MemberDao {
 
   @Override
   public List<Member> findAll() {
-    try (Connection con = threadConnection.getConnection();
-        PreparedStatement pstmt = con.prepareStatement("select * from members")) {
-
-      ArrayList<Member> list;
-      try (ResultSet rs = pstmt.executeQuery()) {
-        list = new ArrayList<>();
-        while (rs.next()) {
-          Member member = new Member();
-          member.setNo(rs.getInt("member_no"));
-          member.setEmail(rs.getString("email"));
-          member.setName(rs.getString("name"));
-          member.setPhoto(rs.getString("photo"));
-          member.setCreatedDate(rs.getDate("created_date"));
-          list.add(member);
-        }
-      }
-      return list;
-    } catch (Exception e) {
-      throw new DaoException("데이터 조회 오류", e);
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.selectList("Mapper1.sql1");
     }
   }
+
 
   @Override
   public Member findBy(int no) {

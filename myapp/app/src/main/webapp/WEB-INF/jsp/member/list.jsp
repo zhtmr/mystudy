@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang='en'>
@@ -42,7 +43,7 @@
             </td>
             <td>${member.email}
             </td>
-            <td>${member.createdDate}
+            <td><fmt:formatDate value="${member.createdDate}" pattern="yyyy-MM-dd"/>
             </td>
         </tr>
     </c:forEach>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang='en'>
@@ -34,7 +35,7 @@
         </a></td>
         <td>${board.writer.name}
         </td>
-        <td>${board.createdDate}
+        <td><fmt:formatDate value="${board.createdDate}" pattern="yyyy-MM-dd"/>
         </td>
         <td>${board.fileCount}
         </td>
