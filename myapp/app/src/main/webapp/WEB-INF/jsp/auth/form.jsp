@@ -10,7 +10,7 @@
     <title>비트캠프 5기</title>
 </head>
 <body>
-<jsp:include page="/header.jsp"></jsp:include>
+<jsp:include page="../header.jsp"></jsp:include>
 <h1>로그인</h1>
 <form action='/app/auth/login' method='post'>
     <div>
@@ -30,6 +30,6 @@
         <input type='checkbox' name='saveEmail'> 이메일 저장
     </label>
 </form>
-<jsp:include page="/footer.jsp"></jsp:include>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

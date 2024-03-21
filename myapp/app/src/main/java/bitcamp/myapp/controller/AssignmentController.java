@@ -22,35 +22,35 @@ public class AssignmentController {
     this.assignmentDao = assignmentDao;
   }
 
-  @GetMapping("/form")
-  public String form() throws Exception {
-    return "/assignment/form.jsp";
+  @GetMapping("form")
+  public void form() throws Exception {
+//    return "/assignment/form.jsp";
   }
 
-  @PostMapping("/add")
+  @PostMapping("add")
   public String add(Assignment assignment) throws Exception {
     assignmentDao.add(assignment);
     return "redirect:list";
   }
 
-  @GetMapping("/list")
-  public String list(Model map) throws Exception {
+  @GetMapping("list")
+  public void list(Model map) throws Exception {
     map.addAttribute("list", assignmentDao.findAll());
-    return "/assignment/list.jsp";
+//    return "/assignment/list.jsp";
   }
 
-  @GetMapping("/view")
-  public String view(int no, Model model) throws Exception {
+  @GetMapping("view")
+  public void view(int no, Model model) throws Exception {
     Assignment assignment = assignmentDao.findBy(no);
     if (assignment == null) {
       throw new Exception("과제 번호가 유효하지 않습니다.");
     }
 
     model.addAttribute("assignment", assignment);
-    return "/assignment/view.jsp";
+//    return "/assignment/view.jsp";
   }
 
-  @PostMapping("/update")
+  @PostMapping("update")
   public String update(Assignment assignment) throws Exception {
     Assignment old = this.assignmentDao.findBy(assignment.getNo());
     if (old == null) {
@@ -61,7 +61,7 @@ public class AssignmentController {
     return "redirect:list";
   }
 
-  @GetMapping("/delete")
+  @GetMapping("delete")
   public String delete(int no) throws Exception {
     Assignment assignment = assignmentDao.findBy(no);
     if (assignment == null) {

@@ -8,7 +8,7 @@
     <title>비트캠프 5기</title>
 </head>
 <body>
-<jsp:include page="/header.jsp"></jsp:include>
+<jsp:include page="../header.jsp"></jsp:include>
 
 <h1>${title}
 </h1>
@@ -47,6 +47,6 @@
 </form>
 
 
-<jsp:include page="/footer.jsp"></jsp:include>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

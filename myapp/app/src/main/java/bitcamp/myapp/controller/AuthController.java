@@ -25,9 +25,9 @@ public class AuthController {
   }
 
   @GetMapping("/form")
-  public String form(@CookieValue(value = "email", required = false) String email, Model model) {
+  public void form(@CookieValue(value = "email", required = false) String email, Model model) {
     model.addAttribute("email", email);
-    return "/auth/form.jsp";
+    // return void 로 할 경우 url 경로가 jsp 경로가 된다. (GET 요청일 경우에만 가능한 방법)
   }
 
   @PostMapping("/login")
@@ -53,8 +53,7 @@ public class AuthController {
     if (member != null) {
       session.setAttribute("loginUser", member);
     }
-
-    return "/auth/login.jsp";
+    return "auth/login";
   }
 
   @GetMapping("/logout")

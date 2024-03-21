@@ -10,7 +10,7 @@
     <title>비트캠프 5기</title>
 </head>
 <body>
-<jsp:include page="/header.jsp"></jsp:include>
+<jsp:include page="../header.jsp"></jsp:include>
 <h1>과제</h1>
 
 <form action='/app/assignment/add' method='post'>
@@ -28,6 +28,6 @@
     </div>
 </form>
 
-<jsp:include page="/footer.jsp"></jsp:include>
+<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>
