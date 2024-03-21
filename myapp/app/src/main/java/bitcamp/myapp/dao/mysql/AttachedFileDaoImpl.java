@@ -4,6 +4,8 @@ import bitcamp.myapp.dao.AttachedFileDao;
 import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.util.DBConnectionPool;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -14,10 +16,11 @@ import java.util.List;
 
 @Repository
 public class AttachedFileDaoImpl implements AttachedFileDao {
+  private final Log log = LogFactory.getLog(this.getClass());
   DBConnectionPool threadConnection;
 
   public AttachedFileDaoImpl(DBConnectionPool threadConnection) {
-    System.out.println("AttachedFileDaoImpl() 호출됨");
+    log.debug("AttachedFileDaoImpl() 호출됨");
     this.threadConnection = threadConnection;
   }
 

@@ -1,5 +1,7 @@
 package bitcamp.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 
 @Component
 public class DBConnectionPool implements ConnectionPool{
+  private final Log log = LogFactory.getLog(this.getClass());
 
   @Value("${jdbc.url}")
   private String jdbcUrl;
@@ -27,7 +30,7 @@ public class DBConnectionPool implements ConnectionPool{
   private static final ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<>();
 
   public DBConnectionPool() {
-    System.out.println("DB con pool 호출됨");
+    log.debug("DB con pool 호출됨");
   }
 
   @Override
@@ -39,18 +42,18 @@ public class DBConnectionPool implements ConnectionPool{
       if (!connections.isEmpty()) {
         // 스레드 풀에 놀고 있는 Connection 이 있다면 꺼낸다.
         con = connections.removeFirst();  // 목록에서 맨 처음 객체를 꺼낸다.
-        System.out.printf("%s: db 커넥션 풀에서 꺼냄\n", Thread.currentThread().getName());
+        log.debug(String.format("%s: db 커넥션 풀에서 꺼냄\n", Thread.currentThread().getName()));
 
       } else {
         // 스레드 풀에도 놀고 있는 Connection 이 없다면 새로 Connection 을 만든다.
         con = new ConnectionProxy(this, DriverManager.getConnection(jdbcUrl, username, password));
-        System.out.printf("%s: db 커넥션 생성\n", Thread.currentThread().getName());
+        log.debug(String.format("%s: db 커넥션 생성\n", Thread.currentThread().getName()));
       }
 
       // 현재 스레드에  Connection 보관한다.
       connectionThreadLocal.set(con);
     } else {   // 스레드에 보관된 Connection 이 있다면
-      System.out.printf("%s: 스레드에 보관된 DB 커넥션 리턴\n", Thread.currentThread().getName());
+      log.debug(String.format("%s: 스레드에 보관된 DB 커넥션 리턴\n", Thread.currentThread().getName()));
     }
     return con;
   }
@@ -63,7 +66,7 @@ public class DBConnectionPool implements ConnectionPool{
     // Connection 을 커넥션 풀에 반환
     connections.add(con);
 
-    System.out.printf("%s: db 커넥션을 pool 에 반환\n", Thread.currentThread().getName());
+    log.debug(String.format("%s: db 커넥션을 pool 에 반환\n", Thread.currentThread().getName()));
   }
 
   public void closeAll() {

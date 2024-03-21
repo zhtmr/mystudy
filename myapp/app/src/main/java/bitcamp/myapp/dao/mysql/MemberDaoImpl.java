@@ -4,6 +4,8 @@ import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.DBConnectionPool;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -14,11 +16,12 @@ import java.util.List;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
+  private final Log log = LogFactory.getLog(this.getClass());
 
   DBConnectionPool threadConnection;
 
   public MemberDaoImpl(DBConnectionPool threadConnection) {
-    System.out.println("MemberDaoImpl() 호출됨");
+    log.debug("MemberDaoImpl() 호출됨");
     this.threadConnection = threadConnection;
   }
 

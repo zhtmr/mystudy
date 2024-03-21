@@ -8,6 +8,7 @@
 <head>
     <!-- TUI 에디터 CSS CDN -->
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <meta charset='UTF-8'>
     <title>비트캠프 5기</title>
 </head>
@@ -38,7 +39,6 @@
 
 <jsp:include page="/footer.jsp"></jsp:include>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script>
     // const editor = new toastui.Editor({
@@ -108,13 +108,15 @@ const editor = new Editor(options);
     });
 
     let markdown = editor.getMarkdown();
-    console.dir(markdown)
 </script>
 <script>
+    const formData = new FormData(document.getElementById("myForm"));
+    formData.append("content", markdown);
+
     function add() {
         $.ajax({
             type: 'post',           // 타입 (get, post, put 등등)
-            url: '/app/board/add?category=${category}',           // 요청할 서버url
+            url: '/app/board/add',           // 요청할 서버url
             async: true,            // 비동기화 여부 (default : true)
             headers: {              // Http header
                 "Content-Type": "application/json",
@@ -122,7 +124,7 @@ const editor = new Editor(options);
             },
             dataType: 'text',       // 데이터 타입 (html, xml, json, text 등등)
             data: JSON.stringify({  // 보낼 데이터 (Object , String, Array)
-                formData
+                "content":markdown
             }),
             success: function (result) { // 결과 성공 콜백함수
                 console.log(result);
@@ -132,11 +134,14 @@ const editor = new Editor(options);
             }
         })
     }
-    const formData = new FormData($('#myForm'));
     console.dir(formData)
 
+    let entries = formData.entries();
+    for (const x of entries) {
+        console.log(x[0], ": ", x[1]);
+    }
+
     $(document).ready(function(){
-        debugger
         $("button").click(add);
     });
 </script>

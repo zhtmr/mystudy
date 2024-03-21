@@ -1,5 +1,7 @@
 package bitcamp.myapp.config;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 
@@ -11,9 +13,9 @@ import org.springframework.context.annotation.PropertySource;
     "classpath:config/jdbc.properties"
 })
 public class RootConfig {
-
+  private final Log log = LogFactory.getLog(this.getClass());
 
   public RootConfig() {
-    System.out.println("RootConfig() 호출됨");
+    log.debug("RootConfig() 호출됨");
   }
 }
