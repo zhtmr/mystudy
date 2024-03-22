@@ -5,18 +5,18 @@ import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.TransactionManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,15 +28,13 @@ public class BoardController {
 
   private BoardDao boardDao;
   private AttachedFileDao fileDao;
-  private TransactionManager txManager;
   private String uploadDir;
 
-  public BoardController(BoardDao boardDao, AttachedFileDao fileDao, TransactionManager txManager,
+  public BoardController(BoardDao boardDao, AttachedFileDao fileDao,
       ServletContext sc) {   // BoardController 는 ServletContext 를 필요로한다. --> WebApplicationInitializer 구현체를 만들어 리스터에서 ServletContext 를 등록하도록 한다.
     log.debug("BoardController 생성");
     this.boardDao = boardDao;
     this.fileDao = fileDao;
-    this.txManager = txManager;
     this.uploadDir = sc.getRealPath("/upload/board");
   }
 
@@ -45,11 +43,11 @@ public class BoardController {
     String title = category == 1 ? "게시글" : "가입인사";
     model.addAttribute("title", title);
     model.addAttribute("category", category);
-//    return "/board/form.jsp";
+    //    return "/board/form.jsp";
   }
 
   @PostMapping("add")
-  public String add(@RequestBody Board board, MultipartFile[] attachedFiles, HttpSession session, Model model)
+  public String add(Board board, MultipartFile[] attachedFiles, HttpSession session, Model model)
       throws Exception {
 
     // 리다이렉트 할 경우 url 뒤에 쿼리 스트링으로 붙는다.
@@ -74,8 +72,6 @@ public class BoardController {
         }
       }
 
-      txManager.begin();
-
       boardDao.add(board);
       if (!files.isEmpty()) {
         for (AttachedFile attachedFile : files) {
@@ -83,13 +79,8 @@ public class BoardController {
         }
         fileDao.addAll(files);
       }
-      txManager.commit();
       return "redirect:list";
     } catch (Exception e) {
-      try {
-        txManager.rollback();
-      } catch (Exception e2) {
-      }
       throw e;
     }
   }
@@ -104,7 +95,7 @@ public class BoardController {
     model.addAttribute("list", list);
     model.addAttribute("category", category);
     model.addAttribute("title", title);
-//    return "/board/list.jsp";
+    //    return "/board/list.jsp";
   }
 
   @GetMapping("view")
@@ -119,11 +110,10 @@ public class BoardController {
     model.addAttribute("category", category);
     model.addAttribute("title", title);
     model.addAttribute("board", board);
-    if (category == 1) {
-      model.addAttribute("files", fileDao.findAllByBoardNo(no));
-    }
-
-//    return "/board/view.jsp";
+    // resultMap 으로 처리
+//    if (category == 1) {
+//      model.addAttribute("files", fileDao.findAllByBoardNo(no));
+//    }
   }
 
 
@@ -157,8 +147,6 @@ public class BoardController {
         }
       }
 
-      txManager.begin();
-
       boardDao.update(board);
       if (!files.isEmpty()) {
         for (AttachedFile attachedFile : files) {
@@ -167,15 +155,10 @@ public class BoardController {
         fileDao.addAll(files);
       }
 
-      txManager.commit();
       model.addAttribute("category", board.getCategory());
       return "redirect:list";
 
     } catch (Exception e) {
-      try {
-        txManager.rollback();
-      } catch (Exception e2) {
-      }
       throw e;
     }
   }
@@ -197,22 +180,16 @@ public class BoardController {
       }
 
       List<AttachedFile> files = fileDao.findAllByBoardNo(no);
-      txManager.begin();
 
       fileDao.deleteAll(no);
-      boardDao.delete(no);
 
-      txManager.commit();
+      boardDao.delete(no);
       for (AttachedFile file : files) {
         new File(uploadDir + "/" + file.getFilePath()).delete();
       }
 
       return "redirect:list?category=" + category;
     } catch (Exception e) {
-      try {
-        txManager.rollback();
-      } catch (SQLException ex) {
-      }
       throw e;
     }
   }

@@ -11,38 +11,40 @@
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
 
-<h1>${title}
-</h1>
+<div class="container">
+    <h1>${title}
+    </h1>
 
-<a href='/app/board/form?category=${category}'>새 글</a>
+    <a href='/app/board/form?category=${category}'>새 글</a>
 
-<table border='1'>
-    <thead>
-    <tr>
-        <th>번호</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>등록일</th>
-        <th>첨부파일</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${list}" var="board">
-    <tr>
-        <td>${board.no}
-        </td>
-        <td><a href='/app/board/view?category=${category}&no=${board.no}'>${board.title}
-        </a></td>
-        <td>${board.writer.name}
-        </td>
-        <td><fmt:formatDate value="${board.createdDate}" pattern="yyyy-MM-dd"/>
-        </td>
-        <td>${board.fileCount}
-        </td>
-    <tr>
-        </c:forEach>
-    </tbody>
-</table>
+    <table border='1'>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>등록일</th>
+            <th>첨부파일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${list}" var="board">
+        <tr>
+            <td>${board.no}
+            </td>
+            <td><a href='/app/board/view?category=${category}&no=${board.no}'>${board.title}
+            </a></td>
+            <td>${board.writer.name}
+            </td>
+            <td><fmt:formatDate value="${board.createdDate}" pattern="yyyy-MM-dd"/>
+            </td>
+            <td>${board.fileCount}
+            </td>
+        <tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
 
 <jsp:include page="../footer.jsp"></jsp:include>
 </body>

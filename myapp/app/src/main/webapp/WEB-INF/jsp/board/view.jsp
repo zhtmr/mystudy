@@ -10,43 +10,67 @@
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
 
-<h1>${title}
-</h1>
+<div class="container">
 
-<form action='/app/board/update' method='post' enctype='multipart/form-data'>
-    <input name='category' type='hidden' value='${category}'>
-    <div>
-        번호: <input readonly type='text' name='no' value=${board.no}>
-    </div>
-    <div>
-        제목: <input type='text' name='title' value=${board.title}>
-    </div>
-    <div>
-        <label for='content'>내용: </label><textarea id="content" name='content'>${board.content}</textarea>
-    </div>
-    <div>
-        작성자: <input readonly type='text' value=${board.writer.name} disabled>
-    </div>
-    <c:if test="${category == 1}">
+    <h1>${title}
+    </h1>
 
-    <div>
-        첨부파일: <input name='attachedFiles' type='file' multiple>
-        <ul>
-            <c:forEach items="${files}" var="file">
-                <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
-                    [<a href='/app/board/file/delete?category=${category}&no=${file.no}'>삭제</a>]
-                </li>
-            </c:forEach>
-            </c:if>
-        </ul>
-    </div>
-    <div>
-        <button>변경</button>
-        <a href='/app/board/delete?category=${category}&no=${board.no}'>삭제</a>
-    </div>
-</form>
+    <form action='/app/board/update' method='post' enctype='multipart/form-data'>
+        <input name='category' type='hidden' value='${category}'>
+        <div>
+            번호: <input readonly type='text' name='no' value=${board.no}>
+        </div>
+        <div>
+            제목: <input type='text' name='title' value=${board.title}>
+        </div>
+        <div id="viewer">
+            ${board.content}
+            <%--        <label for='content'>내용: </label><textarea id="content" name='content'>${board.content}</textarea>--%>
+        </div>
+        <div>
+            작성자: <input readonly type='text' value=${board.writer.name} disabled>
+        </div>
+        <c:if test="${category == 1}">
 
+        <div>
+            첨부파일: <input name='attachedFiles' type='file' multiple>
+            <ul>
+                <c:forEach items="${board.files}" var="file">
+                    <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
+                        [<a href='/app/board/file/delete?category=${category}&no=${file.no}'>삭제</a>]
+                    </li>
+                </c:forEach>
+                </c:if>
+            </ul>
+        </div>
+        <div>
+            <button>변경</button>
+            <a href='/app/board/delete?category=${category}&no=${board.no}'>삭제</a>
+        </div>
+    </form>
+</div>
+<script>
+    const {Editor} = toastui;
 
+    const editor = new Editor({
+        el: document.querySelector('#viewer'),
+        previewStyle: 'vertical',
+        height: '500px',
+        theme: 'dark'
+    });
+
+    // editor.getHTML();
+
+    // const viewer = Editor.factory({
+    //     el: document.querySelector('#viewer'),
+    //     viewer: true,
+    //     previewStyle: 'vertical',
+    //     height: '500px',
+    //     theme: 'dark',
+    //     initialEditType: 'markdown'
+    // });
+
+</script>
 <jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>
