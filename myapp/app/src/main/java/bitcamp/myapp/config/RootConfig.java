@@ -13,13 +13,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
+@EnableTransactionManagement
 @MapperScan("bitcamp.myapp.dao")
-@ComponentScan(value = {
-    "bitcamp.myapp.dao"
-})
+@ComponentScan({"bitcamp.myapp.dao", "bitcamp.myapp.service"})
 @PropertySource({"classpath:config/jdbc.properties"})
 public class RootConfig {
   private final Log log = LogFactory.getLog(this.getClass());

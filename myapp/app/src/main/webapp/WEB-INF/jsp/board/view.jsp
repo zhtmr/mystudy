@@ -56,33 +56,38 @@
     <hr class="border border-primary border-3 opacity-75">
     <div id="viewer"></div>
 </div>
+
 <script>
     const {Editor} = toastui;
+    const { codeSyntaxHighlight } = Editor.plugin;
 
     const editor = new Editor({
         el: document.querySelector('#editor'),
         previewStyle: 'vertical',
         height: '500px',
+        plugins: [codeSyntaxHighlight],
         theme: 'dark'
     });
 
-    let html = editor.getHTML();
+    // let html = editor.getHTML();
+    let markdown = editor.getMarkdown();
 
     const viewer = Editor.factory({
         el: document.querySelector('#viewer'),
-        viewer: true,
         previewStyle: 'vertical',
         height: '500px',
         theme: 'dark',
         initialEditType: 'markdown',
-        initialValue: html
+        plugins: [codeSyntaxHighlight],
+        viewer: true,
+        initialValue: markdown   // viewer 에는 마크다운 형식으로 해야 된다
     });
 
     let $form = $("#viewFrm");
     $(function () {
 
         $('button[id="submit"]').on('click', function () {
-            let content = editor.getHTML();
+            let content = editor.getHTML();  // 서버 전송시에는 html 로 변환해 전송
             // let markdown = editor.getMarkdown();
             $form.children('form input[name="content"]').val(content)
             $form.attr('action', '/app/board/update').submit()

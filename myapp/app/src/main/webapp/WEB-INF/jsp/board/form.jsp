@@ -42,12 +42,14 @@
 <script>
 
     const {Editor} = toastui;
+    const { codeSyntaxHighlight } = Editor.plugin;
 
     const editor = new Editor({
         el: document.querySelector('#editor'),
         previewStyle: 'vertical',
         height: '500px',
         initialEditType: 'markdown',
+        plugins: [codeSyntaxHighlight],
         theme: 'dark'
     });
 
