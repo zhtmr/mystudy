@@ -87,7 +87,7 @@
     $(function () {
 
         $('button[id="submit"]').on('click', function () {
-            let content = editor.getHTML();  // 서버 전송시에는 html 로 변환해 전송
+            let content = editor.getHTML();   // 서버 전송시에는 html 로 변환해 전송
             // let markdown = editor.getMarkdown();
             $form.children('form input[name="content"]').val(content)
             $form.attr('action', '/app/board/update').submit()

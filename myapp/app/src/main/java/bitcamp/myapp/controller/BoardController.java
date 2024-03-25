@@ -6,6 +6,7 @@ import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,16 +24,17 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
-  private final Log log = LogFactory.getLog(this.getClass());
-
-  private BoardService boardService;
+  private static final Log log = LogFactory.getLog(BoardController.class);
+  private final BoardService boardService;
+  private final ApplicationContext ctx;
   private String uploadDir;
 
 
-  public BoardController(BoardService boardService,
+  public BoardController(BoardService boardService, ApplicationContext ctx,
       ServletContext sc) {   // BoardController 는 ServletContext 를 필요로한다. --> WebApplicationInitializer 구현체를 만들어 리스터에서 ServletContext 를 등록하도록 한다.
     log.debug("BoardController 생성");
     this.boardService = boardService;
+    this.ctx = ctx;
     this.uploadDir = sc.getRealPath("/upload/board");
   }
 
@@ -65,7 +67,7 @@ public class BoardController {
         }
         String filename = UUID.randomUUID().toString();
         file.transferTo(new File(uploadDir + "/" + filename));
-        files.add(new AttachedFile().filePath(filename));
+        files.add(AttachedFile.builder().filePath(filename).build());
       }
     }
     board.setFiles(files);
@@ -131,7 +133,7 @@ public class BoardController {
         }
         String filename = UUID.randomUUID().toString();
         file.transferTo(new File(uploadDir + "/" + filename));
-        files.add(new AttachedFile().filePath(filename));
+        files.add(AttachedFile.builder().filePath(filename).build());
       }
     }
 

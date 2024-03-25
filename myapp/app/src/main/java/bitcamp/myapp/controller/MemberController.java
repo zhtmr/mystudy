@@ -18,9 +18,9 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-  private final Log log = LogFactory.getLog(this.getClass());
+  private static final Log log = LogFactory.getLog(MemberController.class);
 
-  private MemberService memberService;
+  private final MemberService memberService;
   private String uploadDir;
 
   public MemberController(MemberService memberService, ServletContext sc) {

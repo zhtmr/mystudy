@@ -5,21 +5,22 @@ import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.service.BoardService;
 import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class DefaultBoardService implements BoardService {
 
-  private BoardDao boardDao;
-  private AttachedFileDao fileDao;
+  private static final Log log = LogFactory.getLog(DefaultBoardService.class);
+  private final BoardDao boardDao;
+  private final AttachedFileDao fileDao;
 
-  public DefaultBoardService(BoardDao boardDao, AttachedFileDao fileDao) {
-    this.boardDao = boardDao;
-    this.fileDao = fileDao;
-  }
 
   @Transactional
   @Override

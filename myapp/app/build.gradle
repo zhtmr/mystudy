@@ -62,8 +62,12 @@ dependencies {
 //    implementation 'org.mybatis:mybatis-spring:3.0.3'
     implementation 'org.mybatis:mybatis-spring:2.1.2'
 
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
 
-
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
 
 }
 

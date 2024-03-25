@@ -2,6 +2,7 @@ package bitcamp.myapp.controller;
 
 import bitcamp.myapp.service.MemberService;
 import bitcamp.myapp.vo.Member;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -16,16 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
-  private final Log log = LogFactory.getLog(this.getClass());
+  private static final Log log = LogFactory.getLog(AssignmentController.class);
+  private final MemberService memberService;
 
-  MemberService memberService;
-
-  public AuthController(MemberService memberService) {
-    log.debug("AuthController 생성");
-    this.memberService = memberService;
-  }
 
   @GetMapping("/form")
   public void form(@CookieValue(value = "email", required = false) String email, Model model) {
