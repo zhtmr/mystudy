@@ -21,19 +21,19 @@
         <div>
             제목: <input type='text' name='title'>
         </div>
-        <div id='content'></div>
-        <input type="hidden" name="content">
+        <div id='editor'></div>
+        <input type="hidden" name='content' value="ddd">
         <c:if test="${category == 1}">
-            <div>
-                첨부파일: <input name='attachedFiles' type='file' multiple>
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="inputGroupFile02" name='attachedFiles' multiple>
+                <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
         </c:if>
         <div>
-            <button>등록</button>
+            <button id="submit" class="btn btn-success">등록</button>
         </div>
     </form>
-    <h1>viewer</h1>
-    <div id="viewer"></div>
+<%--    <div id="viewer"></div>--%>
 
 </div>
 <jsp:include page="../footer.jsp"></jsp:include>
@@ -44,44 +44,47 @@
     const {Editor} = toastui;
 
     const editor = new Editor({
-        el: document.querySelector('#content'),
+        el: document.querySelector('#editor'),
         previewStyle: 'vertical',
         height: '500px',
+        initialEditType: 'markdown',
         theme: 'dark'
     });
 
-    const viewer = Editor.factory({
-        el: document.querySelector('#viewer'),
-        viewer: true,
-        height: '500px',
-        theme: 'dark'
-    });
-
-    // let markdown = editor.getMarkdown();
-    let markdown = editor.getHTML();
-
-    const $form = $("#myForm");
+    // const viewer = Editor.factory({
+    //     el: document.querySelector('#viewer'),
+    //     viewer: true,
+    //     height: '500px',
+    //     theme: 'dark'
+    // });
+</script>
+<script>
+    let $form = $("#myForm");
     // formData.append("content", markdown);
+    $(function () {
 
-    $('form button').on('click', function () {
-        $form.children('input[name=content]')
-        $form.attr('action', '/app/board/add').submit()
-        // $.ajax({
-        //     enctype: 'multipart/form-data',
-        //     processData: false,
-        //     contentType: false,
-        //     type: 'post',
-        //     url: '/app/board/add',
-        //     async: false,
-        //     dataType: 'text',
-        //     data: formData,
-        //     success: function (result) {
-        //         console.log(result);
-        //     },
-        //     error: function (request, status, error) {
-        //         console.log(error)
-        //     }
-        // })
-    });
+        $('button[id="submit"]').on('click', function () {
+            // let markdown = editor.getMarkdown();
+            let content = editor.getHTML();
+            $form.children('form input[name="content"]').val(content)
+            $form.attr('action', '/app/board/add').submit()
+            // $.ajax({
+            //     enctype: 'multipart/form-data',
+            //     processData: false,
+            //     contentType: false,
+            //     type: 'post',
+            //     url: '/app/board/add',
+            //     async: false,
+            //     dataType: 'text',
+            //     data: formData,
+            //     success: function (result) {
+            //         console.log(result);
+            //     },
+            //     error: function (request, status, error) {
+            //         console.log(error)
+            //     }
+            // })
+        });
+    })
 </script>
 </html>

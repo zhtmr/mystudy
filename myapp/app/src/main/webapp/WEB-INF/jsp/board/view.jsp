@@ -15,7 +15,7 @@
     <h1>${title}
     </h1>
 
-    <form action='/app/board/update' method='post' enctype='multipart/form-data'>
+    <form id="viewFrm" action='' method='post' enctype='multipart/form-data'>
         <input name='category' type='hidden' value='${category}'>
         <div>
             번호: <input readonly type='text' name='no' value=${board.no}>
@@ -23,17 +23,20 @@
         <div>
             제목: <input type='text' name='title' value=${board.title}>
         </div>
-        <div id="viewer">
+        <div id="editor">
             ${board.content}
-            <%--        <label for='content'>내용: </label><textarea id="content" name='content'>${board.content}</textarea>--%>
         </div>
+        <input type="hidden" name="content" value="">
         <div>
             작성자: <input readonly type='text' value=${board.writer.name} disabled>
         </div>
         <c:if test="${category == 1}">
 
         <div>
-            첨부파일: <input name='attachedFiles' type='file' multiple>
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="inputGroupFile02" name='attachedFiles' multiple>
+                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+            </div>
             <ul>
                 <c:forEach items="${board.files}" var="file">
                     <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
@@ -44,31 +47,63 @@
             </ul>
         </div>
         <div>
-            <button>변경</button>
+            <button id="submit">변경</button>
             <a href='/app/board/delete?category=${category}&no=${board.no}'>삭제</a>
         </div>
     </form>
+    <br>
+    <h1>뷰어</h1>
+    <hr class="border border-primary border-3 opacity-75">
+    <div id="viewer"></div>
 </div>
 <script>
     const {Editor} = toastui;
 
     const editor = new Editor({
-        el: document.querySelector('#viewer'),
+        el: document.querySelector('#editor'),
         previewStyle: 'vertical',
         height: '500px',
         theme: 'dark'
     });
 
-    // editor.getHTML();
+    let html = editor.getHTML();
 
-    // const viewer = Editor.factory({
-    //     el: document.querySelector('#viewer'),
-    //     viewer: true,
-    //     previewStyle: 'vertical',
-    //     height: '500px',
-    //     theme: 'dark',
-    //     initialEditType: 'markdown'
-    // });
+    const viewer = Editor.factory({
+        el: document.querySelector('#viewer'),
+        viewer: true,
+        previewStyle: 'vertical',
+        height: '500px',
+        theme: 'dark',
+        initialEditType: 'markdown',
+        initialValue: html
+    });
+
+    let $form = $("#viewFrm");
+    $(function () {
+
+        $('button[id="submit"]').on('click', function () {
+            let content = editor.getHTML();
+            // let markdown = editor.getMarkdown();
+            $form.children('form input[name="content"]').val(content)
+            $form.attr('action', '/app/board/update').submit()
+            // $.ajax({
+            //     enctype: 'multipart/form-data',
+            //     processData: false,
+            //     contentType: false,
+            //     type: 'post',
+            //     url: '/app/board/add',
+            //     async: false,
+            //     dataType: 'text',
+            //     data: formData,
+            //     success: function (result) {
+            //         console.log(result);
+            //     },
+            //     error: function (request, status, error) {
+            //         console.log(error)
+            //     }
+            // })
+        });
+    })
 
 </script>
 <jsp:include page="../footer.jsp"></jsp:include>

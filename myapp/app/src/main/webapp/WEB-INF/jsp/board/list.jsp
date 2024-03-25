@@ -17,7 +17,7 @@
 
     <a href='/app/board/form?category=${category}'>새 글</a>
 
-    <table border='1'>
+    <table class="table" border='1'>
         <thead>
         <tr>
             <th>번호</th>

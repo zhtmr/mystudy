@@ -20,12 +20,12 @@ public class AppWebApplicationInitializer
   @Override
   protected Class<?>[] getRootConfigClasses() {
     return new Class[] {RootConfig.class};
-  }
+  } // 컨텍스트로더리스너 ioC 설정
 
   @Override
   protected Class<?>[] getServletConfigClasses() {
     return new Class[] {AppConfig.class};
-  }
+  } // 디스패처서블릿 ioC 설정
 
   @Override
   protected String[] getServletMappings() {

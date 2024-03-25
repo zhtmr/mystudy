@@ -7,7 +7,10 @@ import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +33,9 @@ public class BoardController {
   private AttachedFileDao fileDao;
   private String uploadDir;
 
+  @Autowired
+  private ApplicationContext ctx;
+
   public BoardController(BoardDao boardDao, AttachedFileDao fileDao,
       ServletContext sc) {   // BoardController 는 ServletContext 를 필요로한다. --> WebApplicationInitializer 구현체를 만들어 리스터에서 ServletContext 를 등록하도록 한다.
     log.debug("BoardController 생성");
@@ -44,8 +50,15 @@ public class BoardController {
     model.addAttribute("title", title);
     model.addAttribute("category", category);
     //    return "/board/form.jsp";
+
+    // IoC 컨테이너에 들어 있는 객체들
+//    String[] beanNames = ctx.getBeanDefinitionNames();
+//    for (String beanName : beanNames) {
+//      log.debug(ctx.getBean(beanName).getClass().getSimpleName());
+//    }
   }
 
+  @Transactional
   @PostMapping("add")
   public String add(Board board, MultipartFile[] attachedFiles, HttpSession session, Model model)
       throws Exception {
@@ -117,6 +130,7 @@ public class BoardController {
   }
 
 
+  @Transactional
   @PostMapping("update")
   public String update(Board board, MultipartFile[] attachedFiles, HttpSession session, Model model)
       throws Exception {
@@ -163,6 +177,7 @@ public class BoardController {
     }
   }
 
+  @Transactional
   @GetMapping("delete")
   public String delete(int category, int no, HttpSession session) throws Exception {
 

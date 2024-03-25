@@ -11,44 +11,47 @@
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
 
+<div class="container">
 
-<h1>회원</h1>
 
-<a href='/app/member/form'>새 회원</a>
-<table border='1'>
-    <thead>
-    <tr>
-        <th>번호</th>
-        <th>이름</th>
-        <th>이메일</th>
-        <th>등록일</th>
-    </tr>
-    </thead>
-    <tbody>
+    <h1>회원</h1>
 
-    <c:forEach items="${list}" var="member">
+    <a href='/app/member/form'>새 회원</a>
+    <table class="table" border='1'>
+        <thead>
         <tr>
-            <td>${member.no}</td>
-            <td>
-                <c:choose>
-                    <c:when test="${not empty member.photo}">
-                        <img src='/upload/${member.photo}' height='20px'>
-                    </c:when>
-                    <c:otherwise>
-                        <img src='/img/default-photo.png' height='20px'>
-                    </c:otherwise>
-                </c:choose>
-                <a href='/app/member/view?no=${member.no}'>${member.name}
-                </a>
-            </td>
-            <td>${member.email}
-            </td>
-            <td><fmt:formatDate value="${member.createdDate}" pattern="yyyy-MM-dd"/>
-            </td>
+            <th>번호</th>
+            <th>이름</th>
+            <th>이메일</th>
+            <th>등록일</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+
+        <c:forEach items="${list}" var="member">
+            <tr>
+                <td>${member.no}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${not empty member.photo}">
+                            <img src='/upload/${member.photo}' height='20px'>
+                        </c:when>
+                        <c:otherwise>
+                            <img src='/img/default-photo.png' height='20px'>
+                        </c:otherwise>
+                    </c:choose>
+                    <a href='/app/member/view?no=${member.no}'>${member.name}
+                    </a>
+                </td>
+                <td>${member.email}
+                </td>
+                <td><fmt:formatDate value="${member.createdDate}" pattern="yyyy-MM-dd"/>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 
 <jsp:include page="../footer.jsp"></jsp:include>
 </body>
