@@ -32,20 +32,20 @@
         </div>
         <c:if test="${category == 1}">
 
-        <div>
-            <div class="input-group mb-3">
-                <input type="file" class="form-control" id="inputGroupFile02" name='attachedFiles' multiple>
-                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+            <div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="inputGroupFile02" name='attachedFiles' multiple>
+                    <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                </div>
+                <ul>
+                    <c:forEach items="${board.files}" var="file">
+                        <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
+                            [<a href='/app/board/file/delete?category=${category}&no=${file.no}'>삭제</a>]
+                        </li>
+                    </c:forEach>
+                </ul>
             </div>
-            <ul>
-                <c:forEach items="${board.files}" var="file">
-                    <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
-                        [<a href='/app/board/file/delete?category=${category}&no=${file.no}'>삭제</a>]
-                    </li>
-                </c:forEach>
-                </c:if>
-            </ul>
-        </div>
+        </c:if>
         <div>
             <button id="submit">변경</button>
             <a href='/app/board/delete?category=${category}&no=${board.no}'>삭제</a>
@@ -59,7 +59,7 @@
 
 <script>
     const {Editor} = toastui;
-    const { codeSyntaxHighlight } = Editor.plugin;
+    const {codeSyntaxHighlight} = Editor.plugin;
 
     const editor = new Editor({
         el: document.querySelector('#editor'),

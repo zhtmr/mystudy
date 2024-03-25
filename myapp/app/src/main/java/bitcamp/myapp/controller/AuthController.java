@@ -1,12 +1,15 @@
 package bitcamp.myapp.controller;
 
-import bitcamp.myapp.dao.MemberDao;
+import bitcamp.myapp.service.MemberService;
 import bitcamp.myapp.vo.Member;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +20,11 @@ import javax.servlet.http.HttpSession;
 public class AuthController {
   private final Log log = LogFactory.getLog(this.getClass());
 
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public AuthController(MemberDao memberDao) {
+  public AuthController(MemberService memberService) {
     log.debug("AuthController 생성");
-    this.memberDao = memberDao;
+    this.memberService = memberService;
   }
 
   @GetMapping("/form")
@@ -49,7 +52,7 @@ public class AuthController {
       response.addCookie(cookie);
     }
 
-    Member member = memberDao.findByEmailAndPassword(email, password);
+    Member member = memberService.get(email, password);
     if (member != null) {
       session.setAttribute("loginUser", member);
     }
