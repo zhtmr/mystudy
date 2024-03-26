@@ -23,13 +23,13 @@
         <div>
             제목: <input type='text' name='title' value=${board.title}>
         </div>
+        <div>
+            작성자: <input readonly type='text' value=${board.writer.name} disabled>
+        </div>
         <div id="editor">
             ${board.content}
         </div>
         <input type="hidden" name="content" value="">
-        <div>
-            작성자: <input readonly type='text' value=${board.writer.name} disabled>
-        </div>
         <c:if test="${category == 1}">
 
             <div>
@@ -39,9 +39,11 @@
                 </div>
                 <ul>
                     <c:forEach items="${board.files}" var="file">
-                        <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
-                            [<a href='/app/board/file/delete?category=${category}&no=${file.no}'>삭제</a>]
-                        </li>
+                        <c:if test="${file.filePath != null}">
+                            <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
+                                [<a href='/app/board/file/delete?category=${category}&no=${file.no}'>삭제</a>]
+                            </li>
+                        </c:if>
                     </c:forEach>
                 </ul>
             </div>
