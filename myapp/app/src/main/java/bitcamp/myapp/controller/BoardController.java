@@ -4,9 +4,10 @@ import bitcamp.myapp.service.BoardService;
 import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,20 +23,19 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/board")
-public class BoardController {
+public class BoardController implements InitializingBean {
   private static final Log log = LogFactory.getLog(BoardController.class);
   private final BoardService boardService;
-  private final ApplicationContext ctx;
+  private final ServletContext servletContext;
   private String uploadDir;
 
 
-  public BoardController(BoardService boardService, ApplicationContext ctx,
-      ServletContext sc) {   // BoardController 는 ServletContext 를 필요로한다. --> WebApplicationInitializer 구현체를 만들어 리스터에서 ServletContext 를 등록하도록 한다.
-    log.debug("BoardController 생성");
-    this.boardService = boardService;
-    this.ctx = ctx;
-    this.uploadDir = sc.getRealPath("/upload/board");
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    this.uploadDir = servletContext.getRealPath("/upload/board");
+
   }
 
   @GetMapping("form")

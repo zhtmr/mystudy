@@ -2,8 +2,10 @@ package bitcamp.myapp.controller;
 
 import bitcamp.myapp.service.MemberService;
 import bitcamp.myapp.vo.Member;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +18,18 @@ import java.io.File;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/member")
-public class MemberController {
+public class MemberController implements InitializingBean {
   private static final Log log = LogFactory.getLog(MemberController.class);
 
   private final MemberService memberService;
+  private final ServletContext servletContext;
   private String uploadDir;
 
-  public MemberController(MemberService memberService, ServletContext sc) {
-    log.debug("MemberController 생성");
-    this.memberService = memberService;
-    this.uploadDir = sc.getRealPath("/upload");
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    this.uploadDir = servletContext.getRealPath("/upload");
   }
 
   @GetMapping("form")
