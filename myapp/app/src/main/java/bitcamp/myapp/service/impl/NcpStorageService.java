@@ -1,13 +1,39 @@
 package bitcamp.myapp.service.impl;
 
 import bitcamp.myapp.service.StorageService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-public class NcpStorageService implements StorageService {
-  final String endPoint = "https://kr.object.ncloudstorage.com";
-  final String regionName = "kr-standard";
-  final String accessKey = "ACCESS_KEY";
-  final String secretKey = "SECRET_KEY";
+@Service
+public class NcpStorageService implements StorageService, InitializingBean {
+  private static Log log = LogFactory.getLog(NcpStorageService.class);
+  final String endPoint;
+  final String regionName;
+  final String accessKey;
+  final String secretKey;
+
+  public NcpStorageService(
+      @Value("${ncp.ss.endpoint}") String endPoint,
+      @Value("${ncp.ss.regionname}") String regionName,
+      @Value("${ncp.accesskey}") String accessKey,
+      @Value("${ncp.secretkey}") String secretKey) {
+    this.endPoint = endPoint;
+    this.regionName = regionName;
+    this.accessKey = accessKey;
+    this.secretKey = secretKey;
+  }
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    log.debug(String.format("endPoint: %s", endPoint));
+    log.debug(String.format("regionName: %s", regionName));
+    log.debug(String.format("accessKey: %s", accessKey));
+    log.debug(String.format("secretKey: %s", secretKey));
+  }
 
   @Override
   public String upload(MultipartFile multipartFile) throws Exception {
