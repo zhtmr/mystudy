@@ -11,8 +11,8 @@
 <form data-th-action='@{update}' data-th-object="${member}" method='post' enctype='multipart/form-data'>
     <div>
         사진:
-            <a data-th-if="*{photo}" data-th-href="@{'/upload/'+*{photo}}">
-                <img data-th-src="@{'/upload/'+*{photo}}" height='80px'>
+            <a data-th-if="*{photo}" data-th-href="@{'https://kr.object.ncloudstorage.com/bitcamp-devops5-39/member/'+*{photo}}">
+                <img data-th-src="@{'https://kr.object.ncloudstorage.com/bitcamp-devops5-39/member/'+*{photo}}" height='80px'>
             </a><br>
             <a data-th-unless="*{photo}" data-th-href='@{/img/default-photo.png}'>
                 <img data-th-src='@{/img/default-photo.png}' height='80px'>

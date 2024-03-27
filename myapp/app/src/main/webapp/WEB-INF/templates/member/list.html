@@ -24,7 +24,7 @@
         <tr data-th-each="member : ${list}" data-th-object="${member}">
             <td data-th-text="*{no}">1</td>
             <td>
-                <img data-th-if="*{photo}" data-th-src="@{'/upload/'+*{photo}}" src="/img/default-photo.png" height='20px'>
+                <img data-th-if="*{photo}" data-th-src="@{'https://kr.object.ncloudstorage.com/bitcamp-devops5-39/member/'+*{photo}}" src="/img/default-photo.png" height='20px'>
                 <img data-th-unless="*{photo}" data-th-src='@{/img/default-photo.png}' height='20px'>
                 <a data-th-href='@{view(no=*{no})}' data-th-text="*{name}">홍길동</a>
             </td>

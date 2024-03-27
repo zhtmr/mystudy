@@ -1,11 +1,13 @@
 package bitcamp.myapp.controller;
 
 import bitcamp.myapp.service.MemberService;
+import bitcamp.myapp.service.impl.NcpStorageService;
 import bitcamp.myapp.vo.Member;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 import java.util.UUID;
 
@@ -24,12 +25,17 @@ public class MemberController implements InitializingBean {
   private static final Log log = LogFactory.getLog(MemberController.class);
 
   private final MemberService memberService;
-  private final ServletContext servletContext;
+  private final NcpStorageService ncpStorageService;
   private String uploadDir;
+
+  @Value("${ncp.ss.bucketname}")
+  private String bucketName;
 
   @Override
   public void afterPropertiesSet() throws Exception {
-    this.uploadDir = servletContext.getRealPath("/upload");
+    this.uploadDir = "member/";
+    log.debug(String.format("bucketName: %s", bucketName));
+    log.debug(String.format("uploadDir: %s", uploadDir));
   }
 
   @GetMapping("form")
@@ -41,9 +47,8 @@ public class MemberController implements InitializingBean {
   public String add(Member member, MultipartFile file) throws Exception {
 
     if (file.getSize() > 0) {
-      String filename = UUID.randomUUID().toString();
+      String filename = ncpStorageService.upload(bucketName, uploadDir, file);
       member.setPhoto(filename);
-      file.transferTo(new File(this.uploadDir + "/" + filename));
     }
     memberService.add(member);
     return "redirect:list";
