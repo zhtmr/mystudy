@@ -12,7 +12,7 @@
     <div>
         사진:
             <a data-th-if="*{photo}" data-th-href="@{'https://kr.object.ncloudstorage.com/bitcamp-devops5-39/member/'+*{photo}}">
-                <img data-th-src="@{'https://kr.object.ncloudstorage.com/bitcamp-devops5-39/member/'+*{photo}}" height='80px'>
+                <img data-th-src="@{'https://2bs2caof2683.edge.naverncp.com/skwzRdytI1/member/' + *{photo}(type=f,w=80,h=80,ttype=jpg)}"/>
             </a><br>
             <a data-th-unless="*{photo}" data-th-href='@{/img/default-photo.png}'>
                 <img data-th-src='@{/img/default-photo.png}' height='80px'>
@@ -24,10 +24,10 @@
         <input readonly type='text' name='no' data-th-value='*{no}'>
     </div>
     <div>
-        이름: <input type='text' name='name' data-th-value='*{email}'>
+        이름: <input type='text' name='name' data-th-value='*{name}'>
     </div>
     <div>
-        이메일: <input type='text' name='email' data-th-value='*{name}'>
+        이메일: <input type='text' name='email' data-th-value='*{email}'>
     </div>
     <div>
         비밀번호: <input type='password' name='password'>
