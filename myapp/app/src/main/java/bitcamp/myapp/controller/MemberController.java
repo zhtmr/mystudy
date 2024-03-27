@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -71,10 +70,10 @@ public class MemberController implements InitializingBean {
     member.setCreatedDate(old.getCreatedDate());
 
     if (file.getSize() > 0) {
-      String filename = UUID.randomUUID().toString();
+      String filename = ncpStorageService.upload(bucketName, uploadDir, file);
       member.setPhoto(filename);
-      file.transferTo(new File(this.uploadDir + "/" + filename));
-      new File(uploadDir + "/" + old.getPhoto()).delete();
+//      file.transferTo(new File(this.uploadDir + "/" + filename));
+//      new File(uploadDir + "/" + old.getPhoto()).delete();
     } else {
       member.setPhoto(old.getPhoto());
     }
