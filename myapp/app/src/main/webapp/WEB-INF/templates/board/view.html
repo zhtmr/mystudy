@@ -1,56 +1,44 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html lang='en'>
 <head>
     <meta charset='UTF-8'>
     <title>비트캠프 5기</title>
 </head>
+<div data-th-replace="header :: header"></div>
 <body>
-<jsp:include page="../header.jsp"></jsp:include>
 
 <div class="container">
 
-    <h1>${title}
-    </h1>
+    <h1 data-th-text="${title}"></h1>
 
-    <form id="viewFrm" action='' method='post' enctype='multipart/form-data'>
-        <input name='category' type='hidden' value='${category}'>
+    <form id="viewFrm" action='' method='post' enctype='multipart/form-data' data-th-object="${board}">
+        <input name='category' type='hidden' data-th-value='${category}'>
         <div>
-            번호: <input readonly type='text' name='no' value=${board.no}>
-        </div>
-        <div>
-            제목: <input type='text' name='title' value=${board.title}>
+            번호: <input readonly type='text' name='no' data-th-value="*{no}">
         </div>
         <div>
-            작성자: <input readonly type='text' value=${board.writer.name} disabled>
+            제목: <input type='text' name='title' data-th-value="*{title}">
         </div>
-        <div id="editor">
-            ${board.content}
+        <div>
+            작성자: <input readonly type='text' data-th-value="*{writer.name}" disabled>
         </div>
+        <div id="editor" data-th-utext="*{content}"></div>
         <input type="hidden" name="content" value="">
-        <c:if test="${category == 1}">
-
-            <div>
-                <div class="input-group mb-3">
-                    <input type="file" class="form-control" id="inputGroupFile02" name='attachedFiles' multiple>
-                    <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                </div>
-                <ul>
-                    <c:forEach items="${board.files}" var="file">
-                        <c:if test="${file.filePath != null}">
-                            <li><a href='/upload/board/${file.filePath}'>${file.filePath}</a>
-                                [<a href='/app/board/file/delete?category=${category}&no=${file.no}'>삭제</a>]
-                            </li>
-                        </c:if>
-                    </c:forEach>
-                </ul>
+        <div data-th-if="${category == 1}">
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="inputGroupFile02" name='attachedFiles' multiple>
+                <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
-        </c:if>
+            <ul>
+                <li data-th-if="${file.filePath} != null" data-th-each="file : *{files}" data-th-object="${file}"><a
+                        data-th-href="@{'/upload/board/' + *{filePath}}" data-th-text="*{filePath}"></a>
+                    [<a data-th-href="@{file/delete(category=${category},no=*{no})}" href=''>삭제</a>]
+                </li>
+            </ul>
+        </div>
         <div>
             <button id="submit">변경</button>
-            <a href='/app/board/delete?category=${category}&no=${board.no}'>삭제</a>
+            <a data-th-href="@{delete(category=${category},no=${board.no})}" href=''>삭제</a>
         </div>
     </form>
     <br>
@@ -112,6 +100,6 @@
     })
 
 </script>
-<jsp:include page="../footer.jsp"></jsp:include>
 </body>
+<div data-th-replace="footer :: footer"></div>
 </html>

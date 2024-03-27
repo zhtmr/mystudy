@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>비트캠프 데브옵스 5기</title>
+</head>
+<div data-th-replace="header :: header"></div>
+<body>
+
+
+<h1>오류!</h1>
+
+<p data-th-if="${message != null}" data-th-text="${message}">오류제목</p>
+<pre data-th-if="${detail != null}" data-th-text="${detail}">오류내용</pre>
+
+
+</body>
+<div data-th-replace="footer :: footer"></div>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>비트캠프 5기</title>
+</head>
+<div data-th-replace="header :: header"></div>
+<body>
+<h1>과제</h1>
+
+<form action='/app/assignment/update' method='post' data-th-object="${assignment}">
+    <div>
+        번호: <input readonly type='text' name='no' data-th-value=*{no} value="100">
+    </div>
+    <div>
+        제목: <input type='text' name='title' data-th-value=*{title} value="java">
+    </div>
+    <div>
+        내용: <textarea name='content' data-th-text="*{content}">과제내용</textarea>
+    </div>
+    <div>
+        마감일: <input type='date' name='deadline' data-th-value="*{deadline}" value="2020-2-2">
+    </div>
+    <button>변경</button>
+    <a data-th-href='@{delete(no=${assignment.no})}' href="delete.html">삭제</a>
+</form>
+
+</body>
+<div data-th-replace="footer :: footer"></div>
+</html>

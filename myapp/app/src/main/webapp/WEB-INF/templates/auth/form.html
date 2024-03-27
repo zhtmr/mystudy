@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>비트캠프 5기</title>
+</head>
+<div data-th-replace="header :: header"></div>
+
+<body>
+<h1>로그인</h1>
+
+<form action='/app/auth/login' method='post'>
+    <div>
+        <label>
+            이메일:
+            <input type='text' name='email' data-th-value='${email}' value="hong@test.com">
+        </label>
+    </div>
+    <div>
+        <label>
+            암호:
+            <input type='password' name='password'>
+        </label>
+    </div>
+    <button>로그인</button>
+    <label>
+        <input type='checkbox' name='saveEmail'> 이메일 저장
+    </label>
+</form>
+</body>
+<div data-th-replace="footer :: footer"></div>
+</html>

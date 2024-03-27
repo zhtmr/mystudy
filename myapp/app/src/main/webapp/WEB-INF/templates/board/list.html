@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>비트캠프 5기</title>
+</head>
+<div data-th-replace="header :: header"></div>
+<body>
+
+<div class="container">
+    <h1 data-th-text="${title}"></h1>
+
+    <a data-th-href="@{form(category=${category})}" href='form.html'>새 글</a>
+
+    <table class="table" border='1'>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>등록일</th>
+            <th>첨부파일</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr data-th-each="board : ${list}" data-th-object="${board}">
+                <td data-th-text="*{no}"></td>
+                <td><a data-th-href='@{view(category=${category},no=*{no})}' data-th-text="*{title}"></a></td>
+                <td data-th-text="*{writer.name}"></td>
+                <td data-th-text="${#dates.format(board.createdDate,'yyyy-MM-dd')}"></td>
+                <td data-th-text="*{fileCount}"></td>
+            <tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+<div data-th-replace="footer :: footer"></div>
+</html>
