@@ -30,8 +30,11 @@
                 <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
             <ul>
-                <li data-th-if="${file.filePath} != null" data-th-each="file : *{files}" data-th-object="${file}"><a
-                        data-th-href="@{'/upload/board/' + *{filePath}}" data-th-text="*{filePath}"></a>
+                <li data-th-if="${file.filePath} != null" data-th-each="file : *{files}" data-th-object="${file}">
+                    <!--                    <a data-th-href="@{'/upload/board/' + *{filePath}}" data-th-text="*{filePath}"></a>-->
+                    <a data-th-href="@{'https://kr.object.ncloudstorage.com/bitcamp-devops5-39/board/' + *{filePath}}"
+                       data-th-text="*{filePath}"
+                       href="file.html">a.gif</a>
                     [<a data-th-href="@{file/delete(category=${category},no=*{no})}" href=''>삭제</a>]
                 </li>
             </ul>
@@ -97,6 +100,9 @@
             //     }
             // })
         });
+
+
+        console.log($('[data-nodeid^="h"]').text())
     })
 
 </script>

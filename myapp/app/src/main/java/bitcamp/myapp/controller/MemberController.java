@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -39,7 +37,7 @@ public class MemberController implements InitializingBean {
 
   @GetMapping("form")
   public void form() throws Exception {
-//    return "/member/form.jsp";
+    //    return "/member/form.jsp";
   }
 
   @PostMapping("add")
@@ -56,7 +54,7 @@ public class MemberController implements InitializingBean {
   @GetMapping("list")
   public void list(Model model) throws Exception {
     model.addAttribute("list", memberService.list());
-//    return "/member/list.jsp";
+    //    return "/member/list.jsp";
   }
 
   @PostMapping("update")
@@ -72,8 +70,9 @@ public class MemberController implements InitializingBean {
     if (file.getSize() > 0) {
       String filename = ncpStorageService.upload(bucketName, uploadDir, file);
       member.setPhoto(filename);
-//      file.transferTo(new File(this.uploadDir + "/" + filename));
-//      new File(uploadDir + "/" + old.getPhoto()).delete();
+      ncpStorageService.delete(this.bucketName, this.uploadDir, old.getPhoto());
+      //      file.transferTo(new File(this.uploadDir + "/" + filename));
+      //      new File(uploadDir + "/" + old.getPhoto()).delete();
     } else {
       member.setPhoto(old.getPhoto());
     }
@@ -88,7 +87,7 @@ public class MemberController implements InitializingBean {
       throw new Exception("회원 번호가 유효하지 않습니다.");
     }
     model.addAttribute("member", member);
-//    return "/member/view.jsp";
+    //    return "/member/view.jsp";
   }
 
   @GetMapping("delete")
@@ -101,7 +100,8 @@ public class MemberController implements InitializingBean {
     memberService.delete(no);
     String filename = member.getPhoto();
     if (filename != null) {
-      new File(uploadDir + "/" + filename).delete();
+      //      new File(uploadDir + "/" + filename).delete();
+      ncpStorageService.delete(this.bucketName, this.uploadDir, member.getPhoto());
     }
     return "redirect:list";
   }

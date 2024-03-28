@@ -16,18 +16,18 @@
 <header>
     <a href='/'><img src='https://www.google.com/logos/doodles/2024/teachers-day-2024-jan-15-6753651837110419-2xa.gif'
                      height=100px></a>
-    <a href='/app/assignment/list'>과제</a>
-    <a href='/app/board/list?category=1'>게시글</a>
-    <a href='/app/member/list'>회원</a>
-    <a href='/app/board/list?category=2'>가입인사</a>
+    <a data-th-href="@{/assignment/list}" href='assignment/list'>과제</a>
+    <a data-th-href="@{/board/list(category=1)}" href='board/list'>게시글</a>
+    <a data-th-href="@{/member/list}" href='member/list'>회원</a>
+    <a data-th-href="@{/board/list(category=2)}" href='board/list2'>가입인사</a>
 
 
     <span data-th-if="${session.loginUser != null}" data-th-text="${session.loginUser.name}">홍길동</span>
-    <a data-th-if="${session.loginUser != null}" href='/app/auth/logout'>로그아웃</a>
+    <a data-th-if="${session.loginUser != null}" data-th-href="@{/auth/logout}" href='/auth/logout'>로그아웃</a>
 
-    <a data-th-if="${session.loginUser == null}" href='/app/auth/form'>로그인</a>
+    <a data-th-if="${session.loginUser == null}" data-th-href="@{/auth/form}" href='/auth/form'>로그인</a>
 
-    <a href='/app/about'>소개</a>
+    <a data-th-href="@{/about}" href='about'>소개</a>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
